@@ -1,0 +1,8 @@
+{
+  "slug": "answer-anchored-flashcards",
+  "title": "Recall Anchor",
+  "summary": "Score flashcards from the answer you type, not a rating you guess.",
+  "artifact_class": "pwa-offline",
+  "monetization": "one-time",
+  "smallest_useful_product": "Offline PWA for exact text, numeric tolerance, and checklist cards with answer evidence, interval explanations, and export."
+}
