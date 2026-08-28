@@ -1,5 +1,24 @@
 # Recall Anchor v1 handoff
 
+## Independent verification status — FAIL
+
+Independent verification on 2026-08-28 tested candidate `098c5c52f7677aa938a2c8cd415a060d2992f885` and the byte-matching live deployment at <https://answer-anchored-flashcards.sociobot.in>.
+
+**Do not release this candidate.** Full evidence is in [`.factory/verification.md`](verification.md).
+
+Release-blocking findings:
+
+- **High:** Every $19 buy link reaches the production Sociobot checkout endpoint, which returns HTTP 404 (`{"error":"enabled factory product","status":404}`).
+- **High:** Dark mode has serious axe color-contrast failures on Home, Demo, Cards, and the 404 view (ratios as low as 1.12:1).
+- **High:** Checklist scoring uses substring matching; `earth` falsely matches rubric item `art`, records 50%, and schedules tomorrow.
+- **High:** Two rapid answer submissions create two reviews and advance the interval twice.
+- **High:** Two stale tabs silently overwrite one another's card additions; only the last writer's card remains.
+- **Medium:** Multiple 390 px mobile links have 16–36 px target heights instead of the required 44 px.
+- **Medium:** Hashed assets are served with `max-age=30` rather than long-lived immutable caching.
+- **Low:** Unknown routes render the designed 404 UI but return HTTP 200.
+
+Positive evidence: the first-read/demo gate passes; all 11 claim commands pass after `npm ci`; `npm test` passes 20/20; `npm run build` passes; live files match the candidate; offline reload and a controlled service-worker update pass; keyboard-only review works at 390 px; rate limiting begins after an observed 30-request burst allowance and every 429 has `Retry-After: 4`; live Lighthouse is 96/100/100/100. No product code was changed during verification.
+
 ## What shipped
 
 - A Vite and TypeScript offline PWA at static route `/` with build output in `dist/`.
