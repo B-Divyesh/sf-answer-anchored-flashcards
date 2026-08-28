@@ -2,9 +2,9 @@
 
 ## Independent verification status — FAIL
 
-Independent verification on 2026-08-28 tested candidate `098c5c52f7677aa938a2c8cd415a060d2992f885` and the byte-matching live deployment at <https://answer-anchored-flashcards.sociobot.in>.
+Fresh independent verification on 2026-08-28 tested candidate `098c5c52f7677aa938a2c8cd415a060d2992f885` from a detached clean worktree and the byte-matching live deployment at <https://answer-anchored-flashcards.sociobot.in>.
 
-**Do not release this candidate.** Full evidence is in [`.factory/verification.md`](verification.md).
+**Do not release this candidate.** Fresh evidence is in [`.factory/verification-1.md`](verification-1.md); the earlier interrupted-run report remains in [`.factory/verification.md`](verification.md).
 
 Release-blocking findings:
 
@@ -14,10 +14,12 @@ Release-blocking findings:
 - **High:** Two rapid answer submissions create two reviews and advance the interval twice.
 - **High:** Two stale tabs silently overwrite one another's card additions; only the last writer's card remains.
 - **Medium:** Multiple 390 px mobile links have 16–36 px target heights instead of the required 44 px.
+- **Medium:** Invisible confidence radio inputs make the review DOM 397 px wide at a 390 px viewport and 1779 px wide at a 1440 px viewport; clipping hides the overflow.
 - **Medium:** Hashed assets are served with `max-age=30` rather than long-lived immutable caching.
+- **Medium:** Claim tests do not fully assert restored review rows or the real checkout, and several copy promises lack complete tagged coverage.
 - **Low:** Unknown routes render the designed 404 UI but return HTTP 200.
 
-Positive evidence: the first-read/demo gate passes; all 11 claim commands pass after `npm ci`; `npm test` passes 20/20; `npm run build` passes; live files match the candidate; offline reload and a controlled service-worker update pass; keyboard-only review works at 390 px; rate limiting begins after an observed 30-request burst allowance and every 429 has `Retry-After: 4`; live Lighthouse is 96/100/100/100. No product code was changed during verification.
+Positive evidence: the first-read/demo gate passes; all 11 claim commands pass after `npm ci`; `npm test` passes 20/20; `npm run build` passes; live files match the candidate; offline reload and a controlled service-worker update pass; keyboard-only review works at 390 px; rate limiting allows 30 requests before returning 429 with `Retry-After: 4`; fresh live Lighthouse is 100/100/100/100 with 1.4 s LCP. No product code was changed during verification.
 
 ## What shipped
 
@@ -51,7 +53,7 @@ The deployment build command is exactly `npm run build`. Publish `dist/`; `dist/
 ## Verification completed
 
 - `npm test`: 20 Playwright tests passed, including all 11 tagged claim tests.
-- Axe checks: no serious or critical findings across home, demo, cards, privacy, terms, and unknown-route screens.
+- Axe checks: light mode had no serious or critical findings across home, demo, cards, privacy, terms, and unknown-route screens; dark mode has the release-blocking contrast failures recorded above and in `verification-1.md`.
 - Chromium console smoke: no console errors on desktop home, 390 px home, or 390 px demo.
 - Mobile smoke: 390 × 844 layout, touch controls, and `Ctrl+Enter` review passed.
 - Offline smoke: `/demo` reloaded with the network disabled and kept the sample cards.
