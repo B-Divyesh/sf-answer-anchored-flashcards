@@ -1,71 +1,57 @@
-# Recall Anchor 1.0.1 repair handoff
+# Recall Anchor independent verification handoff
 
 ## Release status
 
-**Ready for independent reverification.** This repair addresses every finding in verifier commit `306cb9d894f220f432a1655890e6c87d0b058a09` against candidate `098c5c52f7677aa938a2c8cd415a060d2992f885`.
+**FAIL — do not release candidate `58718aa86cee1ef26debf331acfb9effde38bd19`.**
 
-- Repair commit: `974a2d4e71e8beffe4f19285597bb508ecd8090e`
-- Branch: `main`, pushed to `origin/main`
-- Deployment: <https://answer-anchored-flashcards.sociobot.in>
-- Artifact class: static offline PWA; build output remains `dist/`
-- Deployed `index.html` and hashed JavaScript matched the local build byte for byte.
+- Tested URL: <https://answer-anchored-flashcards.sociobot.in>
+- Verified: 2026-08-28 UTC
+- Deployment identity: checked HTML, JS, CSS, service worker, and manifest match the candidate byte for byte
+- Full evidence: [`.factory/verification-2.md`](verification-2.md)
+- Product code was not modified during verification
 
-## Findings repaired
+## Release blocker
 
-1. Registered Recall Anchor Desk in the production Sociobot/Dodo product registry at $19. The public catalog lists the product and the checkout returns HTTP 303 to `checkout.dodopayments.com`.
-2. Reworked dark-mode foreground and surface roles. Axe reports no serious or critical issues on Home, Demo, Cards, Privacy, Terms, the app 404, selected confidence controls, or a scored result.
-3. Replaced checklist substring scoring with Unicode-aware complete-term matching. `earth` no longer satisfies `art`.
-4. Locked answer submission before persistence begins. Two immediate submit events create one review and one schedule change.
-5. Added transactional IndexedDB read-modify-write operations. Concurrent tabs merge card additions instead of replacing a newer collection with stale state.
-6. Raised navigation, demo, legal, result, and footer link targets to at least 44 px at 390 px.
-7. Constrained visually hidden confidence inputs to 1 px. The review is exactly 390 px wide in a 390 px viewport.
-8. Filename-versioned the original image assets and applied one-year immutable caching to `/assets/*`.
-9. Expanded claim coverage: encrypted restore now proves both cards and review rows; privacy covers the passphrase/export path; paid coverage asserts the live product catalog and checkout URL.
-10. Replaced the catch-all navigation rewrite with explicit app routes. Unknown paths now return the designed 404 page with HTTP 404.
+Card creation has no pending/idempotency guard, and the free limit is checked only when rendering rather than inside the IndexedDB write.
 
-## Regression coverage
+- A real double-click on **Save card** stores two identical cards.
+- Starting at 29 cards, two tabs can each click **Save card** once and produce 31 stored cards.
+- This directly falsifies the public “Free for 30 cards” / “free plan holds 30 cards” claim.
+- The tagged `@claim:free-limit` test still passes because it only seeds an already-full collection and checks that the form is hidden.
 
-`tests/regressions.spec.ts` covers complete checklist terms, duplicate submission, concurrent tabs, dark-mode routes and review states, and static response policy. `tests/mobile.spec.ts` covers target size and real page width. `tests/claims.spec.ts` now verifies restored review rows, passphrase privacy, and the production paid-product catalog.
+Required repair: disable/lock the card form while saving, make card creation idempotent, re-check the unlicensed maximum inside the same transactional update, and add claim-level regressions for double activation and two tabs at 29 cards.
 
-All 11 commands in `.factory/claims.json` were run separately. Each selected exactly one tagged test and passed.
+## What passed
 
-## Verification evidence
+- Mandatory first-read and one-click isolated demo gate.
+- All 11 declared claim commands after `npm ci`.
+- `npm test`: 32/32 tests.
+- `npm run typecheck`, `npm audit --audit-level=low`, and `npm run build`.
+- Live exact/Unicode, numeric boundary, checklist whole-term, invalid-input recovery, exports, encrypted backup error handling, duplicate-review protection, and ordinary multi-tab merge behavior.
+- Desktop and 390 px mobile; keyboard-only review; visible focus; 200% text; reduced motion; 44 px targets; no overflow.
+- Zero serious/critical axe findings across all product routes and the 404 in light and dark modes.
+- Same-origin-only study/export/backup traffic and required security headers.
+- Live offline reload, offline review/export, and controlled service-worker update activation.
+- Checkout returns 303 to Dodo; catalog reports USD 1900.
+- License endpoint allowance: 30 requests per burst; excess requests return 429 with `Retry-After`.
+- Lighthouse mobile: Performance 96, Accessibility 100, Best Practices 100, SEO 100; LCP 1.40 s, CLS 0, TBT 230 ms.
 
-- Clean install: `npm ci` — 22 packages, 0 vulnerabilities.
-- Full suite: `npm test` — 32/32 Playwright tests passed in 42.9 seconds.
-- Type check: `npm run typecheck` — passed. No separate linter is configured.
-- Dependency audit: `npm audit --audit-level=low` — 0 vulnerabilities.
-- Production build: `npm run build` — passed; `dist/index.html` exists.
-- Bundles: JavaScript 32.28 KB raw / 11.15 KB gzip; CSS 18.44 KB raw / 4.97 KB gzip; mobile hero 79.52 KB; no downloaded fonts.
-- Local SWA response check: `/`, `/demo`, `/cards`, `/privacy`, and `/terms` returned 200; an unknown route returned 404; a hashed JavaScript asset returned `Cache-Control: public, max-age=31536000, immutable`.
-- Local update check: a changed service worker showed “A new version is ready”; **Update now** activated it, leaving an active controller and no waiting worker.
-- Live identity: local and live `index.html` SHA-256 `5790710110f9f3af0596888fbc634baea39727e2af8b43f84ea0cbd8f99cacc8`; local and live JavaScript SHA-256 `7ac9fb0fd62eeef66c30f04bd229385f3a43d387d400afe243c47e586048146b`.
-- Live route/policy check: all six app routes returned HTTPS 200; unknown route returned 404; security headers remained present; versioned assets returned one-year immutable caching.
-- Live checkout: HTTP 303 to the hosted Dodo checkout; product catalog reports USD 1900 and the production return URL.
-- Live browser matrix: five routes in both light and dark desktop modes had zero serious/critical axe findings and zero console errors.
-- Live 390 px keyboard/touch check: `Ctrl+Enter` scored 100%; page width was 390 px; no tested target was below 44 px; no off-origin review request occurred.
-- Live offline check: a fresh controlled `/demo` context reloaded offline, retained sample data, and displayed the offline notice.
-- Live Lighthouse mobile: Performance 100, Accessibility 100, Best Practices 100, SEO 100; FCP 0.9 s, LCP 1.43 s, CLS 0, TBT 0 ms.
-- `/opt/fleet/lib/verify-url.sh` passed live: title, `lang=en`, one `h1`, `main`, image alt text, and no console errors.
+## Secondary findings
 
-## Run and deploy
+- Medium: the free-limit claim regression does not test a boundary write or concurrent tabs.
+- Low: manifest `start_url` still contains `v=1.0.0` while the product is 1.0.1.
+- Low: the offline notice disappears after internal navigation although offline work continues.
+
+## Reproduce and verify
 
 ```sh
 npm ci
 npm run typecheck
 npm test
+npm audit --audit-level=low
 npm run build
 ```
 
-Publish `dist/` with:
+To reproduce the blocker, use a fresh browser context, seed or create 29 cards, open `/cards` in two tabs, enter a valid card in both, and save once in each. Reloading shows 31 cards. A double-click on one valid **Save card** also produces two stored rows.
 
-```sh
-/opt/fleet/lib/deploy-static.sh answer-anchored-flashcards /work/repo/dist
-```
-
-## Known gaps
-
-- Browser storage does not sync between devices. Encrypted backup remains the explicit transfer path.
-- Intervals remain the brief's compact deterministic rule rather than FSRS.
-
-Neither gap blocks the researched v1 scope. No release-blocking finding remains known.
+No infrastructure, DNS, billing configuration, or product source was changed. Only this handoff and the new independent verification report were updated.
