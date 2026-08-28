@@ -1,5 +1,5 @@
-const VERSION = 'recall-anchor-v2';
-const SHELL = ['/', '/index.html', '/offline.html', '/manifest.webmanifest', '/favicon.svg', '/assets/hero-768.webp', '/assets/hero-1200.webp', '/assets/social.webp', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/apple-touch-icon.png'];
+const VERSION = 'recall-anchor-v3';
+const SHELL = ['/', '/index.html', '/offline.html', '/manifest.webmanifest', '/favicon.svg', '/assets/hero-768-v1.webp', '/assets/hero-1200-v1.webp', '/assets/social-v1.webp', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/apple-touch-icon.png'];
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
@@ -27,7 +27,11 @@ self.addEventListener('fetch', event => {
   if (url.origin !== location.origin) return;
   if (event.request.mode === 'navigate') {
     event.respondWith(fetch(event.request).then(response => {
-      const copy = response.clone(); caches.open(VERSION).then(cache => cache.put('/index.html', copy)); return response;
+      if (response.ok) {
+        const copy = response.clone();
+        caches.open(VERSION).then(cache => cache.put('/index.html', copy));
+      }
+      return response;
     }).catch(() => caches.match('/index.html', { ignoreVary: true }).then(response => response || caches.match('/offline.html', { ignoreVary: true }))));
     return;
   }

@@ -37,6 +37,35 @@ export async function saveData(demo: boolean, data: AppData): Promise<void> {
   db.close();
 }
 
+/**
+ * Apply a mutation to the newest stored snapshot in one IndexedDB transaction.
+ * Read-modify-write calls are serialized by IndexedDB, so a stale tab cannot
+ * replace cards or reviews written by another tab.
+ */
+export async function updateData(demo: boolean, update: (current: AppData) => AppData): Promise<AppData> {
+  const db = await openDb(demo);
+  return new Promise<AppData>((resolve, reject) => {
+    const tx = db.transaction('app', 'readwrite');
+    const store = tx.objectStore('app');
+    const request = store.get('data');
+    let next: AppData | undefined;
+    request.onsuccess = () => {
+      try {
+        const current = (request.result as AppData | undefined) ?? (demo ? sampleData() : emptyData());
+        next = update(structuredClone(current));
+        store.put(next, 'data');
+      } catch (error) {
+        tx.abort();
+        reject(error);
+      }
+    };
+    request.onerror = () => reject(request.error);
+    tx.oncomplete = () => { db.close(); resolve(next!); };
+    tx.onerror = () => { db.close(); reject(tx.error); };
+    tx.onabort = () => db.close();
+  });
+}
+
 export async function resetDemo(): Promise<AppData> {
   const data = sampleData();
   await saveData(true, data);

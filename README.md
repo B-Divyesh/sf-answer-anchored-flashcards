@@ -51,7 +51,7 @@ Deploy the contents of `dist/` as a static site. `staticwebapp.config.json` supp
 
 ## Privacy and payment
 
-There are no analytics, accounts, third-party fonts, or runtime scripts. Study data does not leave the browser. The one-time Desk purchase uses Sociobot’s hosted checkout and license verification. Sociobot and Dodo act as merchant of record.
+There are no analytics, third-party fonts, or third-party runtime scripts. Study data does not leave the browser. The one-time Desk purchase uses Sociobot’s hosted checkout and license verification. Sociobot and Dodo act as merchant of record.
 
 See `/privacy` and `/terms` in the app.
 

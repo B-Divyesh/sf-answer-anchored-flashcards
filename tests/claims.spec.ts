@@ -94,10 +94,31 @@ test('@claim:encrypted-backup exports AES-GCM data and restores it', async ({ pa
   page.on('dialog', dialog => dialog.accept());
   await page.getByRole('button', { name: /Remove card:/ }).first().click();
   await expect(page.getByText('2 cards ·')).toBeVisible();
+  await page.evaluate(async () => {
+    const db = await new Promise<IDBDatabase>((resolve, reject) => {
+      const request = indexedDB.open('recall-anchor-demo', 1);
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+    await new Promise<void>((resolve, reject) => {
+      const tx = db.transaction('app', 'readwrite');
+      const store = tx.objectStore('app');
+      const request = store.get('data');
+      request.onsuccess = () => store.put({ ...request.result, reviews: [] }, 'data');
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+    });
+    db.close();
+  });
+  await page.reload();
   await page.getByLabel('Backup passphrase').fill('correct-horse');
   await page.getByLabel('Choose an encrypted backup').setInputFiles(path!);
   await page.getByRole('button', { name: 'Import encrypted backup' }).click();
   await expect(page.getByText('3 cards ·')).toBeVisible();
+  const restoredDownload = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Export review CSV' }).click();
+  const restoredPath = await (await restoredDownload).path();
+  expect((await readFile(restoredPath!, 'utf8')).split('\r\n')).toHaveLength(3);
 });
 
 test('@claim:demo-isolation keeps sample data out of real storage', async ({ page }) => {
@@ -108,15 +129,22 @@ test('@claim:demo-isolation keeps sample data out of real storage', async ({ pag
 });
 
 test('@claim:local-privacy sends no study data off origin', async ({ page }) => {
-  const offOrigin: string[] = [];
-  page.on('request', request => { if (new URL(request.url()).origin !== 'http://127.0.0.1:4173') offOrigin.push(request.url()); });
+  const requests: Array<{ url: string; body: string | null }> = [];
+  page.on('request', request => requests.push({ url: request.url(), body: request.postData() }));
   await page.goto('/demo');
   await page.getByLabel('Your answer').fill('mitochondria');
   await page.getByText('Close', { exact: true }).click();
   await page.getByRole('button', { name: 'Score my answer' }).click();
   await page.getByRole('link', { name: 'View all cards' }).click();
   await page.getByRole('button', { name: 'Export Anki CSV' }).click();
+  await page.getByLabel('Backup passphrase').fill('private-passphrase');
+  const backupDownload = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Export encrypted backup' }).click();
+  await backupDownload;
+  const offOrigin = requests.filter(request => new URL(request.url).origin !== 'http://127.0.0.1:4173');
   expect(offOrigin).toEqual([]);
+  expect(requests.some(request => request.body?.includes('private-passphrase'))).toBe(false);
+  expect(requests.some(request => /analytics|telemetry|beacon/i.test(request.url))).toBe(false);
 });
 
 test('@claim:free-limit stops the free collection at 30 cards', async ({ page }) => {
@@ -127,9 +155,18 @@ test('@claim:free-limit stops the free collection at 30 cards', async ({ page })
   await expect(page.locator('[data-card-form]')).toHaveCount(0);
 });
 
-test('@claim:paid-desk verifies a license and adds unlimited cards plus trends', async ({ page }) => {
+test('@claim:paid-desk verifies checkout and a license, then adds unlimited cards plus trends', async ({ page, request }) => {
+  const products = await request.get('https://api.sociobot.in/api/v1/products');
+  expect(products.ok()).toBe(true);
+  const catalog = await products.json() as { data: Array<{ slug: string; price_minor: number; checkout_url: string }> };
+  const listed = catalog.data.find(item => item.slug === 'answer-anchored-flashcards');
+  expect(listed).toEqual(expect.objectContaining({
+    price_minor: 1900,
+    checkout_url: 'https://api.sociobot.in/api/v1/products/answer-anchored-flashcards/checkout'
+  }));
   await page.route('https://api.sociobot.in/api/v1/products/answer-anchored-flashcards/verify?*', route => route.fulfill({ json: { valid: true, reason: 'ok', expires_at: null } }));
   await page.goto('/cards');
+  await expect(page.getByRole('link', { name: /Buy Desk for \$19/ })).toHaveAttribute('href', listed!.checkout_url);
   await seedThirtyCards(page);
   await page.reload();
   await expect(page.getByText('Your 30-card free plan is full.')).toBeVisible();

@@ -1,6 +1,6 @@
 import './style.css';
 import type { AppData, Card, CardType, Review } from './types';
-import { loadData, resetDemo, saveData } from './store';
+import { loadData, resetDemo, saveData, updateData } from './store';
 import { dueDate, nextInterval, scoreCard } from './scoring';
 import { ankiCsv, decryptBackup, downloadFile, encryptBackup, reviewsCsv } from './backup';
 
@@ -13,6 +13,7 @@ let activeCardId = '';
 let revealed: { card: Card; answer: string; confidence: 'unsure' | 'close' | 'certain'; review: Review } | null = null;
 let notice = '';
 let updateWorker: ServiceWorker | null = null;
+let answerSubmissionPending = false;
 
 const escapeHtml = (value: unknown) => String(value ?? '').replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[char]!);
 const uid = () => crypto.randomUUID();
@@ -49,7 +50,7 @@ function shell(content: string): string {
     </header>
     ${notice ? `<div class="notice" role="status">${escapeHtml(notice)}</div>` : ''}
     <main id="main" tabindex="-1">${content}</main>
-    <footer><div><strong>Recall Anchor</strong><p>Score cards from answers, not guesses.</p></div><nav aria-label="Footer"><a href="/privacy" data-link>Privacy</a><a href="/terms" data-link>Terms</a><a href="https://sociobot.in" target="_blank" rel="noreferrer">Built by Param Factory <span class="sr-only">(opens in a new tab)</span></a></nav><small>Version 1.0.0 · Generated illustration disclosed in the visual notes.</small></footer>
+    <footer><div><strong>Recall Anchor</strong><p>Score cards from answers, not guesses.</p></div><nav aria-label="Footer"><a href="/privacy" data-link>Privacy</a><a href="/terms" data-link>Terms</a><a href="https://sociobot.in" target="_blank" rel="noreferrer">Built by Param Factory <span class="sr-only">(opens in a new tab)</span></a></nav><small>Version 1.0.1 · Generated illustration disclosed in the visual notes.</small></footer>
     <div class="route-announcer sr-only" aria-live="polite"></div>
     <div class="update-toast" hidden><span>A new version is ready.</span><button data-action="apply-update">Update now</button></div>`;
 }
@@ -64,11 +65,11 @@ function homePage(): string {
         <div class="hero-actions"><a class="button primary" href="/demo" data-link>Try it with sample data</a><span>Three due cards open next.</span></div>
         <ul class="facts" aria-label="Product facts"><li>Works offline after your first visit</li><li>Cards stay in this browser</li><li>Free for 30 cards</li></ul>
       </div>
-      <figure class="hero-art"><div class="print-number">01</div><picture><source srcset="/assets/hero-768.webp 768w, /assets/hero-1200.webp 1200w" sizes="(max-width: 720px) 92vw, 46vw" type="image/webp"><img src="/assets/hero-1200.webp" width="1200" height="800" alt="Printed answer slips move through a brass interval dial." fetchpriority="high" decoding="async"></picture><figcaption>Answer → rubric → next interval</figcaption></figure>
+      <figure class="hero-art"><div class="print-number">01</div><picture><source srcset="/assets/hero-768-v1.webp 768w, /assets/hero-1200-v1.webp 1200w" sizes="(max-width: 720px) 92vw, 46vw" type="image/webp"><img src="/assets/hero-1200-v1.webp" width="1200" height="800" alt="Printed answer slips move through a brass interval dial." fetchpriority="high" decoding="async"></picture><figcaption>Answer → rubric → next interval</figcaption></figure>
     </section>
     <section class="proof-strip" aria-label="Live scoring preview"><div><span>Typed answer</span><strong>claim, evidence</strong></div><div><span>Rubric</span><strong>2 of 3 matched</strong></div><div><span>Next review</span><strong>Tomorrow</strong></div></section>
     <section class="how"><div class="section-label">How it works / 03 marks</div><h2>Let the evidence set the interval</h2><ol><li><span>01</span><div><h3>Type before reveal</h3><p>Put your full answer on the record.</p></div></li><li><span>02</span><div><h3>Check one rubric</h3><p>Use exact text, a number range, or a checklist.</p></div></li><li><span>03</span><div><h3>See the reason</h3><p>Read what matched and when the card returns.</p></div></li></ol></section>
-    <section class="boundaries"><div><p class="eyebrow">Local by design</p><h2>Your study record stays yours</h2><p>Recall Anchor does not host decks, generate cards, or diagnose learning ability. It stores cards in this browser.</p><a href="/privacy" data-link>Read the privacy details</a></div><div class="stamp" aria-hidden="true">NO<br>ACCOUNT</div></section>
+    <section class="boundaries"><div><p class="eyebrow">Local by design</p><h2>Your study record stays yours</h2><p>Recall Anchor does not host decks, generate cards, or diagnose learning ability. It stores cards in this browser.</p><a href="/privacy" data-link>Read the privacy details</a></div><div class="stamp" aria-hidden="true">LOCAL<br>ONLY</div></section>
     <section class="pricing"><p class="eyebrow">One-time desk pass</p><h2>Keep studying free, or add more room</h2><div class="price-row"><div><strong>$19</strong><span>one-time purchase</span></div><p>Recall Anchor Desk adds unlimited cards and review trends. The free plan includes 30 cards, every card type, and every export.</p></div><div class="price-actions"><a class="button primary" href="https://api.sociobot.in/api/v1/products/${slug}/checkout">Buy Recall Anchor Desk <span class="sr-only">(opens hosted checkout)</span></a><a href="/terms" data-link>Read purchase terms</a></div><details class="license-restore"><summary>Have a license?</summary><form data-license-form><label for="home-license">Paste your license</label><div class="inline-form"><input id="home-license" name="license" autocomplete="off" required><button>Verify license</button></div><p class="form-status" aria-live="polite"></p></form></details></section>
   `);
 }
@@ -112,7 +113,7 @@ function renderReveal(result: NonNullable<typeof revealed>): string {
 
 function cardsPage(): string {
   const atLimit = !isLicensed() && data.cards.length >= 30;
-  return shell(`<section class="page-head cards-head"><p class="eyebrow">Card workshop</p><h1 tabindex="-1">Build rubrics you can score</h1><p>Create exact, numeric, or checklist cards. All card types work offline.</p></section>
+  return shell(`<section class="page-head cards-head"><p class="eyebrow">Card workshop</p><h1 tabindex="-1">Build rubrics you can score</h1><p>Choose exact, numeric, or checklist scoring for each card.</p></section>
     <section class="card-maker"><div><h2>Add a card</h2><p>Free plans hold 30 cards. You have ${data.cards.length}.</p></div>
         ${atLimit ? `<div class="limit-note"><strong>Your 30-card free plan is full.</strong><p>Export or remove cards, or buy Desk for unlimited cards.</p><a class="button primary" href="https://api.sociobot.in/api/v1/products/${slug}/checkout">Buy Desk for $19 <span class="sr-only">(opens hosted checkout)</span></a></div>` : `<form data-card-form>
         <label for="deck">Deck</label><input id="deck" name="deck" value="My deck" required maxlength="60">
@@ -179,7 +180,11 @@ function bindEvents(): void {
   answerForm?.addEventListener('keydown', event => { if (event.ctrlKey && event.key === 'Enter') answerForm.requestSubmit(); });
   answerForm?.addEventListener('submit', event => { event.preventDefault(); void submitAnswer(answerForm); });
   app.querySelector('[data-action="next-card"]')?.addEventListener('click', () => { revealed = null; activeCardId = ''; void render(); });
-  app.querySelector('[data-action="study-anyway"]')?.addEventListener('click', () => { const next = [...data.cards].sort((a,b) => a.dueAt.localeCompare(b.dueAt))[0]; next.dueAt = new Date(0).toISOString(); void saveData(demo, data).then(() => render()); });
+  app.querySelector('[data-action="study-anyway"]')?.addEventListener('click', () => void updateData(demo, current => {
+    const next = [...current.cards].sort((a,b) => a.dueAt.localeCompare(b.dueAt))[0];
+    if (next) next.dueAt = new Date(0).toISOString();
+    return current;
+  }).then(latest => { data = latest; return render(); }));
   const cardForm = app.querySelector<HTMLFormElement>('[data-card-form]');
   const typeSelect = cardForm?.elements.namedItem('type') as HTMLSelectElement | null;
   typeSelect?.addEventListener('change', () => app.querySelectorAll<HTMLElement>('[data-fields]').forEach(group => group.hidden = group.dataset.fields !== typeSelect.value));
@@ -192,21 +197,39 @@ function bindEvents(): void {
 }
 
 async function submitAnswer(form: HTMLFormElement): Promise<void> {
+  if (answerSubmissionPending) return;
   const formData = new FormData(form);
   const answer = String(formData.get('answer') || '').trim();
   const confidence = formData.get('confidence') as 'unsure' | 'close' | 'certain' | null;
   const error = form.querySelector<HTMLElement>('.form-error')!;
   if (!answer || !confidence) { error.textContent = 'Write an answer and choose your confidence before scoring.'; return; }
-  const card = data.cards.find(item => item.id === activeCardId)!;
-  const scored = scoreCard(card, answer);
-  const interval = nextInterval(card, scored.score, confidence);
-  const dueAt = dueDate(interval.days);
-  const review: Review = { id: uid(), cardId: card.id, prompt: card.prompt, typedAnswer: answer, confidence, score: scored.score, matched: scored.matched, missing: scored.missing, reviewedAt: new Date().toISOString(), previousInterval: card.intervalDays, nextInterval: interval.days, dueAt, explanation: interval.explanation };
-  data.reviews.push(review);
-  card.intervalDays = interval.days; card.dueAt = dueAt; card.reviewCount += 1;
-  await saveData(demo, data);
-  revealed = { card: structuredClone(card), answer, confidence, review };
-  await render(true);
+  answerSubmissionPending = true;
+  const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"], button:not([type])');
+  if (submitButton) { submitButton.disabled = true; submitButton.textContent = 'Scoring answer…'; }
+  try {
+    let savedCard: Card | undefined;
+    let savedReview: Review | undefined;
+    data = await updateData(demo, current => {
+      const card = current.cards.find(item => item.id === activeCardId);
+      if (!card) throw new Error('This card is no longer available. Reload and try again.');
+      const scored = scoreCard(card, answer);
+      const interval = nextInterval(card, scored.score, confidence);
+      const dueAt = dueDate(interval.days);
+      const review: Review = { id: uid(), cardId: card.id, prompt: card.prompt, typedAnswer: answer, confidence, score: scored.score, matched: scored.matched, missing: scored.missing, reviewedAt: new Date().toISOString(), previousInterval: card.intervalDays, nextInterval: interval.days, dueAt, explanation: interval.explanation };
+      current.reviews.push(review);
+      card.intervalDays = interval.days; card.dueAt = dueAt; card.reviewCount += 1;
+      savedCard = structuredClone(card);
+      savedReview = review;
+      return current;
+    });
+    revealed = { card: savedCard!, answer, confidence, review: savedReview! };
+    await render(true);
+  } catch (cause) {
+    error.textContent = cause instanceof Error ? cause.message : 'The answer could not be saved. Try again.';
+    if (submitButton) { submitButton.disabled = false; submitButton.textContent = 'Score my answer'; }
+  } finally {
+    answerSubmissionPending = false;
+  }
 }
 
 async function addCard(form: HTMLFormElement): Promise<void> {
@@ -218,13 +241,13 @@ async function addCard(form: HTMLFormElement): Promise<void> {
   const error = form.querySelector<HTMLElement>('.form-error')!;
   if ((type === 'exact' && !exact) || (type === 'numeric' && numeric === '') || (type === 'checklist' && checklist.length < 2)) { error.textContent = type === 'checklist' ? 'Add at least two checklist items, one per line.' : 'Add the expected answer before saving.'; return; }
   const card: Card = { id: uid(), deck: String(values.get('deck')).trim(), prompt: String(values.get('prompt')).trim(), type, answer: type === 'exact' ? exact : type === 'numeric' ? numeric : '', aliases: String(values.get('aliases') || '').split(/\r?\n/).map(item => item.trim()).filter(Boolean), tolerance: Number(values.get('tolerance') || 0), checklist, intervalDays: 0, dueAt: new Date(0).toISOString(), reviewCount: 0, createdAt: new Date().toISOString() };
-  data.cards.push(card); await saveData(demo, data); notice = 'Card saved and ready to study.'; await render();
+  data = await updateData(demo, current => { current.cards.push(card); return current; }); notice = 'Card saved and ready to study.'; await render();
 }
 
 async function removeCard(id: string): Promise<void> {
   const card = data.cards.find(item => item.id === id);
   if (!card || !confirm(`Remove “${card.prompt}”? Its past review rows stay in exports.`)) return;
-  data.cards = data.cards.filter(item => item.id !== id); await saveData(demo, data); notice = 'Card removed. Past review rows were kept.'; await render();
+  data = await updateData(demo, current => { current.cards = current.cards.filter(item => item.id !== id); return current; }); notice = 'Card removed. Past review rows were kept.'; await render();
 }
 
 async function backupAction(button: HTMLButtonElement, form: HTMLFormElement): Promise<void> {

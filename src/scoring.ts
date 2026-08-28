@@ -4,6 +4,11 @@ export function normalize(value: string): string {
   return value.normalize('NFKC').trim().toLocaleLowerCase().replace(/\s+/g, ' ');
 }
 
+function containsCompleteRubricItem(answer: string, item: string): boolean {
+  const escaped = normalize(item).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(`(^|[^\\p{L}\\p{N}])${escaped}(?=$|[^\\p{L}\\p{N}])`, 'iu').test(answer);
+}
+
 export function scoreCard(card: Card, typed: string): ScoreResult {
   if (card.type === 'exact') {
     const expected = [card.answer, ...card.aliases].map(normalize);
@@ -17,7 +22,7 @@ export function scoreCard(card: Card, typed: string): ScoreResult {
     return { score: pass ? 1 : 0, matched: pass ? [typed] : [], missing: pass ? [] : [`${card.answer} ± ${card.tolerance}`], label: pass ? 'Within tolerance' : 'Outside tolerance' };
   }
   const entered = normalize(typed);
-  const matched = card.checklist.filter(item => entered.includes(normalize(item)));
+  const matched = card.checklist.filter(item => containsCompleteRubricItem(entered, item));
   const missing = card.checklist.filter(item => !matched.includes(item));
   const score = card.checklist.length ? matched.length / card.checklist.length : 0;
   return { score, matched, missing, label: `Matched ${matched.length} of ${card.checklist.length}` };
