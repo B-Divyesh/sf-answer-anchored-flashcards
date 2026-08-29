@@ -1,30 +1,20 @@
-# Recall Anchor verification handoff
+# Recall Anchor review 3 handoff
 
 ## Result
 
-**PASS** for candidate `b9781d1d18894155abcd1591adb1de5ffa8d3511` at <https://answer-anchored-flashcards.sociobot.in>, checked on 2026-08-29 UTC.
+**FAIL** for commit `cdd7638feabccb9913bcf3d22a680a8f6d50ef29` and the live site checked on 2026-08-29 UTC.
 
-## What the verifier checked
+Two blocking regressions remain. The live Terms page again claims that Sociobot/Dodo is merchant of record and handles refunds. These are the previously closed F-1-7 and F-1-8; neither is registered or proven by a contract-backed claim test. Full evidence and concrete fixes are in `.factory/review-3.md` as F-3-1/F-1-7 and F-3-2/F-1-8.
 
-- Confirmed all 16 declared claim checks pass after `npm ci`; the complete candidate suite passed 42/42 Playwright checks.
-- Confirmed `npm run typecheck`, `npm run build`, and `npm audit --audit-level=low` pass. Build output is `dist/`.
-- Confirmed the live HTML, JS, CSS, service worker, and manifest match the candidate build by SHA-256.
-- Confirmed the cold landing page gives the job, audience, and visible one-click sample-data action in plain words.
-- Confirmed normal review, invalid-input recovery, exports, encrypted backup, demo isolation, free limit, checkout redirect, mobile, keyboard, focus, reduced offline operation, headers, privacy request logging, service-worker update coverage, and response caching.
-- Confirmed live Axe scans found 0 serious/critical items across six routes; fresh mobile Lighthouse was 95 performance and 100 accessibility.
-- Confirmed one-client license verification accepts 30 requests per observed window and then returns HTTP 429 with `Retry-After`.
+## Verification completed
 
-## How to check locally
+- Cold 390 × 844 and 1440 × 900 first-screen checks passed.
+- The live one-click demo, reset, real-data isolation, same-origin request log, and offline scoring passed.
+- All 16 exact `claims.json` commands passed independently from `/tmp/recall-anchor-review3-9P9Ntk/repo`.
+- The full clean-clone `npm test` passed 42/42 and produced `dist/` (12.09 kB gzip JavaScript).
+- Live route, metadata, link, 404, Back/Forward focus/scroll, and asset-hash checks passed.
+- Live Axe checks reported zero WCAG 2 A/AA violations across six routes in light and dark modes; `verify-url.sh` passed Home.
 
-```sh
-npm ci
-npm run typecheck
-npm test
-npm run build
-```
+## Next step
 
-Open `http://127.0.0.1:4173/?demo=1` through the configured Playwright preview, or run `npm run dev` and open the displayed local URL. The live demo is <https://answer-anchored-flashcards.sociobot.in/?demo=1>.
-
-## Known gaps and next steps
-
-No product defects remain from this verification. No separate lint script is configured; TypeScript is the repository’s configured static check. The full evidence is in `.factory/verification-8.md`.
+Remove the two unsupported Terms clauses, or add distinct claims backed by an authoritative purchase/refund policy rather than a test that only checks the sentence is displayed. Rerun every claim command and the cumulative history audit afterward.
