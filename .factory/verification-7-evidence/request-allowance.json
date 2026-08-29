@@ -1,0 +1,11 @@
+{
+  "endpoint": "https://api.sociobot.in/api/v1/products/answer-anchored-flashcards/verify",
+  "singleClientBurst": 40,
+  "elapsedMs": 414,
+  "statusCounts": {
+    "200": 30,
+    "429": 10
+  },
+  "retryAfterSeconds": 4,
+  "result": "PASS"
+}

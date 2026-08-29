@@ -1,0 +1,17 @@
+Candidate: d1a4b11214be7991d459dac02bdd71b364b76dff
+Live URL: https://answer-anchored-flashcards.sociobot.in
+Final result: FAIL
+
+At 08:59 UTC, the 16 public files produced by the candidate build matched the
+live files byte for byte. The candidate JavaScript was:
+
+/assets/index-3otriggV.js
+SHA-256 4a37cca31c01cde2df2112698b01b6ae51ea972be130b9ba69be2a1aa2518469
+
+At 09:10 UTC, the live deployment had changed. Its JavaScript was:
+
+/assets/index-C1R0E4zc.js
+SHA-256 8f5f9fe1490df55c88636a300f684482b6420e83f1301d1a595b8876cadef450
+
+The live HTML last-modified value was Sat, 29 Aug 2026 09:07:48 GMT. The final
+live deployment therefore does not match the specified candidate.

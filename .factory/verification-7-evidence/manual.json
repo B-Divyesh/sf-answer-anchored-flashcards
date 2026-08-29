@@ -1,0 +1,91 @@
+{
+  "keyboardMobile": {
+    "skip": {
+      "visible": true,
+      "focusVisible": true,
+      "outline": "3px"
+    },
+    "scoredHeading": "100% of the answer key matched",
+    "reduced": {
+      "animation": "1e-05s",
+      "transition": "1e-05s"
+    },
+    "overflow": {
+      "scrollWidth": 390,
+      "clientWidth": 390
+    },
+    "offOrigin": [],
+    "errors": [],
+    "focusTrail": [
+      {
+        "tag": "TEXTAREA",
+        "type": null,
+        "value": null,
+        "focusVisible": true,
+        "outline": "3px",
+        "siblingOutline": "0px"
+      },
+      {
+        "tag": "INPUT",
+        "type": "radio",
+        "value": "unsure",
+        "focusVisible": true,
+        "outline": "3px",
+        "siblingOutline": "3px"
+      },
+      {
+        "tag": "INPUT",
+        "type": "radio",
+        "value": "close",
+        "focusVisible": true,
+        "outline": "3px",
+        "siblingOutline": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "type": null,
+        "value": null,
+        "focusVisible": true,
+        "outline": "3px",
+        "siblingOutline": "0px"
+      }
+    ]
+  },
+  "invalidRecovery": {
+    "nativeAnswerError": "Please fill out this field.",
+    "checklistError": "Add at least two checklist items, one per line.",
+    "checklistRecovered": true,
+    "noFile": "Choose a Recall Anchor backup before importing.",
+    "wrongPass": "The backup could not be opened. Check the file and passphrase.",
+    "backupRecovered": true
+  },
+  "numeric_lower": {
+    "answer": "299782",
+    "heading": "100% of the answer key matched",
+    "expected": "100%"
+  },
+  "numeric_upper": {
+    "answer": "299802",
+    "heading": "100% of the answer key matched",
+    "expected": "100%"
+  },
+  "numeric_outside": {
+    "answer": "299781",
+    "heading": "0% of the answer key matched",
+    "expected": "0%"
+  },
+  "textResize200": {
+    "method": "32px root font size at a 390px viewport",
+    "routes": [
+      "/",
+      "/demo",
+      "/cards",
+      "/privacy",
+      "/terms"
+    ],
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "headingsVisible": true,
+    "controlsVisible": true
+  }
+}

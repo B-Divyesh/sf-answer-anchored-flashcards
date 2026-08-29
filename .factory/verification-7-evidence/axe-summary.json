@@ -1,0 +1,10 @@
+{
+  "tool": "axe-core 4.10.3",
+  "result": "PASS",
+  "pages": [
+    {"url":"https://answer-anchored-flashcards.sociobot.in/","violations":0},
+    {"url":"https://answer-anchored-flashcards.sociobot.in/demo","violations":0},
+    {"url":"https://answer-anchored-flashcards.sociobot.in/privacy","violations":0},
+    {"url":"https://answer-anchored-flashcards.sociobot.in/terms","violations":0}
+  ]
+}

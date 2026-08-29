@@ -1,0 +1,23 @@
+{
+  "candidate": "d1a4b11214be7991d459dac02bdd71b364b76dff",
+  "source": "local candidate production build",
+  "result": "FAIL",
+  "beforeReload": {
+    "bodyText": "Skip to main content\nRA\nRecall Anchor\nStudy\nCards\nDemo\nPrivacy\nCard saved and ready to study.\n\nCARD WORKSHOP\n\nBuild answer keys you can score\n\nChoose exact text, a number range, or a checklist for each card.\n\nAdd a card\n\nFree plans hold 30 cards. You have 1.\n\nDeck\nPrompt\nAnswer type\nExact text\nNumeric tolerance\nChecklist recall\nExpected answer\nAccepted alternatives (optional, one per line)\nSave card\n\n1 CARDS · 1 DUE\n\nYour cards\nStudy due cards\nEXACT\nCollection that must survive\nMy deck · next Jan 1, 1970\nRemove\n\nPORTABLE STUDY RECORD\n\nExport or restore your data\n\nDownload review CSV or an Anki-formatted card CSV. Encrypted backups restore this app.\n\nExport review CSV\nExport Anki card CSV\nBackup passphrase\nExport encrypted backup\n\nUse at least eight characters. The passphrase never leaves this page.\n\nChoose an encrypted backup\nImport encrypted backup\n\nThe backup could not be opened. Check the file and passphrase.\n\nRECALL ANCHOR DESK LICENSE\n\nSee your review trend\n\nThe Recall Anchor Desk license adds answer-match trends and unlimited cards for $19 once.\n\nBuy Recall Anchor Desk license for $19\n(opens hosted checkout)\nRestore a purchase\nRecall Anchor\n\nScore cards from typed answers, not guessed ratings.\n\nPrivacy\nTerms\nBuilt by Param Factory\n(opens in a new tab)\nVersion 1.0.3",
+    "h1": 1,
+    "errors": [],
+    "dialogs": [
+      "Replace this collection with 1 cards and 0 reviews?"
+    ]
+  },
+  "afterReload": {
+    "bodyText": "",
+    "h1": 0,
+    "errors": [
+      "Invalid time value"
+    ],
+    "dialogs": [
+      "Replace this collection with 1 cards and 0 reviews?"
+    ]
+  }
+}

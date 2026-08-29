@@ -1,0 +1,25 @@
+{
+  "commit": "d1a4b11214be7991d459dac02bdd71b364b76dff",
+  "demoEntry": "https://answer-anchored-flashcards.sociobot.in/?demo=1",
+  "total": 16,
+  "passed": 16,
+  "failed": 0,
+  "results": [
+    {"id":"offline-reload","command":"npm test -- --grep @claim:offline-reload","status":"PASS","testsPassed":1},
+    {"id":"answer-types","command":"npm test -- --grep @claim:answer-types","status":"PASS","testsPassed":1},
+    {"id":"interval-reason","command":"npm test -- --grep @claim:interval-reason","status":"PASS","testsPassed":1},
+    {"id":"csv-export","command":"npm test -- --grep @claim:csv-export","status":"PASS","testsPassed":1},
+    {"id":"anki-export","command":"npm test -- --grep @claim:anki-export","status":"PASS","testsPassed":1},
+    {"id":"encrypted-backup","command":"npm test -- --grep @claim:encrypted-backup","status":"PASS","testsPassed":1},
+    {"id":"demo-isolation","command":"npm test -- --grep @claim:demo-isolation","status":"PASS","testsPassed":1},
+    {"id":"demo-sample","command":"npm test -- --grep @claim:demo-sample","status":"PASS","testsPassed":1},
+    {"id":"demo-reset","command":"npm test -- --grep @claim:demo-reset","status":"PASS","testsPassed":1},
+    {"id":"local-privacy","command":"npm test -- --grep @claim:local-privacy","status":"PASS","testsPassed":1},
+    {"id":"keyboard-review","command":"npm test -- --grep @claim:keyboard-review","status":"PASS","testsPassed":1},
+    {"id":"exact-normalization","command":"npm test -- --grep @claim:exact-normalization","status":"PASS","testsPassed":1},
+    {"id":"free-limit","command":"npm test -- --grep @claim:free-limit","status":"PASS","testsPassed":1},
+    {"id":"paid-desk","command":"npm test -- --grep @claim:paid-desk","status":"PASS","testsPassed":1},
+    {"id":"license-network","command":"npm test -- --grep @claim:license-network","status":"PASS","testsPassed":1},
+    {"id":"license-revocation","command":"npm test -- --grep @claim:license-revocation","status":"PASS","testsPassed":1}
+  ]
+}

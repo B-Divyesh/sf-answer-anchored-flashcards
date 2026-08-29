@@ -1,0 +1,17 @@
+{
+  "tool": "Lighthouse 12.8.2 mobile",
+  "url": "https://answer-anchored-flashcards.sociobot.in",
+  "result": "PASS",
+  "scores": {
+    "performance": 97,
+    "accessibility": 100,
+    "bestPractices": 100,
+    "seo": 100
+  },
+  "metrics": {
+    "lcpMs": 1427,
+    "totalBlockingTimeMs": 182,
+    "cls": 0,
+    "totalBytes": 99851
+  }
+}

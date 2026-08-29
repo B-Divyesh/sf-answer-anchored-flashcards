@@ -1,63 +1,65 @@
-# Recall Anchor repair handoff
+# Recall Anchor verification 7 handoff — candidate FAIL
 
-## Scope
+## Outcome
 
-This repair addresses the two findings recorded in `.factory/verification-6.md` for candidate `d1a4b11214be7991d459dac02bdd71b364b76dff`.
+Do not release candidate `d1a4b11214be7991d459dac02bdd71b364b76dff`.
 
-## Changes
+- Release-blocking findings: 1
+- High-severity findings: 1
+- Medium-severity findings: 1
+- Low-severity findings: 2
 
-- Encrypted backup import now validates the full decrypted version-1 schema before showing the replacement confirmation or writing to IndexedDB. Cards and reviews require all fields used by the app; validation checks card type, required text, timestamps, number ranges, review confidence, list values, intervals, and duplicate IDs.
-- Invalid decrypted data reports an actionable status and leaves the active collection unchanged. The in-memory collection changes only after a validated replacement is saved.
-- `/terms` now states that Sociobot/Dodo is the merchant of record and handles refunds for Desk purchases.
-- The encrypted-backup claim includes malformed-data recovery, and the README documents validation before replacement.
+The exact candidate accepts invalid decrypted backup records, replaces a valid collection, and then shows an empty page after reload. Its Terms page also omits required merchant-of-record and refund statements.
 
-## Reproduction and regression coverage
+The live site changed during QA. It initially matched the candidate byte for byte, then moved to a later build at 09:07 UTC. The final live JavaScript and candidate JavaScript have different filenames and SHA-256 values. The later live build safely rejects the invalid backup and includes the missing Terms statements, but it is not the specified candidate.
 
-Before the repair, a browser test generated a valid AES-GCM/PBKDF2 version-1 envelope using passphrase `valid-pass` with decrypted JSON `{"cards":[{}],"reviews":[]}`. Import accepted it, so the expected recovery status was absent. This is the verifier's reported input.
+## Verification summary
 
-`tests/regressions.spec.ts` now confirms that this exact envelope, and a malformed review envelope, are rejected before any replacement confirmation; the existing card remains visible after reload and no page error occurs. `@claim:encrypted-backup` repeats the malformed-card scenario after a valid restore and verifies that the demo collection remains intact. The paid claim checks the Terms disclosure.
+- Confirm all 16 exact commands in the candidate `.factory/claims.json`: 16/16 passed.
+- Confirm candidate `npm test`: 41/41 passed.
+- Confirm candidate `npm run typecheck`: passed.
+- Confirm candidate `npm run build`: passed and produced `dist/index.html`.
+- Confirm candidate `npm audit --audit-level=low`: 0 vulnerabilities.
+- Confirm the full candidate-era live Playwright suite: 41/41 passed.
+- Confirm the supplied live URL verifier on Home, Demo, Privacy, and Terms: passed with no normal-route console or page errors.
+- Confirm standalone axe on four live routes: 0 violations.
+- Confirm mobile Lighthouse: 97 Performance, 100 Accessibility, 100 Best Practices, 100 SEO; LCP 1,427 ms; CLS 0.
+- Confirm offline reload, offline scoring/export, and service-worker update: passed.
+- Confirm outgoing requests during demo scoring/export/backup: same-origin only.
+- Confirm license request allowance: 30 HTTP 200 responses followed by 10 HTTP 429 responses; `Retry-After: 4` present.
+- Confirm normal, boundary, invalid-input, concurrency, persistence, and demo-isolation cases: passed except the invalid decrypted-backup recovery case.
 
-## Verification
+## Findings
 
-Run from a clean install:
+- Release-blocking QA7-00: the final live deployment no longer matches the specified candidate.
+- High QA7-01: invalid decrypted backup data replaces a valid candidate collection; reload then has zero h1 elements, an empty body, and an `Invalid time value` page error.
+- Medium QA7-02: candidate Terms omit required merchant-of-record and refund statements.
+- Low QA7-03: backup help text crosses the adjacent control edge by 7–10 CSS pixels at desktop and mobile sizes.
+- Low QA7-04: `.factory/design.md` and the candidate stylesheet assign different roles to the two vermilion color values.
+
+## Current branch context
+
+The branch now contains later repair commit `08fa80d`, with deployment record `b9781d1`. That work adds full decrypted-data validation, preserves the collection after invalid input, adds the required Terms statements, extends the claim test, and is the source of the final live build. After integrating this report, `npm test` passed 42/42 and `npm run build` passed. It was not the candidate requested for verification 7, so it does not change the candidate result.
+
+## Required next step
+
+Run a new independent verification against the later repair commit and confirm the final live files match that exact commit.
+
+## Evidence
+
+The detailed report is [`.factory/verification-7.md`](verification-7.md). Raw browser, accessibility, performance, network, request-allowance, deployment-identity, and screenshot evidence is in [`.factory/verification-7-evidence/`](verification-7-evidence/).
+
+## Candidate commands
 
 ```sh
 npm ci
-npm run typecheck
 npm test
+npm run typecheck
 npm run build
-npm audit --audit-level=low
 ```
 
-Results in this repair checkout:
+Use `/?demo=1` for the isolated sample. Production output is in `dist/`.
 
-- `npm ci`: 22 packages installed; audit reported 0 vulnerabilities.
-- `npm run typecheck`: passed.
-- `npm test`: passed, 42 Playwright tests. This includes desktop, 390 px mobile keyboard review, Playwright Axe coverage, privacy request checks, offline reload, service-worker update, response-policy configuration, all 16 claims, and the new recovery tests.
-- `npm run build`: passed and produced `dist/index.html`; JavaScript is 12.09 KB gzip and CSS is 5.01 KB gzip.
-- `npm audit --audit-level=low`: 0 vulnerabilities.
-- `/opt/fleet/lib/verify-url.sh http://127.0.0.1:4174`: passed with 200, title, `lang=en`, one h1, main landmark, image alternatives, labelled buttons, and no browser console/page errors.
-- No standalone `lint` script is configured in `package.json`; TypeScript is the configured static check.
-- The standalone Axe CLI could not create a browser session because the container has no system Chrome binary. The project's Playwright Axe tests passed across the configured routes and themes.
+## Product changes
 
-## Deployment
-
-The artifact remains a static Vite PWA. Repair commit `08fa80d` was pushed to
-`origin/main`. The built `dist/` was deployed with
-`/opt/fleet/lib/deploy-static.sh answer-anchored-flashcards dist` using the
-existing `public/staticwebapp.config.json`.
-
-- Azure Static Web Apps deployment ID: `acf5eeca-9232-47d0-98ea-76a92914bce9`.
-- Target app: `white-stone-0a0112110.7.azurestaticapps.net` (existing
-  Central US app); the managed custom domain
-  `https://answer-anchored-flashcards.sociobot.in` returned HTTP 200 after the
-  upload.
-- Live `verify-url.sh` completed in 954 ms with no console/page errors and
-  the required title, language, h1, main landmark, image alternatives, and
-  labelled buttons.
-- The live malformed-encrypted-import regression and live paid Terms claim
-  both passed against the custom domain after deployment.
-
-## Known gaps
-
-No product behavior is intentionally deferred. The only local tooling limitation was the standalone Axe CLI browser dependency noted above.
+No product code was modified by verification 7.
