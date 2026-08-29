@@ -1,0 +1,558 @@
+=== @claim:offline-reload ===
+
+> recall-anchor@1.0.7 test
+> npm run build && playwright test --grep @claim:offline-reload
+
+
+> recall-anchor@1.0.7 build
+> tsc --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 8 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.90 kB │ gzip:  0.67 kB
+dist/assets/index-EvPMZokD.css  18.64 kB │ gzip:  5.01 kB
+dist/assets/index-DdgV7jJz.js   36.07 kB │ gzip: 12.11 kB
+✓ built in 457ms
+[WebServer] (node:7015) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:7027) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:7027) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:53:1 › @claim:offline-reload works offline after the first visit (4.8s)
+
+  1 passed (7.8s)
+=== RESULT @claim:offline-reload exit=0 ===
+=== @claim:answer-types ===
+
+> recall-anchor@1.0.7 test
+> npm run build && playwright test --grep @claim:answer-types
+
+
+> recall-anchor@1.0.7 build
+> tsc --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 8 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.90 kB │ gzip:  0.67 kB
+dist/assets/index-EvPMZokD.css  18.64 kB │ gzip:  5.01 kB
+dist/assets/index-DdgV7jJz.js   36.07 kB │ gzip: 12.11 kB
+✓ built in 453ms
+[WebServer] (node:7182) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:7194) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:7194) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:78:1 › @claim:answer-types scores exact, numeric, and checklist answers (4.5s)
+
+  1 passed (7.4s)
+=== RESULT @claim:answer-types exit=0 ===
+=== @claim:interval-reason ===
+
+> recall-anchor@1.0.7 test
+> npm run build && playwright test --grep @claim:interval-reason
+
+
+> recall-anchor@1.0.7 build
+> tsc --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 8 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.90 kB │ gzip:  0.67 kB
+dist/assets/index-EvPMZokD.css  18.64 kB │ gzip:  5.01 kB
+dist/assets/index-DdgV7jJz.js   36.07 kB │ gzip: 12.11 kB
+✓ built in 454ms
+[WebServer] (node:7351) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:7363) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:7363) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:102:1 › @claim:interval-reason records the answer and explains the next interval (2.1s)
+
+  1 passed (5.1s)
+=== RESULT @claim:interval-reason exit=0 ===
+=== @claim:csv-export ===
+
+> recall-anchor@1.0.7 test
+> npm run build && playwright test --grep @claim:csv-export
+
+
+> recall-anchor@1.0.7 build
+> tsc --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 8 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.90 kB │ gzip:  0.67 kB
+dist/assets/index-EvPMZokD.css  18.64 kB │ gzip:  5.01 kB
+dist/assets/index-DdgV7jJz.js   36.07 kB │ gzip: 12.11 kB
+✓ built in 425ms
+[WebServer] (node:7555) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:7571) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:7571) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:112:1 › @claim:csv-export exports review evidence as CSV (2.2s)
+
+  1 passed (5.1s)
+=== RESULT @claim:csv-export exit=0 ===
+=== @claim:anki-export ===
+
+> recall-anchor@1.0.7 test
+> npm run build && playwright test --grep @claim:anki-export
+
+
+> recall-anchor@1.0.7 build
+> tsc --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 8 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.90 kB │ gzip:  0.67 kB
+dist/assets/index-EvPMZokD.css  18.64 kB │ gzip:  5.01 kB
+dist/assets/index-DdgV7jJz.js   36.07 kB │ gzip: 12.11 kB
+✓ built in 408ms
+[WebServer] (node:7723) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:7737) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:7737) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:123:1 › @claim:anki-export exports all cards with Anki fields (2.5s)
+
+  1 passed (5.4s)
+=== RESULT @claim:anki-export exit=0 ===
+=== @claim:encrypted-backup ===
+
+> recall-anchor@1.0.7 test
+> npm run build && playwright test --grep @claim:encrypted-backup
+
+
+> recall-anchor@1.0.7 build
+> tsc --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 8 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.90 kB │ gzip:  0.67 kB
+dist/assets/index-EvPMZokD.css  18.64 kB │ gzip:  5.01 kB
+dist/assets/index-DdgV7jJz.js   36.07 kB │ gzip: 12.11 kB
+✓ built in 429ms
+[WebServer] (node:7889) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:7901) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:7901) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:134:1 › @claim:encrypted-backup exports AES-GCM data, restores valid records, and preserves data on malformed import (6.8s)
+
+  1 passed (9.7s)
+=== RESULT @claim:encrypted-backup exit=0 ===
+=== @claim:demo-isolation ===
+
+> recall-anchor@1.0.7 test
+> npm run build && playwright test --grep @claim:demo-isolation
+
+
+> recall-anchor@1.0.7 build
+> tsc --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 8 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.90 kB │ gzip:  0.67 kB
+dist/assets/index-EvPMZokD.css  18.64 kB │ gzip:  5.01 kB
+dist/assets/index-DdgV7jJz.js   36.07 kB │ gzip: 12.11 kB
+✓ built in 448ms
+[WebServer] (node:8075) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:8087) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:8087) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:187:1 › @claim:demo-isolation keeps sample data out of real storage (2.1s)
+
+  1 passed (5.2s)
+=== RESULT @claim:demo-isolation exit=0 ===
+=== @claim:demo-sample ===
+
+> recall-anchor@1.0.7 test
+> npm run build && playwright test --grep @claim:demo-sample
+
+
+> recall-anchor@1.0.7 build
+> tsc --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 8 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.90 kB │ gzip:  0.67 kB
+dist/assets/index-EvPMZokD.css  18.64 kB │ gzip:  5.01 kB
+dist/assets/index-DdgV7jJz.js   36.07 kB │ gzip: 12.11 kB
+✓ built in 455ms
+[WebServer] (node:8239) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:8256) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:8256) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:194:1 › @claim:demo-sample opens three due sample cards in isolated storage (1.8s)
+
+  1 passed (4.7s)
+=== RESULT @claim:demo-sample exit=0 ===
+=== @claim:demo-reset ===
+
+> recall-anchor@1.0.7 test
+> npm run build && playwright test --grep @claim:demo-reset
+
+
+> recall-anchor@1.0.7 build
+> tsc --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 8 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.90 kB │ gzip:  0.67 kB
+dist/assets/index-EvPMZokD.css  18.64 kB │ gzip:  5.01 kB
+dist/assets/index-DdgV7jJz.js   36.07 kB │ gzip: 12.11 kB
+✓ built in 419ms
+[WebServer] (node:8408) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:8420) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:8420) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:206:1 › @claim:demo-reset restores the sample without changing real cards (6.1s)
+
+  1 passed (8.9s)
+=== RESULT @claim:demo-reset exit=0 ===
+=== @claim:local-privacy ===
+
+> recall-anchor@1.0.7 test
+> npm run build && playwright test --grep @claim:local-privacy
+
+
+> recall-anchor@1.0.7 build
+> tsc --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 8 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.90 kB │ gzip:  0.67 kB
+dist/assets/index-EvPMZokD.css  18.64 kB │ gzip:  5.01 kB
+dist/assets/index-DdgV7jJz.js   36.07 kB │ gzip: 12.11 kB
+✓ built in 432ms
+[WebServer] (node:8577) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:8589) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:8589) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:238:1 › @claim:local-privacy sends no study data off origin (2.7s)
+
+  1 passed (5.5s)
+=== RESULT @claim:local-privacy exit=0 ===
+=== @claim:local-data-deletion ===
+
+> recall-anchor@1.0.7 test
+> npm run build && playwright test --grep @claim:local-data-deletion
+
+
+> recall-anchor@1.0.7 build
+> tsc --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 8 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.90 kB │ gzip:  0.67 kB
+dist/assets/index-EvPMZokD.css  18.64 kB │ gzip:  5.01 kB
+dist/assets/index-DdgV7jJz.js   36.07 kB │ gzip: 12.11 kB
+✓ built in 439ms
+[WebServer] (node:8763) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:8779) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:8779) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:258:1 › @claim:local-data-deletion clears every documented local data store (5.6s)
+
+  1 passed (8.4s)
+=== RESULT @claim:local-data-deletion exit=0 ===
+=== @claim:card-removal-retention ===
+
+> recall-anchor@1.0.7 test
+> npm run build && playwright test --grep @claim:card-removal-retention
+
+
+> recall-anchor@1.0.7 build
+> tsc --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 8 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.90 kB │ gzip:  0.67 kB
+dist/assets/index-EvPMZokD.css  18.64 kB │ gzip:  5.01 kB
+dist/assets/index-DdgV7jJz.js   36.07 kB │ gzip: 12.11 kB
+✓ built in 460ms
+[WebServer] (node:8938) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:8950) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:8950) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:312:1 › @claim:card-removal-retention removes a card and keeps its past review row (7.0s)
+
+  1 passed (9.9s)
+=== RESULT @claim:card-removal-retention exit=0 ===
+=== @claim:keyboard-review ===
+
+> recall-anchor@1.0.7 test
+> npm run build && playwright test --grep @claim:keyboard-review
+
+
+> recall-anchor@1.0.7 build
+> tsc --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 8 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.90 kB │ gzip:  0.67 kB
+dist/assets/index-EvPMZokD.css  18.64 kB │ gzip:  5.01 kB
+dist/assets/index-DdgV7jJz.js   36.07 kB │ gzip: 12.11 kB
+✓ built in 396ms
+[WebServer] (node:9111) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:9125) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:9125) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [mobile] › tests/mobile.spec.ts:3:1 › @claim:keyboard-review mobile demo completes a keyboard-only review (1.3s)
+
+  1 passed (4.1s)
+=== RESULT @claim:keyboard-review exit=0 ===
+=== @claim:exact-normalization ===
+
+> recall-anchor@1.0.7 test
+> npm run build && playwright test --grep @claim:exact-normalization
+
+
+> recall-anchor@1.0.7 build
+> tsc --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 8 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.90 kB │ gzip:  0.67 kB
+dist/assets/index-EvPMZokD.css  18.64 kB │ gzip:  5.01 kB
+dist/assets/index-DdgV7jJz.js   36.07 kB │ gzip: 12.11 kB
+✓ built in 494ms
+[WebServer] (node:9307) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:9319) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:9319) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:229:1 › @claim:exact-normalization matches decomposed accents, case, and spaces (2.7s)
+
+  1 passed (5.6s)
+=== RESULT @claim:exact-normalization exit=0 ===
+=== @claim:free-limit ===
+
+> recall-anchor@1.0.7 test
+> npm run build && playwright test --grep @claim:free-limit
+
+
+> recall-anchor@1.0.7 build
+> tsc --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 8 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.90 kB │ gzip:  0.67 kB
+dist/assets/index-EvPMZokD.css  18.64 kB │ gzip:  5.01 kB
+dist/assets/index-DdgV7jJz.js   36.07 kB │ gzip: 12.11 kB
+✓ built in 395ms
+[WebServer] (node:9476) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:9488) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:9488) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:352:1 › @claim:free-limit makes creation idempotent and stops concurrent tabs at 30 cards (5.1s)
+
+  1 passed (8.0s)
+=== RESULT @claim:free-limit exit=0 ===
+=== @claim:paid-desk ===
+
+> recall-anchor@1.0.7 test
+> npm run build && playwright test --grep @claim:paid-desk
+
+
+> recall-anchor@1.0.7 build
+> tsc --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 8 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.90 kB │ gzip:  0.67 kB
+dist/assets/index-EvPMZokD.css  18.64 kB │ gzip:  5.01 kB
+dist/assets/index-DdgV7jJz.js   36.07 kB │ gzip: 12.11 kB
+✓ built in 394ms
+[WebServer] (node:9662) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:9674) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:9674) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:427:1 › @claim:paid-desk verifies checkout and a license, then adds unlimited cards plus trends (4.6s)
+
+  1 passed (7.4s)
+=== RESULT @claim:paid-desk exit=0 ===
+=== @claim:license-network ===
+
+> recall-anchor@1.0.7 test
+> npm run build && playwright test --grep @claim:license-network
+
+
+> recall-anchor@1.0.7 build
+> tsc --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 8 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.90 kB │ gzip:  0.67 kB
+dist/assets/index-EvPMZokD.css  18.64 kB │ gzip:  5.01 kB
+dist/assets/index-DdgV7jJz.js   36.07 kB │ gzip: 12.11 kB
+✓ built in 408ms
+[WebServer] (node:9881) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:9895) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:9895) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:385:1 › @claim:license-network contacts Sociobot only for license flows (3.1s)
+
+  1 passed (6.0s)
+=== RESULT @claim:license-network exit=0 ===
+=== @claim:license-revocation ===
+
+> recall-anchor@1.0.7 test
+> npm run build && playwright test --grep @claim:license-revocation
+
+
+> recall-anchor@1.0.7 build
+> tsc --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 8 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.90 kB │ gzip:  0.67 kB
+dist/assets/index-EvPMZokD.css  18.64 kB │ gzip:  5.01 kB
+dist/assets/index-DdgV7jJz.js   36.07 kB │ gzip: 12.11 kB
+✓ built in 403ms
+[WebServer] (node:10053) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:10067) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:10067) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:413:1 › @claim:license-revocation returns paid features to the free plan (1.7s)
+
+  1 passed (4.6s)
+=== RESULT @claim:license-revocation exit=0 ===

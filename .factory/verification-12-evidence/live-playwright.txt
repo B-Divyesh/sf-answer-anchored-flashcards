@@ -1,0 +1,70 @@
+[WebServer] (node:5240) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 47 tests using 2 workers
+
+(node:5252) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:5253) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:5252) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:5253) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   2 [chromium] › tests/app.spec.ts:4:1 › landing page has one clear heading and working routes (4.5s)
+  ✓   1 [chromium] › tests/app.spec.ts:15:1 › creates an exact card and persists it after reload (4.9s)
+  ✓   4 [chromium] › tests/app.spec.ts:26:3 › has no serious accessibility issues on /demo (4.4s)
+  ✓   3 [chromium] › tests/app.spec.ts:26:3 › has no serious accessibility issues on / (5.1s)
+  ✓   6 [chromium] › tests/app.spec.ts:26:3 › has no serious accessibility issues on /privacy (4.0s)
+  ✓   5 [chromium] › tests/app.spec.ts:26:3 › has no serious accessibility issues on /cards (4.7s)
+  ✓   8 [chromium] › tests/app.spec.ts:26:3 › has no serious accessibility issues on /not-a-real-card (2.8s)
+  ✓   7 [chromium] › tests/app.spec.ts:26:3 › has no serious accessibility issues on /terms (3.4s)
+  ✓   9 [chromium] › tests/app.spec.ts:33:1 › unknown URLs show the designed 404 route (600ms)
+  ✓  10 [chromium] › tests/app.spec.ts:39:1 › terms disclose checkout, merchant-of-record, refund, and license behavior (2.2s)
+  ✓  11 [chromium] › tests/app.spec.ts:49:1 › every app route updates canonical, Open Graph, and Twitter metadata (5.6s)
+  ✓  12 [chromium] › tests/claims.spec.ts:53:1 › @claim:offline-reload works offline after the first visit (6.6s)
+  ✓  13 [chromium] › tests/claims.spec.ts:78:1 › @claim:answer-types scores exact, numeric, and checklist answers (6.0s)
+  ✓  14 [chromium] › tests/claims.spec.ts:102:1 › @claim:interval-reason records the answer and explains the next interval (3.3s)
+  ✓  15 [chromium] › tests/claims.spec.ts:112:1 › @claim:csv-export exports review evidence as CSV (3.6s)
+  ✓  16 [chromium] › tests/claims.spec.ts:123:1 › @claim:anki-export exports all cards with Anki fields (4.5s)
+  ✓  18 [chromium] › tests/claims.spec.ts:187:1 › @claim:demo-isolation keeps sample data out of real storage (2.9s)
+  ✓  19 [chromium] › tests/claims.spec.ts:194:1 › @claim:demo-sample opens three due sample cards in isolated storage (2.8s)
+  ✓  17 [chromium] › tests/claims.spec.ts:134:1 › @claim:encrypted-backup exports AES-GCM data, restores valid records, and preserves data on malformed import (11.2s)
+  ✓  21 [chromium] › tests/claims.spec.ts:229:1 › @claim:exact-normalization matches decomposed accents, case, and spaces (3.7s)
+  ✓  20 [chromium] › tests/claims.spec.ts:206:1 › @claim:demo-reset restores the sample without changing real cards (8.3s)
+  ✓  22 [chromium] › tests/claims.spec.ts:238:1 › @claim:local-privacy sends no study data off origin (4.6s)
+  ✓  23 [chromium] › tests/claims.spec.ts:258:1 › @claim:local-data-deletion clears every documented local data store (10.3s)
+  ✓  24 [chromium] › tests/claims.spec.ts:312:1 › @claim:card-removal-retention removes a card and keeps its past review row (13.4s)
+  ✓  25 [chromium] › tests/claims.spec.ts:352:1 › @claim:free-limit makes creation idempotent and stops concurrent tabs at 30 cards (8.4s)
+  ✓  26 [chromium] › tests/claims.spec.ts:385:1 › @claim:license-network contacts Sociobot only for license flows (4.7s)
+  ✓  27 [chromium] › tests/claims.spec.ts:413:1 › @claim:license-revocation returns paid features to the free plan (3.5s)
+  ✓  29 [chromium] › tests/pwa.spec.ts:17:1 › service worker announces and activates an available update (3.9s)
+  ✓  28 [chromium] › tests/claims.spec.ts:427:1 › @claim:paid-desk verifies checkout and a license, then adds unlimited cards plus trends (6.9s)
+  ✓  30 [chromium] › tests/regressions.spec.ts:31:1 › a structurally malformed encrypted backup is rejected and preserves the existing collection (6.9s)
+  ✓  31 [chromium] › tests/regressions.spec.ts:56:1 › checklist scoring matches complete rubric items, not substrings (4.6s)
+  ✓  32 [chromium] › tests/regressions.spec.ts:71:1 › an accepted numeric tolerance boundary marks the answer key as matched (4.4s)
+  ✓  33 [chromium] › tests/regressions.spec.ts:89:1 › one answer submit records exactly one review (3.9s)
+  ✓  35 [chromium] › tests/regressions.spec.ts:126:1 › Back and Forward restore route scroll while moving focus to the heading (4.5s)
+  ✓  34 [chromium] › tests/regressions.spec.ts:115:1 › concurrent tabs merge card additions instead of losing stale writes (8.1s)
+  ✓  36 [chromium] › tests/regressions.spec.ts:157:3 › dark mode has no serious accessibility issues on / (5.5s)
+  ✓  37 [chromium] › tests/regressions.spec.ts:157:3 › dark mode has no serious accessibility issues on /demo (4.8s)
+  ✓  38 [chromium] › tests/regressions.spec.ts:157:3 › dark mode has no serious accessibility issues on /cards (3.6s)
+  ✓  40 [chromium] › tests/regressions.spec.ts:157:3 › dark mode has no serious accessibility issues on /terms (3.5s)
+  ✓  39 [chromium] › tests/regressions.spec.ts:157:3 › dark mode has no serious accessibility issues on /privacy (4.7s)
+  ✓  41 [chromium] › tests/regressions.spec.ts:157:3 › dark mode has no serious accessibility issues on /not-a-real-card (2.5s)
+  ✓  43 [chromium] › tests/regressions.spec.ts:178:1 › static host policy serves real 404s and immutable hashed assets (11ms)
+  ✓  44 [chromium] › tests/regressions.spec.ts:198:1 › claim registry has exactly one tagged test for every product claim (105ms)
+(node:6087) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:6087) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  42 [chromium] › tests/regressions.spec.ts:165:1 › dark review controls and scored evidence retain accessible contrast (8.0s)
+  ✓  45 [mobile] › tests/mobile.spec.ts:3:1 › @claim:keyboard-review mobile demo completes a keyboard-only review (2.2s)
+(node:6184) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:6184) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  46 [mobile] › tests/mobile.spec.ts:27:1 › all three landing facts fit in the first screen on phone and desktop (4.0s)
+  ✓  47 [mobile] › tests/mobile.spec.ts:13:1 › 390 px controls meet touch size and the review does not overflow (1.8s)
+
+  47 passed (2.1m)

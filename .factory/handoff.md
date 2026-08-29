@@ -1,3 +1,14 @@
+# Recall Anchor — independent verification 12: PASS
+
+Candidate `9b40406d8aa0da742bba45d7dfd30b4898b0577e` at <https://answer-anchored-flashcards.sociobot.in> is independently verified **PASS** on 2026-08-29 UTC. No product code was changed by verification.
+
+- Clean `npm ci`, typecheck, exact production build, audit, local 47-test suite, all 18 individually invoked claim tests, and the full 47-test live suite passed.
+- The live deployment's HTML, hashed JS, and CSS exactly match the candidate build. Demo, offline reload, update flow, privacy request log, encrypted export, keyboard/mobile, axe, headers/cache policy, numeric boundary evidence, paid terms/checkout, and response rate limit were rechecked.
+- Observed license-verification allowance: 30 requests per client; request 31 returned 429 with `Retry-After`.
+- Full evidence and the claim matrix: [verification-12.md](verification-12.md) and [verification-12-evidence](verification-12-evidence/).
+
+No known release gaps remain. The repair handoff below records the builder's implementation details and remains accurate.
+
 # Recall Anchor repair-4 handoff
 
 ## Result
