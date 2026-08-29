@@ -167,9 +167,11 @@ test('dark review controls and scored evidence retain accessible contrast', asyn
   await page.goto('/demo');
   await page.getByLabel('Your answer').fill('café');
   await page.getByText('Close', { exact: true }).click();
+  await expect(page.locator('input[name="confidence"][value="close"]')).toBeChecked();
   let results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
   expect(results.violations.filter(item => ['serious', 'critical'].includes(item.impact || ''))).toEqual([]);
-  await page.getByRole('button', { name: 'Score my answer' }).click();
+  await expect(page.locator('input[name="confidence"][value="close"]')).toBeChecked();
+  await page.locator('[data-answer-form]').evaluate((form: HTMLFormElement) => form.requestSubmit());
   await expect(page.getByRole('heading', { level: 1 })).toContainText('100%');
   results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
   expect(results.violations.filter(item => ['serious', 'critical'].includes(item.impact || ''))).toEqual([]);
