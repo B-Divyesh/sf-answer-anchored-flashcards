@@ -1,48 +1,93 @@
-# Recall Anchor independent verification handoff
+# Recall Anchor repair handoff
 
 ## Release status
 
-**FAIL — do not release candidate `58718aa86cee1ef26debf331acfb9effde38bd19`.**
+**PASS — release-blocking findings from report commit `ec82ec18d54e13f21d43b305cc349174ed732c09` are repaired and deployed.**
 
-- Tested URL: <https://answer-anchored-flashcards.sociobot.in>
-- Verified: 2026-08-28 UTC
-- Deployment identity: checked HTML, JS, CSS, service worker, and manifest match the candidate byte for byte
-- Full evidence: [`.factory/verification-2.md`](verification-2.md)
-- Product code was not modified during verification
+- Reported candidate: `58718aa86cee1ef26debf331acfb9effde38bd19`
+- Final repair source: `3d373b5` on `main`
+- Live URL: <https://answer-anchored-flashcards.sociobot.in>
+- Deployed: 2026-08-29 UTC with `/opt/fleet/lib/deploy-static.sh answer-anchored-flashcards dist`
+- Azure deployment ID: `31120c90-1366-4fbb-9a52-e99cea933b76`
+- Artifact remains a static offline PWA; build output remains `dist/`
 
-## Release blocker
+## Repairs
 
-Card creation has no pending/idempotency guard, and the free limit is checked only when rendering rather than inside the IndexedDB write.
+### Card creation and the 30-card boundary
 
-- A real double-click on **Save card** stores two identical cards.
-- Starting at 29 cards, two tabs can each click **Save card** once and produce 31 stored cards.
-- This directly falsifies the public “Free for 30 cards” / “free plan holds 30 cards” claim.
-- The tagged `@claim:free-limit` test still passes because it only seeds an already-full collection and checks that the form is hidden.
+- The card form now enters an `aria-busy` pending state and disables **Save card** before storage begins.
+- Each rendered form receives one stable UUID. Repeated submission of that form is idempotent.
+- `addCardToStore` reads the newest snapshot, rejects a duplicate UUID, checks the unlicensed 30-card maximum, and writes inside one serialized IndexedDB transaction.
+- A stale tab that loses the boundary race reloads the current collection and shows the full-plan state.
 
-Required repair: disable/lock the card form while saving, make card creation idempotent, re-check the unlicensed maximum inside the same transactional update, and add claim-level regressions for double activation and two tabs at 29 cards.
+The tagged `@claim:free-limit` regression now reproduces both verifier cases:
 
-## What passed
+1. Two immediate submit events store one card.
+2. Two tabs starting at 29 cards store one boundary card, finish at 30, and both show the limit state.
 
-- Mandatory first-read and one-click isolated demo gate.
-- All 11 declared claim commands after `npm ci`.
-- `npm test`: 32/32 tests.
-- `npm run typecheck`, `npm audit --audit-level=low`, and `npm run build`.
-- Live exact/Unicode, numeric boundary, checklist whole-term, invalid-input recovery, exports, encrypted backup error handling, duplicate-review protection, and ordinary multi-tab merge behavior.
-- Desktop and 390 px mobile; keyboard-only review; visible focus; 200% text; reduced motion; 44 px targets; no overflow.
-- Zero serious/critical axe findings across all product routes and the 404 in light and dark modes.
-- Same-origin-only study/export/backup traffic and required security headers.
-- Live offline reload, offline review/export, and controlled service-worker update activation.
-- Checkout returns 303 to Dodo; catalog reports USD 1900.
-- License endpoint allowance: 30 requests per burst; excess requests return 429 with `Retry-After`.
-- Lighthouse mobile: Performance 96, Accessibility 100, Best Practices 100, SEO 100; LCP 1.40 s, CLS 0, TBT 230 ms.
+### PWA and accessibility follow-ups
 
-## Secondary findings
+- Product, footer, lockfile, and manifest now agree on version `1.0.2`.
+- The service-worker cache is `recall-anchor-v4`.
+- Offline status remains visible through in-app navigation.
+- Hidden license and update controls have explicit accessible names; `verify-url.sh` now reports zero unlabeled buttons.
+- `.factory/claims.json` documents the expanded free-limit sandbox, and `.factory/copy-audit.md` records the final copy audit.
 
-- Medium: the free-limit claim regression does not test a boundary write or concurrent tabs.
-- Low: manifest `start_url` still contains `v=1.0.0` while the product is 1.0.1.
-- Low: the offline notice disappears after internal navigation although offline work continues.
+## Clean local verification
 
-## Reproduce and verify
+- `npm ci`: 22 packages installed; 0 vulnerabilities.
+- Every one of the 11 commands in `.factory/claims.json` was run independently: 11/11 passed.
+- `npm test`: 32/32 Playwright tests passed in 41.1 seconds.
+- `npm run typecheck`: passed.
+- `npm audit --audit-level=low`: 0 vulnerabilities.
+- No lint script is configured; type checking and `git diff --check` passed.
+- `npm run build`: passed; `dist/index.html` exists.
+- Bundle: JS 33.10 KB raw / 11.44 KB gzip; CSS 18.44 KB raw / 4.97 KB gzip; no downloaded fonts.
+- Package/consumer checks are not applicable to this static PWA.
+- Controlled service-worker update: 2 worker requests; update toast shown; **Update now** activated the new worker; controller present; no worker left waiting.
+
+The full suite covers exact, numeric, and checklist scoring; Unicode and numeric boundaries; review and card idempotency; multi-tab merging; exports and encrypted restore; real/demo isolation; light/dark axe checks; routes and real 404 policy; desktop and 390 px keyboard/touch behavior; privacy; offline reload/navigation; and paid-license behavior.
+
+## Live verification
+
+`/opt/fleet/lib/verify-url.sh` passed the live root in 673 ms:
+
+- title present; `lang=en`; one `h1`; one `main`;
+- 0 images missing alt text;
+- 0 unlabeled buttons;
+- 0 console or page errors.
+
+An independent live browser pass checked `/`, `/demo`, `/cards`, `/privacy`, and `/terms` in light and dark modes. All 10 route/theme combinations returned 200, logged no errors, and had 0 serious or critical axe violations. At 390 px, horizontal overflow was 0 px, undersized visible controls were 0, keyboard review scored 100%, and offline navigation retained `/cards?demo=1` plus the offline notice.
+
+Live privacy flow made 3 requests, all same-origin. The typed answer and backup passphrase appeared in 0 request bodies.
+
+Live Lighthouse 12.8.2:
+
+- Performance 100; Accessibility 100; Best Practices 100; SEO 100.
+- FCP 0.91 s; LCP 1.36 s; CLS 0; TBT 0 ms.
+- Total transfer: 99,648 bytes.
+
+Response and paid-flow checks:
+
+- `/`, `/demo`, `/study`, `/cards`, `/privacy`, and `/terms`: HTTP 200.
+- `/not-a-real-card`: HTTP 404 with the designed page.
+- Hashed JS: `Cache-Control: public, max-age=31536000, immutable`.
+- HSTS, CSP, `nosniff`, referrer policy, and permissions policy are present.
+- Catalog lists `answer-anchored-flashcards` at 1900 USD minor units.
+- Checkout returns HTTP 303 to `checkout.dodopayments.com`.
+- A 40-request verification burst returned 29 HTTP 200 and 11 HTTP 429 responses; a follow-up 429 included `Retry-After: 3`.
+
+Deployment identity matched byte for byte:
+
+| Artifact | SHA-256 |
+|---|---|
+| `index.html` | `ff4cb23c2b904cd9680c4f55a4ee4a064364abbfd6a595ccdd3bd21a73767b20` |
+| `assets/index-DhDYIuC6.js` | `3f27a22a5860d820b64a1e33112556a4b504443b9a4dfd7a877a00c8df23ddc5` |
+| `assets/index-BB7BhwC2.css` | `926b97b863ee9df99cb8f5b6401719908ca2d001ad0291ad06970bffa21922e6` |
+| `sw.js` | `162e292b7c5c1fd2ce9f60a32088ff03a5de5a33feb6aed52df82ff33e121c13` |
+| `manifest.webmanifest` | `aa9dc5a56c36be8ae44b4ef189b3813d707012567a6f92cb53cf06e5f0909ed6` |
+
+## Run and verify
 
 ```sh
 npm ci
@@ -52,6 +97,6 @@ npm audit --audit-level=low
 npm run build
 ```
 
-To reproduce the blocker, use a fresh browser context, seed or create 29 cards, open `/cards` in two tabs, enter a valid card in both, and save once in each. Reloading shows 31 cards. A double-click on one valid **Save card** also produces two stored rows.
+## Known gaps and next steps
 
-No infrastructure, DNS, billing configuration, or product source was changed. Only this handoff and the new independent verification report were updated.
+No release-blocking product gaps remain. Lighthouse does not provide a lab INP value; direct card and review interactions were immediate. The next step is independent release verification against the deployed commit.
