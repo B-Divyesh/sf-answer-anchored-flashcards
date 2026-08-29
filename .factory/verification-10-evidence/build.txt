@@ -1,0 +1,13 @@
+
+> recall-anchor@1.0.5 build
+> tsc --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 8 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.90 kB │ gzip:  0.67 kB
+dist/assets/index-EvPMZokD.css  18.64 kB │ gzip:  5.01 kB
+dist/assets/index-BAw0JqP6.js   35.80 kB │ gzip: 12.01 kB
+✓ built in 407ms

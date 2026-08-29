@@ -1,0 +1,29 @@
+
+> recall-anchor@1.0.5 test
+> npm run build && playwright test --grep @claim:local-privacy
+
+
+> recall-anchor@1.0.5 build
+> tsc --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 8 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.90 kB │ gzip:  0.67 kB
+dist/assets/index-EvPMZokD.css  18.64 kB │ gzip:  5.01 kB
+dist/assets/index-BAw0JqP6.js   35.80 kB │ gzip: 12.01 kB
+✓ built in 440ms
+[WebServer] (node:2298) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:2310) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2310) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:234:1 › @claim:local-privacy sends no study data off origin (2.9s)
+
+  1 passed (5.8s)

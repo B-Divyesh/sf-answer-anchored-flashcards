@@ -1,0 +1,22 @@
+PASS 200 https://answer-anchored-flashcards.sociobot.in/
+PASS 200 https://answer-anchored-flashcards.sociobot.in/#main
+PASS 200 https://answer-anchored-flashcards.sociobot.in/?demo=1
+PASS 200 https://answer-anchored-flashcards.sociobot.in/cards
+PASS 200 https://answer-anchored-flashcards.sociobot.in/cards#main
+PASS 200 https://answer-anchored-flashcards.sociobot.in/demo
+PASS 200 https://answer-anchored-flashcards.sociobot.in/demo#main
+PASS 404 https://answer-anchored-flashcards.sociobot.in/not-a-real-card#main (intended 404 route)
+PASS 200 https://answer-anchored-flashcards.sociobot.in/privacy
+PASS 200 https://answer-anchored-flashcards.sociobot.in/privacy#main
+PASS 200 https://answer-anchored-flashcards.sociobot.in/study
+PASS 200 https://answer-anchored-flashcards.sociobot.in/study#main
+PASS 200 https://answer-anchored-flashcards.sociobot.in/terms
+PASS 200 https://answer-anchored-flashcards.sociobot.in/terms#main
+PASS 303 https://api.sociobot.in/api/v1/products/answer-anchored-flashcards/checkout -> https://checkout.dodopayments.com/session/cks_0NmRyD0pKyblbONyAMj33
+PASS 200 https://sociobot.in/
+SKIP mailto:privacy@sociobot.in
+PASS 200 https://answer-anchored-flashcards.sociobot.in/robots.txt
+PASS 200 https://answer-anchored-flashcards.sociobot.in/sitemap.xml
+PASS 200 https://answer-anchored-flashcards.sociobot.in/manifest.webmanifest
+PASS 200 https://answer-anchored-flashcards.sociobot.in/icons/icon-192.png
+PASS 200 https://answer-anchored-flashcards.sociobot.in/icons/icon-512.png

@@ -1,0 +1,5 @@
+PASS / {"clientWidth":390,"scrollWidth":390,"h1Visible":true,"controlsPastRight":[]}
+PASS /demo {"clientWidth":390,"scrollWidth":390,"h1Visible":true,"controlsPastRight":[]}
+PASS /cards {"clientWidth":390,"scrollWidth":390,"h1Visible":true,"controlsPastRight":[]}
+PASS /privacy {"clientWidth":390,"scrollWidth":390,"h1Visible":true,"controlsPastRight":[]}
+PASS /terms {"clientWidth":390,"scrollWidth":390,"h1Visible":true,"controlsPastRight":[]}

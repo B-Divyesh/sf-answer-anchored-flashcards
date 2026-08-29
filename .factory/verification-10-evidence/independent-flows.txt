@@ -1,0 +1,24 @@
+PASS keyboard reaches the sample-data action
+PASS sample-data action has a visible focus outline ({"text":"Try it with sample data","outlineWidth":"3px","outlineStyle":"solid","outlineColor":"rgb(217, 67, 47)"})
+PASS keyboard opens the demo review
+PASS keyboard reaches the answer field
+PASS arrow key selects confidence
+PASS Ctrl+Enter completes a review at 390 px
+PASS keyboard review has no console or page errors
+PASS empty review identifies the required answer
+PASS review identifies the required confidence choice
+PASS review recovers after valid input
+PASS blank card form identifies the required prompt
+PASS one-item checklist explains the two-item minimum
+PASS checklist card saves after corrected input
+PASS numeric answer 105 produces 100%
+PASS numeric answer 105.01 produces 0%
+PASS wrong backup passphrase keeps the current collection
+PASS backup import recovers with the correct passphrase
+PASS demo review/export requests stay same-origin (https://answer-anchored-flashcards.sociobot.in)
+PASS typed answer is absent from outgoing requests
+PASS demo review/export has no console or page errors
+INFO request URLs: https://answer-anchored-flashcards.sociobot.in/demo, https://answer-anchored-flashcards.sociobot.in/assets/index-BAw0JqP6.js, https://answer-anchored-flashcards.sociobot.in/assets/index-EvPMZokD.css
+PASS live page is controlled by its service worker
+PASS offline reload retains the sample review
+PASS reduced motion shortens motion ({"mainAnimation":"1e-05s","mainTransition":"1e-05s","buttonTransition":"1e-05s"})

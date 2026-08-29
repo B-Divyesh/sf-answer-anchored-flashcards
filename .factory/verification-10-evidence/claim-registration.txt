@@ -1,0 +1,16 @@
+PASS offline-reload: tag count 1
+PASS answer-types: tag count 1
+PASS interval-reason: tag count 1
+PASS csv-export: tag count 1
+PASS anki-export: tag count 1
+PASS encrypted-backup: tag count 1
+PASS demo-isolation: tag count 1
+PASS demo-sample: tag count 1
+PASS demo-reset: tag count 1
+PASS local-privacy: tag count 1
+PASS keyboard-review: tag count 1
+PASS exact-normalization: tag count 1
+PASS free-limit: tag count 1
+PASS paid-desk: tag count 1
+PASS license-network: tag count 1
+PASS license-revocation: tag count 1

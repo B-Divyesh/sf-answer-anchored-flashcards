@@ -1,0 +1,6 @@
+public/icons/icon-192.png PNG 192x192 192x192+0+0 16-bit sRGB 4691B 0.000u 0:00.000
+public/icons/icon-512.png PNG 512x512 512x512+0+0 16-bit sRGB 13754B 0.000u 0:00.000
+public/icons/apple-touch-icon.png PNG 180x180 180x180+0+0 16-bit sRGB 10408B 0.000u 0:00.000
+public/assets/social-v1.webp WEBP 1200x630 1200x630+0+0 8-bit sRGB 160048B 0.000u 0:00.000
+public/assets/hero-768-v1.webp WEBP 768x512 768x512+0+0 8-bit sRGB 79516B 0.000u 0:00.001
+public/assets/hero-1200-v1.webp WEBP 1200x800 1200x800+0+0 8-bit sRGB 205586B 0.000u 0:00.001

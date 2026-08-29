@@ -1,0 +1,16 @@
+{
+  "scores": {
+    "performance": 85,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 100
+  },
+  "metrics": {
+    "first-contentful-paint": "0.9 s",
+    "largest-contentful-paint": "1.4 s",
+    "cumulative-layout-shift": "0",
+    "total-blocking-time": "580 ms",
+    "speed-index": "1.1 s",
+    "interactive": "1.7 s"
+  }
+}

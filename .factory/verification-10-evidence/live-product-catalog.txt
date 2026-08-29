@@ -1,0 +1,8 @@
+{
+  "checkout_url": "https://api.sociobot.in/api/v1/products/answer-anchored-flashcards/checkout",
+  "currency": "USD",
+  "name": "Recall Anchor Desk",
+  "price_minor": 1900,
+  "product_url": "https://answer-anchored-flashcards.sociobot.in/",
+  "slug": "answer-anchored-flashcards"
+}

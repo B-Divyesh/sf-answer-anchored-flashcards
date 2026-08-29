@@ -1,0 +1,17 @@
+run 1: 72 ms; events=[{"name":"pointerdown","duration":72,"interactionId":3502},{"name":"pointerup","duration":72,"interactionId":3502},{"name":"click","duration":72,"interactionId":3502},{"name":"click","duration":72,"interactionId":3509},{"name":"pointerdown","duration":24,"interactionId":3516},{"name":"pointerup","duration":24,"interactionId":3516},{"name":"click","duration":24,"interactionId":3516}]
+run 2: 88 ms; events=[{"name":"pointerdown","duration":88,"interactionId":9675},{"name":"pointerup","duration":88,"interactionId":9675},{"name":"click","duration":88,"interactionId":9675},{"name":"click","duration":88,"interactionId":9682},{"name":"pointerdown","duration":56,"interactionId":9689},{"name":"pointerup","duration":56,"interactionId":9689},{"name":"click","duration":56,"interactionId":9689}]
+run 3: 64 ms; events=[{"name":"pointerdown","duration":64,"interactionId":3353},{"name":"pointerup","duration":64,"interactionId":3353},{"name":"click","duration":64,"interactionId":3353},{"name":"click","duration":64,"interactionId":3360},{"name":"pointerdown","duration":64,"interactionId":3367},{"name":"pointerup","duration":64,"interactionId":3367},{"name":"click","duration":64,"interactionId":3367}]
+run 4: 24 ms; events=[{"name":"pointerdown","duration":24,"interactionId":7447},{"name":"pointerup","duration":24,"interactionId":7447},{"name":"click","duration":24,"interactionId":7447},{"name":"click","duration":24,"interactionId":7454},{"name":"pointerdown","duration":24,"interactionId":7461},{"name":"pointerup","duration":24,"interactionId":7461},{"name":"click","duration":24,"interactionId":7461}]
+run 5: 88 ms; events=[{"name":"pointerdown","duration":88,"interactionId":2182},{"name":"pointerup","duration":88,"interactionId":2182},{"name":"click","duration":88,"interactionId":2182},{"name":"click","duration":88,"interactionId":2189},{"name":"pointerdown","duration":24,"interactionId":2196},{"name":"pointerup","duration":24,"interactionId":2196},{"name":"click","duration":24,"interactionId":2196}]
+{
+  "cpuThrottle": 4,
+  "samplesMs": [
+    72,
+    88,
+    64,
+    24,
+    88
+  ],
+  "medianMs": 72,
+  "under200": true
+}

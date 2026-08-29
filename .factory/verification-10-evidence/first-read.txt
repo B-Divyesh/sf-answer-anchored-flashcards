@@ -1,0 +1,88 @@
+{
+  "status": 200,
+  "headers": {
+    "cache-control": "public, must-revalidate, max-age=30",
+    "content-encoding": "br",
+    "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://api.sociobot.in; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'",
+    "content-type": "text/html",
+    "date": "Sat, 29 Aug 2026 14:34:48 GMT",
+    "etag": "\"95553926\"",
+    "last-modified": "Sat, 29 Aug 2026 14:24:34 GMT",
+    "permissions-policy": "camera=(), microphone=(), geolocation=()",
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+    "vary": "Accept-Encoding",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-xss-protection": "1; mode=block"
+  },
+  "title": "Recall Anchor — Score typed flashcard answers",
+  "h1": [
+    "Score flashcards from typed answers"
+  ],
+  "firstViewportText": [
+    "RA",
+    "Study",
+    "Cards",
+    "Demo",
+    "Privacy",
+    "Typed-answer flashcard review",
+    "Score flashcards from typed answers",
+    "For people studying alone who want the next review date based on an answer, not a guessed rating.",
+    "Try it with sample data",
+    "Three due cards open next.",
+    "Works offline after your first visit",
+    "Cards stay in this browser",
+    "Free for 30 cards",
+    "01"
+  ],
+  "actions": [
+    {
+      "tag": "A",
+      "text": "Skip to main content",
+      "href": "#main"
+    },
+    {
+      "tag": "A",
+      "text": "RA Recall Anchor",
+      "href": "/"
+    },
+    {
+      "tag": "A",
+      "text": "Study",
+      "href": "/study"
+    },
+    {
+      "tag": "A",
+      "text": "Cards",
+      "href": "/cards"
+    },
+    {
+      "tag": "A",
+      "text": "Demo",
+      "href": "/demo"
+    },
+    {
+      "tag": "A",
+      "text": "Privacy",
+      "href": "/privacy"
+    },
+    {
+      "tag": "A",
+      "text": "Try it with sample data",
+      "href": "/?demo=1"
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Update now",
+      "href": null
+    }
+  ],
+  "requests": [
+    "https://answer-anchored-flashcards.sociobot.in/",
+    "https://answer-anchored-flashcards.sociobot.in/assets/index-BAw0JqP6.js",
+    "https://answer-anchored-flashcards.sociobot.in/assets/index-EvPMZokD.css",
+    "https://answer-anchored-flashcards.sociobot.in/assets/hero-768-v1.webp"
+  ],
+  "errors": []
+}

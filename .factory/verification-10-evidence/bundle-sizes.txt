@@ -1,0 +1,7 @@
+
+Bundle sizes (raw/gzip):
+dist/assets/index-BAw0JqP6.js raw=35796 gzip=11986
+dist/assets/index-EvPMZokD.css raw=18644 gzip=5021
+dist/assets/hero-1200-v1.webp raw=205586 gzip=205657
+dist/assets/hero-768-v1.webp raw=79516 gzip=79566
+dist/assets/social-v1.webp raw=160048 gzip=160106

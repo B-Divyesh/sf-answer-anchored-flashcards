@@ -1,0 +1,5 @@
+PASS / {"scrollWidth":390,"small":[]}
+PASS /demo {"scrollWidth":390,"small":[]}
+PASS /cards {"scrollWidth":390,"small":[]}
+PASS /privacy {"scrollWidth":390,"small":[]}
+PASS /terms {"scrollWidth":390,"small":[]}

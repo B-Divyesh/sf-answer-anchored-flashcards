@@ -1,0 +1,32 @@
+RUN offline-reload: npm test -- --grep @claim:offline-reload
+EXIT offline-reload: 0
+RUN answer-types: npm test -- --grep @claim:answer-types
+EXIT answer-types: 0
+RUN interval-reason: npm test -- --grep @claim:interval-reason
+EXIT interval-reason: 0
+RUN csv-export: npm test -- --grep @claim:csv-export
+EXIT csv-export: 0
+RUN anki-export: npm test -- --grep @claim:anki-export
+EXIT anki-export: 0
+RUN encrypted-backup: npm test -- --grep @claim:encrypted-backup
+EXIT encrypted-backup: 0
+RUN demo-isolation: npm test -- --grep @claim:demo-isolation
+EXIT demo-isolation: 0
+RUN demo-sample: npm test -- --grep @claim:demo-sample
+EXIT demo-sample: 0
+RUN demo-reset: npm test -- --grep @claim:demo-reset
+EXIT demo-reset: 0
+RUN local-privacy: npm test -- --grep @claim:local-privacy
+EXIT local-privacy: 0
+RUN keyboard-review: npm test -- --grep @claim:keyboard-review
+EXIT keyboard-review: 0
+RUN exact-normalization: npm test -- --grep @claim:exact-normalization
+EXIT exact-normalization: 0
+RUN free-limit: npm test -- --grep @claim:free-limit
+EXIT free-limit: 0
+RUN paid-desk: npm test -- --grep @claim:paid-desk
+EXIT paid-desk: 0
+RUN license-network: npm test -- --grep @claim:license-network
+EXIT license-network: 0
+RUN license-revocation: npm test -- --grep @claim:license-revocation
+EXIT license-revocation: 0

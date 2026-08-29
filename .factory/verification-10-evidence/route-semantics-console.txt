@@ -1,0 +1,9 @@
+PASS / status=200 {"title":"Recall Anchor — Score typed flashcard answers","lang":"en","h1":1,"main":1,"missingAlt":0,"unlabeled":0}
+PASS /demo status=200 {"title":"Demo — Recall Anchor","lang":"en","h1":1,"main":1,"missingAlt":0,"unlabeled":0}
+PASS /study status=200 {"title":"Study — Recall Anchor","lang":"en","h1":1,"main":1,"missingAlt":0,"unlabeled":0}
+PASS /cards status=200 {"title":"Cards — Recall Anchor","lang":"en","h1":1,"main":1,"missingAlt":0,"unlabeled":0}
+PASS /privacy status=200 {"title":"Privacy — Recall Anchor","lang":"en","h1":1,"main":1,"missingAlt":0,"unlabeled":0}
+PASS /terms status=200 {"title":"Terms — Recall Anchor","lang":"en","h1":1,"main":1,"missingAlt":0,"unlabeled":0}
+PASS /not-a-real-card status=404 {"title":"Page not found — Recall Anchor","lang":"en","h1":1,"main":1,"missingAlt":0,"unlabeled":0}
+expected404ConsoleLines=1
+unexpectedErrors=[]
