@@ -31,6 +31,25 @@ async function storedCards(page: import('@playwright/test').Page) {
   });
 }
 
+async function encryptedBackup(page: import('@playwright/test').Page, payload: unknown, passphrase: string): Promise<string> {
+  return page.evaluate(async ({ payload, passphrase: phrase }) => {
+    const encoder = new TextEncoder();
+    const toBase64 = (bytes: Uint8Array) => btoa(String.fromCharCode(...bytes));
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const material = await crypto.subtle.importKey('raw', encoder.encode(phrase), 'PBKDF2', false, ['deriveKey']);
+    const key = await crypto.subtle.deriveKey(
+      { name: 'PBKDF2', salt, iterations: 180000, hash: 'SHA-256' }, material,
+      { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']
+    );
+    const data = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, encoder.encode(JSON.stringify(payload)));
+    return JSON.stringify({
+      format: 'recall-anchor-backup', version: 1, cipher: 'AES-GCM', kdf: 'PBKDF2-SHA256-180000',
+      salt: toBase64(salt), iv: toBase64(iv), data: toBase64(new Uint8Array(data))
+    });
+  }, { payload, passphrase });
+}
+
 test('@claim:offline-reload works offline after the first visit', async ({ page, context }) => {
   await page.goto('/?demo=1');
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Answer before');
@@ -108,7 +127,7 @@ test('@claim:anki-export exports all cards with Anki fields', async ({ page }) =
   expect(csv.split('\r\n')).toHaveLength(4);
 });
 
-test('@claim:encrypted-backup exports AES-GCM data and restores it', async ({ page }) => {
+test('@claim:encrypted-backup exports AES-GCM data, restores valid records, and preserves data on malformed import', async ({ page }) => {
   await page.goto('/demo');
   await page.getByRole('link', { name: 'Cards', exact: true }).click();
   await page.getByLabel('Backup passphrase').fill('correct-horse');
@@ -147,6 +166,18 @@ test('@claim:encrypted-backup exports AES-GCM data and restores it', async ({ pa
   await page.getByRole('button', { name: 'Export review CSV' }).click();
   const restoredPath = await (await restoredDownload).path();
   expect((await readFile(restoredPath!, 'utf8')).split('\r\n')).toHaveLength(3);
+
+  const malformed = await encryptedBackup(page, { cards: [{}], reviews: [] }, 'correct-horse');
+  let confirmationShown = false;
+  page.on('dialog', dialog => { confirmationShown = true; dialog.accept(); });
+  await page.getByLabel('Backup passphrase').fill('correct-horse');
+  await page.getByLabel('Choose an encrypted backup').setInputFiles({ name: 'malformed.json', mimeType: 'application/json', buffer: Buffer.from(malformed) });
+  await page.getByRole('button', { name: 'Import encrypted backup' }).click();
+  await expect(page.getByText('This backup has invalid card or review data. Your current collection was not changed.')).toBeVisible();
+  expect(confirmationShown).toBe(false);
+  await expect(page.getByText('3 cards ·')).toBeVisible();
+  await page.reload();
+  await expect(page.getByText('3 cards ·')).toBeVisible();
 });
 
 test('@claim:demo-isolation keeps sample data out of real storage', async ({ page }) => {
@@ -310,6 +341,8 @@ test('@claim:paid-desk verifies checkout and a license, then adds unlimited card
   const hostedCheckout = await request.get(listed.checkout_url);
   expect(hostedCheckout.ok()).toBe(true);
   expect(await hostedCheckout.text()).toContain('One-time Recall Anchor Desk license');
+  await page.goto('/terms');
+  await expect(page.getByText('Sociobot/Dodo is the merchant of record and handles refunds for Desk purchases.')).toBeVisible();
   await page.route('https://api.sociobot.in/api/v1/products/answer-anchored-flashcards/verify?*', route => route.fulfill({ json: { valid: true, reason: 'ok', expires_at: null } }));
   await page.goto('/cards');
   await expect(page.getByRole('link', { name: /Buy Recall Anchor Desk license for \$19/ })).toHaveAttribute('href', listed!.checkout_url);

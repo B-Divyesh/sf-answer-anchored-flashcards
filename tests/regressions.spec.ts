@@ -9,6 +9,50 @@ async function addExactCard(page: import('@playwright/test').Page, prompt: strin
   await expect(page.getByText(prompt)).toBeVisible();
 }
 
+async function malformedEncryptedBackup(page: import('@playwright/test').Page, payload: unknown, passphrase: string): Promise<string> {
+  return page.evaluate(async ({ payload: backupPayload, passphrase: phrase }) => {
+    const encoder = new TextEncoder();
+    const toBase64 = (bytes: Uint8Array) => btoa(String.fromCharCode(...bytes));
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const material = await crypto.subtle.importKey('raw', encoder.encode(phrase), 'PBKDF2', false, ['deriveKey']);
+    const key = await crypto.subtle.deriveKey(
+      { name: 'PBKDF2', salt, iterations: 180000, hash: 'SHA-256' }, material,
+      { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']
+    );
+    const data = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, encoder.encode(JSON.stringify(backupPayload)));
+    return JSON.stringify({
+      format: 'recall-anchor-backup', version: 1, cipher: 'AES-GCM', kdf: 'PBKDF2-SHA256-180000',
+      salt: toBase64(salt), iv: toBase64(iv), data: toBase64(new Uint8Array(data))
+    });
+  }, { payload, passphrase });
+}
+
+test('a structurally malformed encrypted backup is rejected and preserves the existing collection', async ({ page }) => {
+  await page.goto('/cards');
+  await addExactCard(page, 'Collection that must survive');
+  const backup = await malformedEncryptedBackup(page, { cards: [{}], reviews: [] }, 'valid-pass');
+  const errors: Error[] = [];
+  let confirmationShown = false;
+  page.on('pageerror', error => errors.push(error));
+  page.on('dialog', dialog => { confirmationShown = true; dialog.accept(); });
+  await page.getByLabel('Backup passphrase').fill('valid-pass');
+  await page.getByLabel('Choose an encrypted backup').setInputFiles({ name: 'malformed.json', mimeType: 'application/json', buffer: Buffer.from(backup) });
+  await page.getByRole('button', { name: 'Import encrypted backup' }).click();
+  await expect(page.getByText('This backup has invalid card or review data. Your current collection was not changed.')).toBeVisible();
+  await expect(page.getByText('Collection that must survive')).toBeVisible();
+  expect(confirmationShown).toBe(false);
+  const malformedReview = await malformedEncryptedBackup(page, { cards: [], reviews: [{}] }, 'valid-pass');
+  await page.getByLabel('Choose an encrypted backup').setInputFiles({ name: 'malformed-review.json', mimeType: 'application/json', buffer: Buffer.from(malformedReview) });
+  await page.getByRole('button', { name: 'Import encrypted backup' }).click();
+  await expect(page.getByText('This backup has invalid card or review data. Your current collection was not changed.')).toBeVisible();
+  await expect(page.getByText('Collection that must survive')).toBeVisible();
+  await page.reload();
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Build answer keys');
+  await expect(page.getByText('Collection that must survive')).toBeVisible();
+  expect(errors).toEqual([]);
+});
+
 test('checklist scoring matches complete rubric items, not substrings', async ({ page }) => {
   await page.goto('/cards');
   await page.getByLabel('Prompt').fill('Name the two requirements.');

@@ -1,34 +1,49 @@
-# Recall Anchor verification handoff — FAIL
+# Recall Anchor repair handoff
 
-## Outcome
+## Scope
 
-Independent QA rejects candidate `d1a4b11214be7991d459dac02bdd71b364b76dff` at <https://answer-anchored-flashcards.sociobot.in> on 2026-08-29 UTC. The live root and served build assets match the candidate, but malformed encrypted backup data can replace the local collection and leave the app blank on every reload.
+This repair addresses the two findings recorded in `.factory/verification-6.md` for candidate `d1a4b11214be7991d459dac02bdd71b364b76dff`.
 
-## Release blockers
+## Changes
 
-- **High — QA6-01:** A correctly encrypted version-1 backup whose decoded data is `{"cards":[{}],"reviews":[]}` is accepted and saved. On reload, `/cards` has an empty body, no h1, and an uncaught `Invalid time value` error. The app provides no recovery path; clearing site storage is necessary. Validate the complete decrypted card/review schema before confirmation or persistence, and retain the prior collection on any failure.
-- **Medium — QA6-02:** `/terms` does not say that Sociobot/Dodo is the merchant of record or that it handles refunds, as the paid-unlock contract requires.
+- Encrypted backup import now validates the full decrypted version-1 schema before showing the replacement confirmation or writing to IndexedDB. Cards and reviews require all fields used by the app; validation checks card type, required text, timestamps, number ranges, review confidence, list values, intervals, and duplicate IDs.
+- Invalid decrypted data reports an actionable status and leaves the active collection unchanged. The in-memory collection changes only after a validated replacement is saved.
+- `/terms` now states that Sociobot/Dodo is the merchant of record and handles refunds for Desk purchases.
+- The encrypted-backup claim includes malformed-data recovery, and the README documents validation before replacement.
 
-## What passed
+## Reproduction and regression coverage
 
-- All 16 exact `.factory/claims.json` commands passed from the detached clean candidate checkout.
-- `npm ci`, `npm test` (41/41), `npm run typecheck`, and `npm run build` passed. Build output is `dist/`; gzip JS is 11.54 KB and gzip CSS is 5.01 KB.
-- The first screen plainly says what it does and for whom, and provides the one-click sample-data demo.
-- Live desktop, 390 px mobile, dark scheme, keyboard-only, reduced-motion, normal review, exports, privacy traffic, offline, and service-worker-update paths passed.
-- Live Axe found no serious/critical findings. `verify-url.sh` passed with a title, `lang`, one h1, main landmark, image alt text, and no console/page errors on normal routes.
-- Review/export/backup traffic was same-origin only. Production checkout is a 303 to hosted Dodo checkout. License verification allowed 30 requests in a burst, then gave 429 with `Retry-After: 4`.
+Before the repair, a browser test generated a valid AES-GCM/PBKDF2 version-1 envelope using passphrase `valid-pass` with decrypted JSON `{"cards":[{}],"reviews":[]}`. Import accepted it, so the expected recovery status was absent. This is the verifier's reported input.
 
-## Run locally
+`tests/regressions.spec.ts` now confirms that this exact envelope, and a malformed review envelope, are rejected before any replacement confirmation; the existing card remains visible after reload and no page error occurs. `@claim:encrypted-backup` repeats the malformed-card scenario after a valid restore and verifies that the demo collection remains intact. The paid claim checks the Terms disclosure.
+
+## Verification
+
+Run from a clean install:
 
 ```sh
 npm ci
-npm test
 npm run typecheck
+npm test
 npm run build
+npm audit --audit-level=low
 ```
 
-Open `/?demo=1` for isolated sample data. Full fresh evidence is in `.factory/verification-6.md`.
+Results in this repair checkout:
 
-## Changes made
+- `npm ci`: 22 packages installed; audit reported 0 vulnerabilities.
+- `npm run typecheck`: passed.
+- `npm test`: passed, 42 Playwright tests. This includes desktop, 390 px mobile keyboard review, Playwright Axe coverage, privacy request checks, offline reload, service-worker update, response-policy configuration, all 16 claims, and the new recovery tests.
+- `npm run build`: passed and produced `dist/index.html`; JavaScript is 12.09 KB gzip and CSS is 5.01 KB gzip.
+- `npm audit --audit-level=low`: 0 vulnerabilities.
+- `/opt/fleet/lib/verify-url.sh http://127.0.0.1:4174`: passed with 200, title, `lang=en`, one h1, main landmark, image alternatives, labelled buttons, and no browser console/page errors.
+- No standalone `lint` script is configured in `package.json`; TypeScript is the configured static check.
+- The standalone Axe CLI could not create a browser session because the container has no system Chrome binary. The project's Playwright Axe tests passed across the configured routes and themes.
 
-Only verification documentation changed. Product code was not modified.
+## Deployment
+
+The artifact remains a static Vite PWA. Deploy `dist/` using the existing `public/staticwebapp.config.json` configuration. The repair commit and push details are added after the static deployment trigger completes.
+
+## Known gaps
+
+No product behavior is intentionally deferred. The only local tooling limitation was the standalone Axe CLI browser dependency noted above.

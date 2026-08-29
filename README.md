@@ -17,6 +17,7 @@ Open `?demo=1` or <https://answer-anchored-flashcards.sociobot.in/?demo=1>. It o
 - Offline review after the first visit.
 - Review CSV and Anki-formatted card CSV downloads.
 - Download an encrypted backup and restore it with your passphrase.
+- Backup imports validate cards and reviews before replacing your collection.
 - Keyboard review, including `Ctrl+Enter` to score.
 - A free 30-card plan.
 - A $19 one-time Recall Anchor Desk license with unlimited cards and review trends.
