@@ -1,6 +1,6 @@
 # Polish round 3 — cumulative zero-finding closure
 
-Repair commit: `a6141443e679813a95a7907dfcc63878bd1261f6`. Pushed to `origin/main` and deployed to <https://answer-anchored-flashcards.sociobot.in> through the static work-order deployment. Azure deployment ID: `a40ca198-57f8-4b5a-a91b-daabc565981a`.
+Repair commit: `e558d514dc337999aa14b938cbcda6455f353071`. Pushed to `origin/main` and deployed to <https://answer-anchored-flashcards.sociobot.in> through the static work-order deployment. Azure deployment ID: `c77b107b-343f-4366-8e59-7c30b95cead0`.
 
 The repair removes the two unsupported legal assertions that regressed after round 2. Every prior finding was rechecked against the deployed artifact, rather than accepted merely because it was previously marked fixed.
 
@@ -36,11 +36,11 @@ The repair removes the two unsupported legal assertions that regressed after rou
 
 ## Verification
 
-- Fresh clone: `/tmp/recall-anchor-polish3-ntIpGV/repo` at `a6141443e679813a95a7907dfcc63878bd1261f6`.
+- Fresh clone: `/tmp/recall-anchor-polish3-final-O8ggVV/repo` at `be38dbcec2477f8e92c4f6999cc09dee5dafbc73` (repair code `e558d514dc337999aa14b938cbcda6455f353071`).
 - After `npm ci`, every exact test command in `.factory/claims.json` passed independently: `offline-reload`, `answer-types`, `interval-reason`, `csv-export`, `anki-export`, `encrypted-backup`, `demo-isolation`, `demo-sample`, `demo-reset`, `local-privacy`, `keyboard-review`, `exact-normalization`, `free-limit`, `paid-desk`, `license-network`, and `license-revocation`.
-- The clean-clone full suite passed 42/42, followed by `npm run typecheck`, `npm run build`, and `npm audit --audit-level=low`. The production build is 12.05 kB gzip JavaScript and 5.01 kB gzip CSS.
-- The deployed full suite also passed 42/42 with `PLAYWRIGHT_BASE_URL=https://answer-anchored-flashcards.sociobot.in npm test`.
-- The cold live browser check found correct status/title/metadata/one-h1/main on `/`, `/study`, `/cards`, `/demo`, `/privacy`, `/terms`, and the HTTP 404. It confirmed the live module hash `/assets/index-D13V2Mir.js`, demo banner/reset/real exit, and all first-screen facts at 390 px.
+- The clean-clone full suite passed 43/43, followed by `npm run typecheck`, `npm run build`, and `npm audit --audit-level=low`. The production build is 12.05 kB gzip JavaScript and 5.01 kB gzip CSS.
+- The deployed full suite also passed 43/43 with `PLAYWRIGHT_BASE_URL=https://answer-anchored-flashcards.sociobot.in npm test`.
+- The cold live browser check found correct status/title/metadata/one-h1/main on `/`, `/study`, `/cards`, `/demo`, `/privacy`, `/terms`, and the HTTP 404. It confirmed the live module hash `/assets/index-BLpr6aNU.js`, demo banner/reset/real exit, and all first-screen facts at 390 px.
 - Playwright Axe found zero WCAG 2 A/AA violations on those seven routes in both light and dark schemes (14 checks). [verify-url evidence](polish-3-live/verify.json) reports no console errors on Home, one h1, `lang=en`, a main landmark, and no missing image alt text or unlabeled buttons.
 - Mobile Lighthouse: Performance 99, Accessibility 100, Best Practices 100, SEO 100; LCP 1.5 s and CLS 0. See [lighthouse.json](polish-3-live/lighthouse.json).
 
