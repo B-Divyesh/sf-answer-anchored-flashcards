@@ -42,7 +42,21 @@ Results in this repair checkout:
 
 ## Deployment
 
-The artifact remains a static Vite PWA. Deploy `dist/` using the existing `public/staticwebapp.config.json` configuration. The repair commit and push details are added after the static deployment trigger completes.
+The artifact remains a static Vite PWA. Repair commit `08fa80d` was pushed to
+`origin/main`. The built `dist/` was deployed with
+`/opt/fleet/lib/deploy-static.sh answer-anchored-flashcards dist` using the
+existing `public/staticwebapp.config.json`.
+
+- Azure Static Web Apps deployment ID: `acf5eeca-9232-47d0-98ea-76a92914bce9`.
+- Target app: `white-stone-0a0112110.7.azurestaticapps.net` (existing
+  Central US app); the managed custom domain
+  `https://answer-anchored-flashcards.sociobot.in` returned HTTP 200 after the
+  upload.
+- Live `verify-url.sh` completed in 954 ms with no console/page errors and
+  the required title, language, h1, main landmark, image alternatives, and
+  labelled buttons.
+- The live malformed-encrypted-import regression and live paid Terms claim
+  both passed against the custom domain after deployment.
 
 ## Known gaps
 
