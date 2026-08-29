@@ -61,6 +61,36 @@ test('concurrent tabs merge card additions instead of losing stale writes', asyn
   await expect(first.getByText('Second tab card')).toBeVisible();
 });
 
+test('Back and Forward restore route scroll while moving focus to the heading', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: 'Score flashcards from typed answers' })).toBeVisible();
+  await page.evaluate(() => scrollTo(0, 1200));
+  await expect.poll(() => page.evaluate(() => scrollY)).toBe(1200);
+  const homeScroll = await page.evaluate(() => scrollY);
+  await expect.poll(() => page.evaluate(() => history.state?.scrollY)).toBe(homeScroll);
+  await page.evaluate(() => (document.querySelector('a[href="/cards"]') as HTMLAnchorElement).click());
+  await expect(page).toHaveURL(/\/cards$/);
+  await expect(page.getByRole('heading', { level: 1 })).toBeFocused();
+
+  await page.evaluate(() => scrollTo(0, 420));
+  await expect.poll(() => page.evaluate(() => scrollY)).toBe(420);
+  const cardsScroll = await page.evaluate(() => scrollY);
+  await expect.poll(() => page.evaluate(() => history.state?.scrollY)).toBe(cardsScroll);
+
+  await page.goBack();
+  await expect(page).toHaveURL(/\/$/);
+  await expect.poll(() => page.evaluate(() => scrollY)).toBe(homeScroll);
+  await expect(page.getByRole('heading', { level: 1 })).toBeFocused();
+  await expect(page.locator('.route-announcer')).toHaveText('Score flashcards from typed answers');
+
+  await page.goForward();
+  await expect(page).toHaveURL(/\/cards$/);
+  await expect.poll(() => page.evaluate(() => scrollY)).toBe(cardsScroll);
+  await expect(page.getByRole('heading', { level: 1 })).toBeFocused();
+  await expect(page.locator('.route-announcer')).toHaveText('Build answer keys you can score');
+});
+
 for (const path of ['/', '/demo', '/cards', '/privacy', '/terms', '/not-a-real-card']) {
   test(`dark mode has no serious accessibility issues on ${path}`, async ({ page }) => {
     await page.emulateMedia({ colorScheme: 'dark' });
@@ -100,4 +130,5 @@ test('static host policy serves real 404s and immutable hashed assets', async ()
   expect(static404).toContain(`Version ${packageJson.version}`);
   expect(static404).toContain('href="/privacy"');
   expect(static404).toContain('href="/terms"');
+  expect(static404).not.toContain('factory-image');
 });

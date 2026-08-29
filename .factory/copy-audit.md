@@ -10,7 +10,7 @@ Audited 2026-08-29. Counts treat hyphenated terms as one word. Every landing sen
 | Score flashcards from typed answers | 5 | Pass |
 | For people studying alone who want the next review date based on an answer, not a guessed rating. | 18 | Pass |
 | Try it with sample data | 5 | Pass |
-| Three due cards open next. | 5 | Pass |
+| Three due cards open next. | 5 | `demo-sample` |
 | Works offline after your first visit | 6 | Pass |
 | Cards stay in this browser | 5 | Pass |
 | Free for 30 cards | 4 | Pass |
@@ -32,7 +32,6 @@ Audited 2026-08-29. Counts treat hyphenated terms as one word. Every landing sen
 | The Recall Anchor Desk license adds unlimited cards and review trends. | 11 | Pass |
 | The free plan includes 30 cards, every card type, and every export. | 12 | Pass |
 | Score cards from typed answers, not guessed ratings. | 8 | Pass |
-| Hero illustration generated with factory-image on August 28, 2026. | 8 | Pass |
 
 Read-aloud check: “Score flashcards from typed answers. For people studying alone who want the next review date based on an answer, not a guessed rating. Try it with sample data.” It states the task, audience, and first action in one breath.
 
@@ -53,4 +52,4 @@ The README now starts with the ordinary study task before implementation details
 | Isolated sample workspace | demo |
 | Paid one-time tier | Recall Anchor Desk license |
 
-Catalog description: “Score flashcards from typed answers and get the next review date.” (66 characters)
+Catalog description: “Score typed flashcard answers and schedule the next review.” (59 characters)

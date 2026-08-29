@@ -156,6 +156,18 @@ test('@claim:demo-isolation keeps sample data out of real storage', async ({ pag
   await expect(page.getByRole('heading', { name: 'No cards yet' })).toBeVisible();
 });
 
+test('@claim:demo-sample opens three due sample cards in isolated storage', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('link', { name: 'Try it with sample data' }).click();
+  await expect(page).toHaveURL(/\/?demo=1$/);
+  await expect(page.getByText('Foundations · 3 due', { exact: true })).toBeVisible();
+  await expect(page.getByRole('complementary', { name: 'Demo mode' })).toContainText('Demo — sample data, nothing is saved to your cards.');
+  await expect(page.getByLabel('Your answer')).toBeVisible();
+  await page.getByRole('link', { name: 'Start for real' }).click();
+  await expect(page).toHaveURL(/\/cards$/);
+  await expect(page.getByRole('heading', { name: 'No cards yet' })).toBeVisible();
+});
+
 test('@claim:demo-reset restores the sample without changing real cards', async ({ page }) => {
   await page.goto('/cards');
   await page.getByLabel('Prompt').fill('Real card stays here');

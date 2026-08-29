@@ -22,6 +22,12 @@ const escapeHtml = (value: unknown) => String(value ?? '').replace(/[&<>'"]/g, c
 const uid = () => crypto.randomUUID();
 const dateLabel = (iso: string) => new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(iso));
 const dueCards = () => data.cards.filter(card => new Date(card.dueAt).getTime() <= Date.now());
+const scrollToPosition = (top: number) => {
+  const previous = document.documentElement.style.scrollBehavior;
+  document.documentElement.style.scrollBehavior = 'auto';
+  scrollTo({ top, behavior: 'auto' });
+  document.documentElement.style.scrollBehavior = previous;
+};
 const isLicensed = () => {
   try { return JSON.parse(localStorage.getItem(`${licenseKey}:verdict`) || '{}').valid === true; } catch { return false; }
 };
@@ -60,7 +66,7 @@ function shell(content: string): string {
     </header>
     ${visibleNotice ? `<div class="notice" role="status">${escapeHtml(visibleNotice)}</div>` : ''}
     <main id="main" tabindex="-1">${content}</main>
-    <footer><div><strong>Recall Anchor</strong><p>Score cards from typed answers, not guessed ratings.</p></div><nav aria-label="Footer"><a href="/privacy" data-link>Privacy</a><a href="/terms" data-link>Terms</a><a href="https://sociobot.in" target="_blank" rel="noreferrer">Built by Param Factory <span class="sr-only">(opens in a new tab)</span></a></nav><small>Version 1.0.3 · Hero illustration generated with factory-image on August 28, 2026.</small></footer>
+    <footer><div><strong>Recall Anchor</strong><p>Score cards from typed answers, not guessed ratings.</p></div><nav aria-label="Footer"><a href="/privacy" data-link>Privacy</a><a href="/terms" data-link>Terms</a><a href="https://sociobot.in" target="_blank" rel="noreferrer">Built by Param Factory <span class="sr-only">(opens in a new tab)</span></a></nav><small>Version 1.0.3</small></footer>
     <div class="route-announcer sr-only" aria-live="polite"></div>
     <div class="update-toast" hidden><span>A new version is ready.</span><button data-action="apply-update" aria-label="Update now">Update now</button></div>`;
 }
@@ -158,7 +164,7 @@ function termsPage(): string { return shell(`<article class="legal"><p class="ey
 
 function notFoundPage(): string { return shell(`<section class="not-found"><span aria-hidden="true">404</span><p class="eyebrow">Misprinted route</p><h1 tabindex="-1">This page is not in the deck</h1><p>The address may be wrong or the page may have moved.</p><a class="button primary" href="/" data-link>Return home</a></section>`); }
 
-async function render(focusHeading = false): Promise<void> {
+async function render(focusHeading = false, restoreScroll: number | null = null): Promise<void> {
   demo = location.pathname === '/demo' || new URLSearchParams(location.search).get('demo') === '1';
   data = await loadData(demo);
   const path = location.pathname;
@@ -171,15 +177,19 @@ async function render(focusHeading = false): Promise<void> {
     heading?.focus({ preventScroll: true });
     const live = app.querySelector<HTMLElement>('.route-announcer');
     if (live && heading) live.textContent = heading.textContent;
-    scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  }
+  if (restoreScroll !== null) {
+    await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
+    scrollToPosition(restoreScroll);
   }
 }
 
 async function navigate(url: string, preserveDemo = true): Promise<void> {
   const destination = demo && preserveDemo && url !== '/demo' ? `${url}${url.includes('?') ? '&' : '?'}demo=1` : url;
-  history.pushState({}, '', destination);
+  history.replaceState({ ...history.state, scrollY }, '', location.href);
+  history.pushState({ scrollY: 0 }, '', destination);
   revealed = null; activeCardId = ''; notice = '';
-  await render(true);
+  await render(true, 0);
 }
 
 function bindEvents(): void {
@@ -351,7 +361,16 @@ function registerServiceWorker(): void {
 
 function showUpdate(worker: ServiceWorker): void { updateWorker = worker; const toast = app.querySelector<HTMLElement>('.update-toast'); if (toast) toast.hidden = false; }
 
-window.addEventListener('popstate', () => { revealed = null; activeCardId = ''; void render(true); });
+history.scrollRestoration = 'manual';
+history.replaceState({ ...history.state, scrollY: history.state?.scrollY ?? scrollY }, '', location.href);
+window.addEventListener('scroll', () => {
+  history.replaceState({ ...history.state, scrollY }, '', location.href);
+}, { passive: true });
+window.addEventListener('popstate', event => {
+  revealed = null; activeCardId = ''; notice = '';
+  const targetScroll = typeof event.state?.scrollY === 'number' ? event.state.scrollY : 0;
+  void render(true, targetScroll);
+});
 window.addEventListener('online', () => { notice = 'Back online. Your local cards stayed available.'; void render(); });
 window.addEventListener('offline', () => { notice = ''; void render(); });
 
