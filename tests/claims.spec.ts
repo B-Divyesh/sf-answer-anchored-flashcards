@@ -342,7 +342,8 @@ test('@claim:paid-desk verifies checkout and a license, then adds unlimited card
   expect(hostedCheckout.ok()).toBe(true);
   expect(await hostedCheckout.text()).toContain('One-time Recall Anchor Desk license');
   await page.goto('/terms');
-  await expect(page.getByText('Sociobot/Dodo is the merchant of record and handles refunds for Desk purchases.')).toBeVisible();
+  await expect(page.getByText('The Desk purchase opens Sociobot’s hosted checkout.')).toBeVisible();
+  await expect(page.getByText('An active license is required for paid features to remain available.')).toBeVisible();
   await page.route('https://api.sociobot.in/api/v1/products/answer-anchored-flashcards/verify?*', route => route.fulfill({ json: { valid: true, reason: 'ok', expires_at: null } }));
   await page.goto('/cards');
   await expect(page.getByRole('link', { name: /Buy Recall Anchor Desk license for \$19/ })).toHaveAttribute('href', listed!.checkout_url);

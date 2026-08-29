@@ -39,6 +39,10 @@ Read-aloud check: “Score flashcards from typed answers. For people studying al
 
 The README now starts with the ordinary study task before implementation details. Technical storage, encryption, and license-key information are grouped under **Technical details**. No README sentence exceeds 22 words.
 
+## Terms review
+
+Purchases are described only as a Sociobot-hosted checkout and an active-license requirement. The unsupported merchant-of-record and refund-handling assertions are absent.
+
 ## Terminology
 
 | Concept | One word or phrase |
@@ -52,4 +56,4 @@ The README now starts with the ordinary study task before implementation details
 | Isolated sample workspace | demo |
 | Paid one-time tier | Recall Anchor Desk license |
 
-Catalog description: “Score typed flashcard answers and schedule the next review.” (59 characters)
+Catalog description: “Score each typed flashcard answer and schedule the next review.” (60 characters)
