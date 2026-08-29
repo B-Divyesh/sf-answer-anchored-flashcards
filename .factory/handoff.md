@@ -1,4 +1,34 @@
-# Recall Anchor — polish round 6 handoff
+# Recall Anchor — review 7 handoff
+
+## Result
+
+Independent adversarial review 7 passed on 2026-08-29 UTC against commit `6e0f73370fbdd91f35a28d4585c00b83e59d2630` and <https://answer-anchored-flashcards.sociobot.in>. This review changed no product code.
+
+## What was done
+
+- Wrote `.factory/review-7.md` after a cold mobile and desktop first-read audit, live demo walkthrough, privacy request capture, route/metadata/link crawl, copy audit, and full earlier-finding regression audit.
+- Ran all 18 exact claim commands independently from a temporary clean clone after `npm ci`; all passed. The source contains exactly one tagged test for each `claims.json` ID.
+- Confirmed the demo is one-click, visibly populated, resettable, separately stored, and exits to an empty real collection. Confirmed live successful routes have no application console errors and the intentional HTTP 404 is designed and recoverable.
+
+## Verify
+
+```bash
+npm ci
+npm test -- --grep @claim:offline-reload
+# Repeat the exact command for every entry in .factory/claims.json
+npm test
+npm run build
+```
+
+For the review evidence and the exact claims exercised, read `.factory/review-7.md`.
+
+## Known gaps / next steps
+
+None found in this review. Re-run the complete claim matrix and cold live audit after future changes.
+
+---
+
+# Previous handoff: polish round 6
 
 ## Result
 
