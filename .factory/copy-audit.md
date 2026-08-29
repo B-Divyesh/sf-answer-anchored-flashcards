@@ -68,4 +68,4 @@ The README now starts with the ordinary study task before implementation details
 | Isolated sample workspace | demo |
 | Paid one-time tier | Recall Anchor Desk license |
 
-Catalog description: “Score flashcards from typed answers and set the next review date.” (64 characters, verb-first)
+Catalog description: “Score flashcards from typed answers and set the next review date.” (65 characters, verb-first)
