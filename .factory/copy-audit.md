@@ -1,38 +1,56 @@
-# Landing copy audit
+# Copy audit
 
-Audited 2026-08-29 after the repair. Counts treat hyphenated terms as one word. No sentence exceeds 22 words. No sentence contains a banned term.
+Audited 2026-08-29. Counts treat hyphenated terms as one word. Every landing sentence is 22 words or fewer and contains no banned plain-words term.
+
+## Landing page
 
 | Copy | Words | Result |
 |---|---:|---|
-| Score the answer you actually recall | 6 | Pass |
-| For self-learners who want the next interval based on a typed answer, not a rating guess. | 16 | Pass |
+| Typed-answer flashcard review | 3 | Pass |
+| Score flashcards from typed answers | 5 | Pass |
+| For people studying alone who want the next review date based on an answer, not a guessed rating. | 18 | Pass |
+| Try it with sample data | 5 | Pass |
 | Three due cards open next. | 5 | Pass |
 | Works offline after your first visit | 6 | Pass |
 | Cards stay in this browser | 5 | Pass |
 | Free for 30 cards | 4 | Pass |
-| Put your full answer on the record. | 7 | Pass |
+| Typed answer → answer key → next review date | 7 | Pass |
+| How Recall Anchor scores a review | 6 | Pass |
+| See what matched and when to review again | 9 | Pass |
+| Type your answer before seeing the key | 7 | Pass |
+| Write the answer you remember. | 5 | Pass |
+| Compare it with the answer key | 6 | Pass |
 | Use exact text, a number range, or a checklist. | 9 | Pass |
-| Read what matched and when the card returns. | 8 | Pass |
-| Recall Anchor does not host decks, generate cards, or diagnose learning ability. | 11 | Pass |
-| It stores cards in this browser. | 6 | Pass |
-| Recall Anchor Desk adds unlimited cards and review trends. | 9 | Pass |
+| See why the card returns when it does | 9 | Pass |
+| Read what matched and the next review date. | 8 | Pass |
+| Data storage and privacy | 4 | Pass |
+| Cards and reviews stay in this browser | 7 | Pass |
+| Cards and reviews are stored on this device. | 9 | Pass |
+| Plans | 1 | Pass |
+| Use 30 cards free or buy unlimited cards | 9 | Pass |
+| one-time purchase | 2 | Pass |
+| The Recall Anchor Desk license adds unlimited cards and review trends. | 11 | Pass |
 | The free plan includes 30 cards, every card type, and every export. | 12 | Pass |
-| Score cards from answers, not guesses. | 6 | Pass |
-| A new version is ready. | 6 | Pass |
+| Score cards from typed answers, not guessed ratings. | 8 | Pass |
+| Hero illustration generated with factory-image on August 28, 2026. | 8 | Pass |
 
-Read-aloud check: “Score the answer you actually recall. For self-learners who want the next interval based on a typed answer, not a rating guess. Try it with sample data.” This fits one breath at a steady pace and states the task, audience, and first action.
+Read-aloud check: “Score flashcards from typed answers. For people studying alone who want the next review date based on an answer, not a guessed rating. Try it with sample data.” It states the task, audience, and first action in one breath.
+
+## README review
+
+The README now starts with the ordinary study task before implementation details. Technical storage, encryption, and license-key information are grouped under **Technical details**. No README sentence exceeds 22 words.
 
 ## Terminology
 
 | Concept | One word or phrase |
 |---|---|
-| A study prompt and its rubric | card |
-| A group of cards | deck |
-| A scored study attempt | review |
-| What the learner types | answer |
-| The scoring key | rubric |
-| Time until the next review | interval |
+| Study prompt and answer key | card |
+| Group of cards | deck |
+| Scored study attempt | review |
+| What the learner types | typed answer |
+| Scoring key | answer key |
+| Scheduled return | next review date |
 | Isolated sample workspace | demo |
-| Paid one-time tier | Recall Anchor Desk |
+| Paid one-time tier | Recall Anchor Desk license |
 
-Catalog description: “Score flashcards from the answer you type, not a rating you guess.” (68 characters)
+Catalog description: “Score flashcards from typed answers and get the next review date.” (66 characters)

@@ -26,7 +26,7 @@ test('checklist scoring matches complete rubric items, not substrings', async ({
 
 test('one answer submit records exactly one review', async ({ page }) => {
   await page.goto('/demo');
-  await page.getByLabel('Your answer').fill('mitochondria');
+  await page.getByLabel('Your answer').fill('café');
   await page.getByText('Close', { exact: true }).click();
   await page.locator('[data-answer-form]').evaluate((form: HTMLFormElement) => {
     form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
@@ -73,7 +73,7 @@ for (const path of ['/', '/demo', '/cards', '/privacy', '/terms', '/not-a-real-c
 test('dark review controls and scored evidence retain accessible contrast', async ({ page }) => {
   await page.emulateMedia({ colorScheme: 'dark' });
   await page.goto('/demo');
-  await page.getByLabel('Your answer').fill('mitochondria');
+  await page.getByLabel('Your answer').fill('café');
   await page.getByText('Close', { exact: true }).click();
   let results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
   expect(results.violations.filter(item => ['serious', 'critical'].includes(item.impact || ''))).toEqual([]);
@@ -94,4 +94,10 @@ test('static host policy serves real 404s and immutable hashed assets', async ()
   ]));
   expect(config.responseOverrides['404']).toEqual({ rewrite: '/404.html' });
   expect(manifest.start_url).toBe(`/?v=${packageJson.version}`);
+  const static404 = await readFile('public/404.html', 'utf8');
+  expect(static404).toContain('Skip to main content');
+  expect(static404).toContain('property="og:title" content="Page not found — Recall Anchor"');
+  expect(static404).toContain(`Version ${packageJson.version}`);
+  expect(static404).toContain('href="/privacy"');
+  expect(static404).toContain('href="/terms"');
 });

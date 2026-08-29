@@ -28,7 +28,7 @@ const isLicensed = () => {
 
 const routeMeta: Record<string, [string, string]> = {
   '/': ['Recall Anchor — Score typed flashcard answers', 'Score exact, numeric, and checklist flashcards from the answer you type.'],
-  '/study': ['Study — Recall Anchor', 'Type an answer before the rubric appears.'],
+  '/study': ['Study — Recall Anchor', 'Type an answer before the answer key appears.'],
   '/cards': ['Cards — Recall Anchor', 'Create, import, and export answer-anchored flashcards.'],
   '/demo': ['Demo — Recall Anchor', 'Try answer-anchored review with isolated sample data.'],
   '/privacy': ['Privacy — Recall Anchor', 'How Recall Anchor stores and handles your study data.'],
@@ -38,9 +38,15 @@ const routeMeta: Record<string, [string, string]> = {
 
 function setMeta(path: string): void {
   const [title, description] = routeMeta[path] || routeMeta['/404'];
+  const canonical = `https://answer-anchored-flashcards.sociobot.in${path}`;
   document.title = title;
   document.querySelector('meta[name="description"]')?.setAttribute('content', description);
-  document.querySelector('link[rel="canonical"]')?.setAttribute('href', `https://answer-anchored-flashcards.sociobot.in${path}`);
+  document.querySelector('link[rel="canonical"]')?.setAttribute('href', canonical);
+  document.querySelector('meta[property="og:title"]')?.setAttribute('content', title);
+  document.querySelector('meta[property="og:description"]')?.setAttribute('content', description);
+  document.querySelector('meta[property="og:url"]')?.setAttribute('content', canonical);
+  document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', title);
+  document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', description);
 }
 
 function shell(content: string): string {
@@ -54,7 +60,7 @@ function shell(content: string): string {
     </header>
     ${visibleNotice ? `<div class="notice" role="status">${escapeHtml(visibleNotice)}</div>` : ''}
     <main id="main" tabindex="-1">${content}</main>
-    <footer><div><strong>Recall Anchor</strong><p>Score cards from answers, not guesses.</p></div><nav aria-label="Footer"><a href="/privacy" data-link>Privacy</a><a href="/terms" data-link>Terms</a><a href="https://sociobot.in" target="_blank" rel="noreferrer">Built by Param Factory <span class="sr-only">(opens in a new tab)</span></a></nav><small>Version 1.0.2 · Generated illustration disclosed in the visual notes.</small></footer>
+    <footer><div><strong>Recall Anchor</strong><p>Score cards from typed answers, not guessed ratings.</p></div><nav aria-label="Footer"><a href="/privacy" data-link>Privacy</a><a href="/terms" data-link>Terms</a><a href="https://sociobot.in" target="_blank" rel="noreferrer">Built by Param Factory <span class="sr-only">(opens in a new tab)</span></a></nav><small>Version 1.0.3 · Hero illustration generated with factory-image on August 28, 2026.</small></footer>
     <div class="route-announcer sr-only" aria-live="polite"></div>
     <div class="update-toast" hidden><span>A new version is ready.</span><button data-action="apply-update" aria-label="Update now">Update now</button></div>`;
 }
@@ -63,18 +69,18 @@ function homePage(): string {
   return shell(`
     <section class="hero">
       <div class="hero-copy">
-        <p class="eyebrow">Evidence-led spaced repetition</p>
-        <h1 tabindex="-1">Score the answer you actually recall</h1>
-        <p class="lede">For self-learners who want the next interval based on a typed answer, not a rating guess.</p>
-        <div class="hero-actions"><a class="button primary" href="/demo" data-link>Try it with sample data</a><span>Three due cards open next.</span></div>
+        <p class="eyebrow">Typed-answer flashcard review</p>
+        <h1 tabindex="-1">Score flashcards from typed answers</h1>
+        <p class="lede">For people studying alone who want the next review date based on an answer, not a guessed rating.</p>
+        <div class="hero-actions"><a class="button primary" href="/?demo=1" data-link>Try it with sample data</a><span>Three due cards open next.</span></div>
         <ul class="facts" aria-label="Product facts"><li>Works offline after your first visit</li><li>Cards stay in this browser</li><li>Free for 30 cards</li></ul>
       </div>
-      <figure class="hero-art"><div class="print-number">01</div><picture><source srcset="/assets/hero-768-v1.webp 768w, /assets/hero-1200-v1.webp 1200w" sizes="(max-width: 720px) 92vw, 46vw" type="image/webp"><img src="/assets/hero-1200-v1.webp" width="1200" height="800" alt="Printed answer slips move through a brass interval dial." fetchpriority="high" decoding="async"></picture><figcaption>Answer → rubric → next interval</figcaption></figure>
+      <figure class="hero-art"><div class="print-number">01</div><picture><source srcset="/assets/hero-768-v1.webp 768w, /assets/hero-1200-v1.webp 1200w" sizes="(max-width: 720px) 92vw, 46vw" type="image/webp"><img src="/assets/hero-1200-v1.webp" width="1200" height="800" alt="Printed answer slips move through a brass interval dial." fetchpriority="high" decoding="async"></picture><figcaption>Typed answer → answer key → next review date</figcaption></figure>
     </section>
-    <section class="proof-strip" aria-label="Live scoring preview"><div><span>Typed answer</span><strong>claim, evidence</strong></div><div><span>Rubric</span><strong>2 of 3 matched</strong></div><div><span>Next review</span><strong>Tomorrow</strong></div></section>
-    <section class="how"><div class="section-label">How it works / 03 marks</div><h2>Let the evidence set the interval</h2><ol><li><span>01</span><div><h3>Type before reveal</h3><p>Put your full answer on the record.</p></div></li><li><span>02</span><div><h3>Check one rubric</h3><p>Use exact text, a number range, or a checklist.</p></div></li><li><span>03</span><div><h3>See the reason</h3><p>Read what matched and when the card returns.</p></div></li></ol></section>
-    <section class="boundaries"><div><p class="eyebrow">Local by design</p><h2>Your study record stays yours</h2><p>Recall Anchor does not host decks, generate cards, or diagnose learning ability. It stores cards in this browser.</p><a href="/privacy" data-link>Read the privacy details</a></div><div class="stamp" aria-hidden="true">LOCAL<br>ONLY</div></section>
-    <section class="pricing"><p class="eyebrow">One-time desk pass</p><h2>Keep studying free, or add more room</h2><div class="price-row"><div><strong>$19</strong><span>one-time purchase</span></div><p>Recall Anchor Desk adds unlimited cards and review trends. The free plan includes 30 cards, every card type, and every export.</p></div><div class="price-actions"><a class="button primary" href="https://api.sociobot.in/api/v1/products/${slug}/checkout">Buy Recall Anchor Desk <span class="sr-only">(opens hosted checkout)</span></a><a href="/terms" data-link>Read purchase terms</a></div><details class="license-restore"><summary>Have a license?</summary><form data-license-form><label for="home-license">Paste your license</label><div class="inline-form"><input id="home-license" name="license" autocomplete="off" required><button aria-label="Verify license">Verify license</button></div><p class="form-status" aria-live="polite"></p></form></details></section>
+    <section class="proof-strip" aria-label="Live scoring preview"><div><span>Typed answer</span><strong>claim, evidence</strong></div><div><span>Answer key</span><strong>2 of 3 matched</strong></div><div><span>Next review</span><strong>Tomorrow</strong></div></section>
+    <section class="how"><div class="section-label">How Recall Anchor scores a review</div><h2>See what matched and when to review again</h2><ol><li><span>01</span><div><h3>Type your answer before seeing the key</h3><p>Write the answer you remember.</p></div></li><li><span>02</span><div><h3>Compare it with the answer key</h3><p>Use exact text, a number range, or a checklist.</p></div></li><li><span>03</span><div><h3>See why the card returns when it does</h3><p>Read what matched and the next review date.</p></div></li></ol></section>
+    <section class="boundaries"><div><p class="eyebrow">Data storage and privacy</p><h2>Cards and reviews stay in this browser</h2><p>Cards and reviews are stored on this device.</p><a href="/privacy" data-link>Read the privacy details</a></div><div class="stamp" aria-hidden="true">LOCAL<br>ONLY</div></section>
+    <section class="pricing"><p class="eyebrow">Plans</p><h2>Use 30 cards free or buy unlimited cards</h2><div class="price-row"><div><strong>$19</strong><span>one-time purchase</span></div><p>The Recall Anchor Desk license adds unlimited cards and review trends. The free plan includes 30 cards, every card type, and every export.</p></div><div class="price-actions"><a class="button primary" href="https://api.sociobot.in/api/v1/products/${slug}/checkout">Buy Recall Anchor Desk license <span class="sr-only">(opens hosted checkout)</span></a><a href="/terms" data-link>Read purchase terms</a></div><details class="license-restore"><summary>Have a license?</summary><form data-license-form><label for="home-license">Paste your license</label><div class="inline-form"><input id="home-license" name="license" autocomplete="off" required><button aria-label="Verify license">Verify license</button></div><p class="form-status" aria-live="polite"></p></form></details></section>
   `);
 }
 
@@ -86,7 +92,7 @@ function studyPage(): string {
   card ||= queue[0];
   if (!card) return shell(`<section class="page-head complete-sheet"><p class="eyebrow">Review desk</p><h1 tabindex="-1">You cleared today’s cards</h1><p>No cards are due now. Your next scheduled card appears on ${escapeHtml(dateLabel(data.cards.sort((a,b) => a.dueAt.localeCompare(b.dueAt))[0].dueAt))}.</p><button class="button secondary" data-action="study-anyway">Study the next card anyway</button></section>`);
   activeCardId = card.id;
-  const typeHelp = card.type === 'exact' ? 'Spelling and spacing are checked after Unicode normalization.' : card.type === 'numeric' ? `Enter one number. The accepted tolerance is hidden until scoring.` : 'Write every item you recall. Separate them however you like.';
+  const typeHelp = card.type === 'exact' ? 'Case, accents, and extra spaces do not change an exact match.' : card.type === 'numeric' ? `Enter one number. The accepted range stays hidden until scoring.` : 'Write every item you recall. Separate them however you like.';
   return shell(`<section class="review-shell">
     <div class="review-top"><div><p class="eyebrow">${escapeHtml(card.deck)} · ${queue.length} due</p><h1 tabindex="-1">Answer before you see the key</h1></div><span class="card-kind">${card.type}</span></div>
     <form class="answer-sheet" data-answer-form>
@@ -105,11 +111,11 @@ function studyPage(): string {
 function renderReveal(result: NonNullable<typeof revealed>): string {
   const { card, answer, confidence, review } = result;
   const percent = Math.round(review.score * 100);
-  const rubric = card.type === 'checklist' ? card.checklist : [card.type === 'numeric' ? `${card.answer} ± ${card.tolerance}` : [card.answer, ...card.aliases].join(' / ')];
+  const answerKey = card.type === 'checklist' ? card.checklist : [card.type === 'numeric' ? `${card.answer} ± ${card.tolerance}` : [card.answer, ...card.aliases].join(' / ')];
   const when = review.nextInterval === 0 ? 'in 10 minutes' : review.nextInterval === 1 ? 'tomorrow' : `in ${review.nextInterval} days`;
   return `<section class="review-shell result-sheet">
-    <div class="review-top"><div><p class="eyebrow">Scored evidence</p><h1 tabindex="-1">${percent}% of the rubric matched</h1></div><span class="score-seal">${percent}%</span></div>
-    <div class="evidence-grid"><section><h2>Your answer</h2><p class="answer-quote">${escapeHtml(answer)}</p><small>Confidence: ${escapeHtml(confidence)}</small></section><section><h2>Answer rubric</h2><ul>${rubric.map(item => `<li class="${review.matched.some(match => match === item || String(item).includes(match)) ? 'matched' : 'missing'}"><span aria-hidden="true">${review.matched.some(match => match === item || String(item).includes(match)) ? '✓' : '○'}</span> <span>${escapeHtml(item)}</span></li>`).join('')}</ul></section></div>
+    <div class="review-top"><div><p class="eyebrow">Scored answer</p><h1 tabindex="-1">${percent}% of the answer key matched</h1></div><span class="score-seal">${percent}%</span></div>
+    <div class="evidence-grid"><section><h2>Your answer</h2><p class="answer-quote">${escapeHtml(answer)}</p><small>Confidence: ${escapeHtml(confidence)}</small></section><section><h2>Answer key</h2><ul>${answerKey.map(item => `<li class="${review.matched.some(match => match === item || String(item).includes(match)) ? 'matched' : 'missing'}"><span aria-hidden="true">${review.matched.some(match => match === item || String(item).includes(match)) ? '✓' : '○'}</span> <span>${escapeHtml(item)}</span></li>`).join('')}</ul></section></div>
     <div class="interval-explain"><span class="interval-arrow" aria-hidden="true">→</span><div><p class="eyebrow">Next review ${when}</p><h2>Why this interval changed</h2><p>${escapeHtml(review.explanation)} Previous interval: ${review.previousInterval || 0} days.</p></div></div>
     <div class="result-actions"><button class="button primary" data-action="next-card">Review next card</button><a href="/cards" data-link>View all cards</a></div>
   </section>`;
@@ -117,7 +123,7 @@ function renderReveal(result: NonNullable<typeof revealed>): string {
 
 function cardsPage(): string {
   const atLimit = !isLicensed() && data.cards.length >= FREE_CARD_LIMIT;
-  return shell(`<section class="page-head cards-head"><p class="eyebrow">Card workshop</p><h1 tabindex="-1">Build rubrics you can score</h1><p>Choose exact, numeric, or checklist scoring for each card.</p></section>
+  return shell(`<section class="page-head cards-head"><p class="eyebrow">Card workshop</p><h1 tabindex="-1">Build answer keys you can score</h1><p>Choose exact text, a number range, or a checklist for each card.</p></section>
     <section class="card-maker"><div><h2>Add a card</h2><p>Free plans hold 30 cards. You have ${data.cards.length}.</p></div>
         ${atLimit ? `<div class="limit-note"><strong>Your 30-card free plan is full.</strong><p>Export or remove cards, or buy Desk for unlimited cards.</p><a class="button primary" href="https://api.sociobot.in/api/v1/products/${slug}/checkout">Buy Desk for $19 <span class="sr-only">(opens hosted checkout)</span></a></div>` : `<form data-card-form>
         <label for="deck">Deck</label><input id="deck" name="deck" value="My deck" required maxlength="60">
@@ -132,23 +138,23 @@ function cardsPage(): string {
     <section class="library"><div class="library-title"><div><p class="eyebrow">${data.cards.length} cards · ${dueCards().length} due</p><h2>Your cards</h2></div><a class="button secondary" href="/study" data-link>Study due cards</a></div>
       ${data.cards.length ? `<ul class="card-list">${data.cards.map(card => `<li><div><span class="card-kind">${card.type}</span><strong>${escapeHtml(card.prompt)}</strong><small>${escapeHtml(card.deck)} · next ${dateLabel(card.dueAt)}</small></div><button class="text-button danger" data-delete-card="${card.id}" aria-label="Remove card: ${escapeHtml(card.prompt)}">Remove</button></li>`).join('')}</ul>` : `<div class="empty-state"><span aria-hidden="true">＋</span><h3>No cards yet</h3><p>Save the form above. Your first due card will appear here.</p></div>`}
     </section>
-    <section class="data-tools"><div><p class="eyebrow">Portable study record</p><h2>Export or restore your data</h2><p>CSV files open in spreadsheets and Anki. Encrypted backups restore this app.</p></div><div class="tool-grid"><button data-action="export-reviews">Export review CSV</button><button data-action="export-anki">Export Anki CSV</button></div>
+    <section class="data-tools"><div><p class="eyebrow">Portable study record</p><h2>Export or restore your data</h2><p>Download review CSV or an Anki-formatted card CSV. Encrypted backups restore this app.</p></div><div class="tool-grid"><button data-action="export-reviews">Export review CSV</button><button data-action="export-anki">Export Anki card CSV</button></div>
       <form data-backup-form><label for="backup-passphrase">Backup passphrase</label><div class="inline-form"><input id="backup-passphrase" name="passphrase" type="password" minlength="8" required aria-describedby="backup-help"><button name="intent" value="export">Export encrypted backup</button></div><p id="backup-help" class="field-help">Use at least eight characters. The passphrase never leaves this page.</p><label class="file-label" for="backup-file">Choose an encrypted backup</label><input id="backup-file" name="file" type="file" accept="application/json,.json"><button name="intent" value="import">Import encrypted backup</button><p class="form-status" aria-live="polite"></p></form>
     </section>
     ${trendsPanel()}`);
 }
 
 function trendsPanel(): string {
-  if (!isLicensed()) return `<section class="trends locked"><p class="eyebrow">Recall Anchor Desk</p><h2>See your review trend</h2><p>Desk adds match-rate trends and unlimited cards for a $19 one-time purchase.</p><a class="button primary" href="https://api.sociobot.in/api/v1/products/${slug}/checkout">Buy Desk for $19 <span class="sr-only">(opens hosted checkout)</span></a><details class="license-restore"><summary>Restore a purchase</summary><form data-license-form><label for="card-license">Paste your license</label><div class="inline-form"><input id="card-license" name="license" required><button aria-label="Verify license">Verify license</button></div><p class="form-status" aria-live="polite"></p></form></details></section>`;
+  if (!isLicensed()) return `<section class="trends locked"><p class="eyebrow">Recall Anchor Desk license</p><h2>See your review trend</h2><p>The Recall Anchor Desk license adds answer-match trends and unlimited cards for $19 once.</p><a class="button primary" href="https://api.sociobot.in/api/v1/products/${slug}/checkout">Buy Recall Anchor Desk license for $19 <span class="sr-only">(opens hosted checkout)</span></a><details class="license-restore"><summary>Restore a purchase</summary><form data-license-form><label for="card-license">Paste your license</label><div class="inline-form"><input id="card-license" name="license" required><button aria-label="Verify license">Verify license</button></div><p class="form-status" aria-live="polite"></p></form></details></section>`;
   const last = data.reviews.slice(-20);
   const average = last.length ? Math.round(last.reduce((sum, item) => sum + item.score, 0) / last.length * 100) : 0;
   const confident = last.filter(item => item.confidence === 'certain' && item.score < .8).length;
-  return `<section class="trends"><p class="eyebrow">Recall Anchor Desk · active</p><h2>Your last 20 reviews</h2><div class="trend-metrics"><div><strong>${average}%</strong><span>average rubric match</span></div><div><strong>${last.length}</strong><span>answers recorded</span></div><div><strong>${confident}</strong><span>certain answers below 80%</span></div></div></section>`;
+  return `<section class="trends"><p class="eyebrow">Recall Anchor Desk license · active</p><h2>Your last 20 reviews</h2><div class="trend-metrics"><div><strong>${average}%</strong><span>average answer-key match</span></div><div><strong>${last.length}</strong><span>answers recorded</span></div><div><strong>${confident}</strong><span>certain answers below 80%</span></div></div></section>`;
 }
 
-function privacyPage(): string { return shell(`<article class="legal"><p class="eyebrow">Policy / August 28, 2026</p><h1 tabindex="-1">Your cards stay in your browser</h1><p>Recall Anchor stores cards and review evidence in IndexedDB on this device. We do not run analytics or send study data to a server.</p><h2>What leaves the device</h2><p>Nothing leaves during card creation, review, or export. A license check contacts Sociobot only after you paste or receive a paid license.</p><h2>Demo separation</h2><p>Demo cards use a separate IndexedDB database. Leaving the demo does not copy those cards into your real collection.</p><h2>Delete and export</h2><p>Remove cards from the Cards page. Clear this site’s storage to remove every local record. Encrypted backups use AES-GCM in your browser.</p><h2>Questions</h2><p>Email <a href="mailto:privacy@sociobot.in">privacy@sociobot.in</a>.</p></article>`); }
+function privacyPage(): string { return shell(`<article class="legal"><p class="eyebrow">Policy / August 29, 2026</p><h1 tabindex="-1">Your cards stay in your browser</h1><p>Recall Anchor stores cards and review answers on this device. It has no analytics or third-party runtime scripts.</p><h2>What leaves the device</h2><p>Card creation, review, and export stay on this device. Sociobot is contacted when you verify a license, receive one after checkout, or refresh a saved license after a day.</p><h2>Demo separation</h2><p>Demo cards use separate browser storage. Leaving the demo does not copy those cards into your real collection.</p><h2>Delete and export</h2><p>Remove cards from the Cards page. Clear this site’s storage to remove every local record. Download an encrypted backup and restore it with your passphrase.</p><h2>Questions</h2><p>Email <a href="mailto:privacy@sociobot.in">privacy@sociobot.in</a>.</p></article>`); }
 
-function termsPage(): string { return shell(`<article class="legal"><p class="eyebrow">Terms / August 28, 2026</p><h1 tabindex="-1">Use Recall Anchor for personal study</h1><p>Recall Anchor is a study utility, not a learning diagnosis or a guarantee of recall.</p><h2>Free and paid use</h2><p>The free plan holds 30 cards. Recall Anchor Desk costs $19 once and adds unlimited cards plus review trends.</p><h2>Purchases</h2><p>Sociobot and Dodo are the merchant of record. They handle payment and refunds. A refunded or revoked license stops paid features.</p><h2>Your responsibility</h2><p>Keep an encrypted backup and its passphrase. Browser storage can be cleared by your device or browser.</p><h2>Warranty</h2><p>The software is provided as is under the MIT License. Use it only where local law allows.</p></article>`); }
+function termsPage(): string { return shell(`<article class="legal"><p class="eyebrow">Terms / August 29, 2026</p><h1 tabindex="-1">Use Recall Anchor for personal study</h1><p>Recall Anchor helps you study. It does not measure learning ability or guarantee recall.</p><h2>Free and paid use</h2><p>The free plan holds 30 cards. The Recall Anchor Desk license costs $19 once and adds unlimited cards plus review trends.</p><h2>Purchases</h2><p>The Desk purchase opens Sociobot’s hosted checkout. A license must be active for paid features to remain available.</p><h2>Your responsibility</h2><p>Keep an encrypted backup and its passphrase. Browser storage can be cleared by your device or browser.</p><h2>Warranty</h2><p>The software is provided as is under the MIT License. Use it only where local law allows.</p></article>`); }
 
 function notFoundPage(): string { return shell(`<section class="not-found"><span aria-hidden="true">404</span><p class="eyebrow">Misprinted route</p><h1 tabindex="-1">This page is not in the deck</h1><p>The address may be wrong or the page may have moved.</p><a class="button primary" href="/" data-link>Return home</a></section>`); }
 
@@ -156,8 +162,9 @@ async function render(focusHeading = false): Promise<void> {
   demo = location.pathname === '/demo' || new URLSearchParams(location.search).get('demo') === '1';
   data = await loadData(demo);
   const path = location.pathname;
-  setMeta(routeMeta[path] ? path : '/404');
-  app.innerHTML = path === '/' ? homePage() : path === '/study' || path === '/demo' ? studyPage() : path === '/cards' ? cardsPage() : path === '/privacy' ? privacyPage() : path === '/terms' ? termsPage() : notFoundPage();
+  const viewPath = demo && path === '/' ? '/demo' : path;
+  setMeta(routeMeta[viewPath] ? viewPath : '/404');
+  app.innerHTML = viewPath === '/' ? homePage() : viewPath === '/study' || viewPath === '/demo' ? studyPage() : viewPath === '/cards' ? cardsPage() : viewPath === '/privacy' ? privacyPage() : viewPath === '/terms' ? termsPage() : notFoundPage();
   bindEvents();
   if (focusHeading) {
     const heading = app.querySelector<HTMLElement>('h1');
@@ -176,7 +183,7 @@ async function navigate(url: string, preserveDemo = true): Promise<void> {
 }
 
 function bindEvents(): void {
-  app.querySelectorAll<HTMLAnchorElement>('a[data-link]').forEach(link => link.addEventListener('click', event => { if (!event.metaKey && !event.ctrlKey) { event.preventDefault(); void navigate(link.pathname); } }));
+  app.querySelectorAll<HTMLAnchorElement>('a[data-link]').forEach(link => link.addEventListener('click', event => { if (!event.metaKey && !event.ctrlKey) { event.preventDefault(); void navigate(link.pathname + link.search); } }));
   app.querySelector<HTMLAnchorElement>('[data-start-real]')?.addEventListener('click', event => { event.preventDefault(); void navigate('/cards', false); });
   app.querySelector('[data-action="reset-demo"]')?.addEventListener('click', async () => { data = await resetDemo(); revealed = null; activeCardId = ''; notice = 'Sample cards were reset.'; await render(); });
   app.querySelector('[data-action="apply-update"]')?.addEventListener('click', () => updateWorker?.postMessage({ type: 'SKIP_WAITING' }));

@@ -1,4 +1,4 @@
-const VERSION = 'recall-anchor-v4';
+const VERSION = 'recall-anchor-v5';
 const SHELL = ['/', '/index.html', '/offline.html', '/manifest.webmanifest', '/favicon.svg', '/assets/hero-768-v1.webp', '/assets/hero-1200-v1.webp', '/assets/social-v1.webp', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/apple-touch-icon.png'];
 
 self.addEventListener('install', event => {

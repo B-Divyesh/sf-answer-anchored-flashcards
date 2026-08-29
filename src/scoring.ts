@@ -29,13 +29,13 @@ export function scoreCard(card: Card, typed: string): ScoreResult {
 }
 
 export function nextInterval(card: Card, score: number, confidence: string): { days: number; explanation: string } {
-  if (score < 0.5) return { days: 0, explanation: 'Fewer than half of the rubric points matched. Review again in 10 minutes.' };
-  if (score < 0.8) return { days: 1, explanation: 'Some rubric points matched. The card returns tomorrow.' };
+  if (score < 0.5) return { days: 0, explanation: 'Fewer than half of the answer-key points matched. Review again in 10 minutes.' };
+  if (score < 0.8) return { days: 1, explanation: 'Some answer-key points matched. The card returns tomorrow.' };
   const base = card.reviewCount === 0 ? 1 : Math.max(2, Math.round(card.intervalDays * 2.2));
   const factor = confidence === 'unsure' ? 0.7 : confidence === 'certain' ? 1.15 : 1;
   const days = Math.max(1, Math.round(base * factor));
   const confidenceNote = confidence === 'unsure' ? 'Unsure confidence shortened it.' : confidence === 'certain' ? 'Certain confidence added a small extension.' : 'Close confidence kept the standard interval.';
-  return { days, explanation: `The rubric passed. ${confidenceNote}` };
+  return { days, explanation: `The answer key passed. ${confidenceNote}` };
 }
 
 export function dueDate(days: number): string {

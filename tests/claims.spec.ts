@@ -32,7 +32,7 @@ async function storedCards(page: import('@playwright/test').Page) {
 }
 
 test('@claim:offline-reload works offline after the first visit', async ({ page, context }) => {
-  await page.goto('/demo');
+  await page.goto('/?demo=1');
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Answer before');
   await page.evaluate(async () => {
     await navigator.serviceWorker.ready;
@@ -43,15 +43,23 @@ test('@claim:offline-reload works offline after the first visit', async ({ page,
   await page.reload();
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Answer before');
   await expect(page.getByText('You are offline. Review and export still work.')).toBeVisible();
-  await page.getByRole('link', { name: 'Cards', exact: true }).click();
+  await page.getByLabel('Your answer').fill('café');
+  await page.getByText('Close', { exact: true }).click();
+  await page.getByRole('button', { name: 'Score my answer' }).click();
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('100%');
+  await page.getByRole('link', { name: 'View all cards' }).click();
   await expect(page).toHaveURL(/\/cards\?demo=1$/);
   await expect(page.getByText('You are offline. Review and export still work.')).toBeVisible();
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Export review CSV' }).click();
+  const csv = await readFile(await (await downloadPromise).path(), 'utf8');
+  expect(csv).toContain('"café"');
 });
 
 test('@claim:answer-types scores exact, numeric, and checklist answers', async ({ page }) => {
   await page.goto('/demo');
   const answer = page.getByLabel('Your answer');
-  await answer.fill('mitochondria');
+  await answer.fill('café');
   await page.getByText('Close', { exact: true }).click();
   await page.getByRole('button', { name: 'Score my answer' }).click();
   await expect(page.getByRole('heading', { level: 1 })).toContainText('100%');
@@ -70,10 +78,10 @@ test('@claim:answer-types scores exact, numeric, and checklist answers', async (
 
 test('@claim:interval-reason records the answer and explains the next interval', async ({ page }) => {
   await page.goto('/demo');
-  await page.getByLabel('Your answer').fill('mitochondria');
+  await page.getByLabel('Your answer').fill('café');
   await page.getByText('Unsure', { exact: true }).click();
   await page.getByRole('button', { name: 'Score my answer' }).click();
-  await expect(page.getByText('mitochondria', { exact: true })).toBeVisible();
+  await expect(page.getByText('café', { exact: true })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Why this interval changed' })).toBeVisible();
   await expect(page.getByText(/Unsure confidence shortened it/)).toBeVisible();
 });
@@ -93,7 +101,7 @@ test('@claim:anki-export exports all cards with Anki fields', async ({ page }) =
   await page.goto('/demo');
   await page.getByRole('link', { name: 'Cards', exact: true }).click();
   const downloadPromise = page.waitForEvent('download');
-  await page.getByRole('button', { name: 'Export Anki CSV' }).click();
+  await page.getByRole('button', { name: 'Export Anki card CSV' }).click();
   const path = await (await downloadPromise).path();
   const csv = await readFile(path!, 'utf8');
   expect(csv).toContain('"Front","Back","Card type","Rubric","Deck","Tags"');
@@ -110,7 +118,7 @@ test('@claim:encrypted-backup exports AES-GCM data and restores it', async ({ pa
   const path = await download.path();
   const envelope = JSON.parse(await readFile(path!, 'utf8'));
   expect(envelope.cipher).toBe('AES-GCM');
-  expect(JSON.stringify(envelope)).not.toContain('mitochondria');
+  expect(JSON.stringify(envelope)).not.toContain('café');
   page.on('dialog', dialog => dialog.accept());
   await page.getByRole('button', { name: /Remove card:/ }).first().click();
   await expect(page.getByText('2 cards ·')).toBeVisible();
@@ -148,16 +156,48 @@ test('@claim:demo-isolation keeps sample data out of real storage', async ({ pag
   await expect(page.getByRole('heading', { name: 'No cards yet' })).toBeVisible();
 });
 
+test('@claim:demo-reset restores the sample without changing real cards', async ({ page }) => {
+  await page.goto('/cards');
+  await page.getByLabel('Prompt').fill('Real card stays here');
+  await page.getByLabel('Expected answer').fill('real answer');
+  await page.getByRole('button', { name: 'Save card' }).click();
+  await page.goto('/?demo=1');
+  await page.getByLabel('Your answer').fill('café');
+  await page.getByText('Close', { exact: true }).click();
+  await page.getByRole('button', { name: 'Score my answer' }).click();
+  await page.getByRole('link', { name: 'View all cards' }).click();
+  const changed = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Export review CSV' }).click();
+  expect((await readFile(await (await changed).path(), 'utf8')).split('\r\n')).toHaveLength(4);
+  await page.getByRole('button', { name: 'Reset demo' }).click();
+  await expect(page.getByText('Sample cards were reset.')).toBeVisible();
+  const reset = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Export review CSV' }).click();
+  expect((await readFile(await (await reset).path(), 'utf8')).split('\r\n')).toHaveLength(3);
+  await expect(page.getByText('3 cards · 3 due')).toBeVisible();
+  await page.getByRole('link', { name: 'Start for real' }).click();
+  await expect(page.getByText('Real card stays here')).toBeVisible();
+});
+
+test('@claim:exact-normalization matches decomposed accents, case, and spaces', async ({ page }) => {
+  await page.goto('/?demo=1');
+  await page.getByLabel('Your answer').fill('  CAFE\u0301   ');
+  await page.getByText('Certain', { exact: true }).click();
+  await page.getByRole('button', { name: 'Score my answer' }).click();
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('100%');
+  await expect(page.getByRole('heading', { name: 'Answer key', exact: true })).toBeVisible();
+});
+
 test('@claim:local-privacy sends no study data off origin', async ({ page }) => {
   const requests: Array<{ url: string; body: string | null }> = [];
   page.on('request', request => requests.push({ url: request.url(), body: request.postData() }));
   await page.goto('/demo');
   const productOrigin = new URL(page.url()).origin;
-  await page.getByLabel('Your answer').fill('mitochondria');
+  await page.getByLabel('Your answer').fill('café');
   await page.getByText('Close', { exact: true }).click();
   await page.getByRole('button', { name: 'Score my answer' }).click();
   await page.getByRole('link', { name: 'View all cards' }).click();
-  await page.getByRole('button', { name: 'Export Anki CSV' }).click();
+  await page.getByRole('button', { name: 'Export Anki card CSV' }).click();
   await page.getByLabel('Backup passphrase').fill('private-passphrase');
   const backupDownload = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Export encrypted backup' }).click();
@@ -201,6 +241,48 @@ test('@claim:free-limit makes creation idempotent and stops concurrent tabs at 3
   await expect(second.locator('[data-card-form]')).toHaveCount(0);
 });
 
+test('@claim:license-network contacts Sociobot only for license flows', async ({ page }) => {
+  const verificationRequests: string[] = [];
+  await page.route('https://api.sociobot.in/api/v1/products/answer-anchored-flashcards/verify?*', route => {
+    verificationRequests.push(route.request().url());
+    return route.fulfill({ json: { valid: true, reason: 'ok', expires_at: null } });
+  });
+  await page.goto('/?demo=1');
+  await page.waitForTimeout(100);
+  expect(verificationRequests).toEqual([]);
+
+  await page.goto('/cards');
+  await page.getByText('Restore a purchase').click();
+  await page.getByLabel('Paste your license').fill('explicit-token');
+  await page.getByRole('button', { name: 'Verify license' }).click();
+  await expect.poll(() => verificationRequests.length).toBe(1);
+  expect(verificationRequests[0]).toContain('license=explicit-token');
+
+  await page.goto('/?license=returned-token');
+  await expect.poll(() => verificationRequests.length).toBe(2);
+  await expect(page).toHaveURL(/\/$/);
+  await expect.poll(() => page.evaluate(() => localStorage.getItem('sb_license:answer-anchored-flashcards'))).toBe('returned-token');
+
+  await page.evaluate(() => localStorage.setItem('sb_license:answer-anchored-flashcards:verdict', JSON.stringify({ valid: true, checkedAt: 0 })));
+  await page.reload();
+  await expect.poll(() => verificationRequests.length).toBe(3);
+  expect(verificationRequests.every(url => new URL(url).origin === 'https://api.sociobot.in')).toBe(true);
+});
+
+test('@claim:license-revocation returns paid features to the free plan', async ({ page }) => {
+  await page.route('https://api.sociobot.in/api/v1/products/answer-anchored-flashcards/verify?*', route => route.fulfill({ json: { valid: false, reason: 'revoked', expires_at: null } }));
+  await page.goto('/cards');
+  await seedCards(page, 30);
+  await page.evaluate(() => {
+    localStorage.setItem('sb_license:answer-anchored-flashcards', 'revoked-token');
+    localStorage.setItem('sb_license:answer-anchored-flashcards:verdict', JSON.stringify({ valid: true, checkedAt: 0 }));
+  });
+  await page.reload();
+  await expect(page.getByText('Your license is no longer active. Free features still work.')).toBeVisible();
+  await expect(page.locator('[data-card-form]')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Export review CSV' })).toBeVisible();
+});
+
 test('@claim:paid-desk verifies checkout and a license, then adds unlimited cards plus trends', async ({ page, request }) => {
   const products = await request.get('https://api.sociobot.in/api/v1/products');
   expect(products.ok()).toBe(true);
@@ -210,16 +292,22 @@ test('@claim:paid-desk verifies checkout and a license, then adds unlimited card
     price_minor: 1900,
     checkout_url: 'https://api.sociobot.in/api/v1/products/answer-anchored-flashcards/checkout'
   }));
+  const checkout = await request.get(listed!.checkout_url, { maxRedirects: 0 });
+  expect(checkout.status()).toBe(303);
+  expect(new URL(checkout.headers().location).hostname).toBe('checkout.dodopayments.com');
+  const hostedCheckout = await request.get(listed.checkout_url);
+  expect(hostedCheckout.ok()).toBe(true);
+  expect(await hostedCheckout.text()).toContain('One-time Recall Anchor Desk license');
   await page.route('https://api.sociobot.in/api/v1/products/answer-anchored-flashcards/verify?*', route => route.fulfill({ json: { valid: true, reason: 'ok', expires_at: null } }));
   await page.goto('/cards');
-  await expect(page.getByRole('link', { name: /Buy Desk for \$19/ })).toHaveAttribute('href', listed!.checkout_url);
+  await expect(page.getByRole('link', { name: /Buy Recall Anchor Desk license for \$19/ })).toHaveAttribute('href', listed!.checkout_url);
   await seedCards(page, 30);
   await page.reload();
   await expect(page.getByText('Your 30-card free plan is full.', { exact: true })).toBeVisible();
   await page.getByText('Restore a purchase').click();
   await page.getByLabel('Paste your license').fill('test-license-token');
   await page.getByRole('button', { name: 'Verify license' }).click();
-  await expect(page.getByText('Recall Anchor Desk · active')).toBeVisible();
+  await expect(page.getByText('Recall Anchor Desk license · active')).toBeVisible();
   await expect(page.locator('[data-card-form]')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Your last 20 reviews' })).toBeVisible();
 });
