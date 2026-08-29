@@ -152,6 +152,7 @@ test('@claim:local-privacy sends no study data off origin', async ({ page }) => 
   const requests: Array<{ url: string; body: string | null }> = [];
   page.on('request', request => requests.push({ url: request.url(), body: request.postData() }));
   await page.goto('/demo');
+  const productOrigin = new URL(page.url()).origin;
   await page.getByLabel('Your answer').fill('mitochondria');
   await page.getByText('Close', { exact: true }).click();
   await page.getByRole('button', { name: 'Score my answer' }).click();
@@ -161,7 +162,7 @@ test('@claim:local-privacy sends no study data off origin', async ({ page }) => 
   const backupDownload = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Export encrypted backup' }).click();
   await backupDownload;
-  const offOrigin = requests.filter(request => new URL(request.url).origin !== 'http://127.0.0.1:4173');
+  const offOrigin = requests.filter(request => new URL(request.url).origin !== productOrigin);
   expect(offOrigin).toEqual([]);
   expect(requests.some(request => request.body?.includes('private-passphrase'))).toBe(false);
   expect(requests.some(request => /analytics|telemetry|beacon/i.test(request.url))).toBe(false);
