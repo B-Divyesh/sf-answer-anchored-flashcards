@@ -35,6 +35,17 @@ Audited 2026-08-29. Counts treat hyphenated terms as one word. Every landing sen
 
 Read-aloud check: “Score flashcards from typed answers. For people studying alone who want the next review date based on an answer, not a guessed rating. Try it with sample data.” It states the task, audience, and first action in one breath.
 
+## Terms review
+
+| Copy | Words | Result |
+|---|---:|---|
+| The free plan holds 30 cards. | 6 | `free-limit` |
+| The Recall Anchor Desk license costs $19 once and adds unlimited cards plus review trends. | 14 | `paid-desk` |
+| The Desk purchase opens Sociobot’s hosted checkout. | 7 | `paid-desk` |
+| A license must be active for paid features to remain available. | 11 | `license-revocation` |
+
+The Terms page has no merchant-of-record or refund-handling statement. Those legal roles are not asserted because this product has no contract source or sandbox proof for them.
+
 ## README review
 
 The README now starts with the ordinary study task before implementation details. Technical storage, encryption, and license-key information are grouped under **Technical details**. No README sentence exceeds 22 words.
@@ -56,4 +67,4 @@ Purchases are described only as a Sociobot-hosted checkout and an active-license
 | Isolated sample workspace | demo |
 | Paid one-time tier | Recall Anchor Desk license |
 
-Catalog description: “Score each typed flashcard answer and schedule the next review.” (60 characters)
+Catalog description: “Score typed flashcard answers and set the next review date.” (61 characters, verb-first)

@@ -1,1 +1,1 @@
-Score each typed flashcard answer and schedule the next review.
+Score typed flashcard answers and set the next review date.

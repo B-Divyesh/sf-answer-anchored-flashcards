@@ -36,6 +36,14 @@ test('unknown URLs show the designed 404 route', async ({ page }) => {
   await expect(page.getByRole('heading', { level: 1 })).toContainText('not in the deck');
 });
 
+test('terms keep purchase copy to the declared checkout and license behavior', async ({ page }) => {
+  await page.goto('/terms');
+  const terms = page.locator('.legal');
+  await expect(terms).toContainText('The Desk purchase opens Sociobot’s hosted checkout.');
+  await expect(terms).toContainText('A license must be active for paid features to remain available.');
+  await expect(terms).not.toContainText(/merchant of record|refund/i);
+});
+
 test('every app route updates canonical, Open Graph, and Twitter metadata', async ({ page }) => {
   const routes = [
     ['/', 'Recall Anchor — Score typed flashcard answers'],
