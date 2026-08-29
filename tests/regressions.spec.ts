@@ -189,6 +189,8 @@ test('static host policy serves real 404s and immutable hashed assets', async ()
   const static404 = await readFile('public/404.html', 'utf8');
   expect(static404).toContain('Skip to main content');
   expect(static404).toContain('property="og:title" content="Page not found — Recall Anchor"');
+  expect(static404).toContain('<h1>Page not found</h1>');
+  expect(static404).not.toContain('not in the deck');
   expect(static404).toContain(`Version ${packageJson.version}`);
   expect(static404).toContain('href="/privacy"');
   expect(static404).toContain('href="/terms"');
