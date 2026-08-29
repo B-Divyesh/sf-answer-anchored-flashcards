@@ -1,31 +1,51 @@
-# Recall Anchor — adversarial review 6 handoff
+# Recall Anchor — polish round 6 handoff
 
 ## Result
 
-Review 6 is complete against commit `aed015d228c1d6fc28740aeb7c683825be5a11cd` and <https://answer-anchored-flashcards.sociobot.in> on 2026-08-29 UTC.
+Candidate `9b40406d8aa0da742bba45d7dfd30b4898b0577e` and review commit `6924ba8e6488dd1b9bdc85a307666802dec5b82c` were repaired on 2026-08-29 UTC. The released app is version 1.0.9 at <https://answer-anchored-flashcards.sociobot.in>.
 
-Verdict: **FAIL — 3 findings: 2 blocking regressions and 1 minor.** The detailed report is [review-6.md](review-6.md).
+Every finding from review rounds 1–6 is closed. The finding-by-finding changes and evidence are in [polish-6.md](polish-6.md). There are no known gaps or deferred minor items.
 
-No product code was changed. The review and this handoff are the only intended repository changes.
+## What changed
 
-## Verification performed
+- Removed the unsupported merchant-of-record, refund-handling, and automatic-refund-revocation statements from Terms. Regression tests reject those phrases.
+- Changed both client and static 404 headings to the literal `Page not found`, retained the product shell, and aligned route metadata.
+- Expanded route tests to assert title, description, canonical URL, Open Graph, and Twitter metadata.
+- Kept the one-click isolated sample, reset/exit behavior, claim registry, mobile first screen, offline PWA, privacy behavior, legal links, and product-specific print identity intact.
+- Updated the catalog description to: “Score flashcards from typed answers and set the next review date.”
+- Bumped the app to version 1.0.9 and service-worker cache to v11.
 
-- Fresh 390 × 844 and 1440 × 900 browser contexts for the first-read gate.
-- Live one-click demo, realistic sample, scoring, reset, real-mode exit, IndexedDB separation, request log, and console log.
-- Every exact command in `.factory/claims.json` independently from clean clone `/tmp/recall-review6-ekAMj0/repo`: 18/18 passed.
-- Clean-clone `npm test`: 47/47 passed and produced `dist/`.
-- Full deployed suite: 47/47 passed.
-- Live `verify-url.sh`: no console errors; title, `lang`, one h1, main, alt text, and button names passed.
-- Playwright Axe light/dark route checks, mobile target/overflow checks, keyboard review, offline review/export, Back/Forward focus/scroll, metadata, headers, link crawl, and real HTTP 404 passed.
-- Live HTML, JavaScript, and CSS hashes match the clean production build. JavaScript is 12,084 bytes gzip.
-- Every finding in review rounds 1–5 and every polish report was rechecked in live behavior and source.
+## Exact verification
+
+- Fresh remote clone at `d5515b68762c8e0c0dcf2d60c40826dd702ba81d`: all 18 exact commands from `.factory/claims.json` passed independently.
+- Fresh remote clone at `e07eec4dee6f010bad2e9f3fb448f041777a548a`: `npm test` passed 47/47; `npm run typecheck`, `npm run build`, and `npm audit --audit-level=low` passed.
+- Production: `PLAYWRIGHT_BASE_URL=https://answer-anchored-flashcards.sociobot.in npm test` passed 47/47.
+- Production `verify-url.sh` passed title, language, one h1, main landmark, image alternatives, button names, and console checks. Evidence: [verify.json](polish-6-live/verify.json).
+- Production Lighthouse mobile: Performance 100, Accessibility 100, Best Practices 100, SEO 100; FCP 0.9 s, LCP 1.4 s, CLS 0, TBT 0 ms. Evidence: [lighthouse-mobile.json](polish-6-live/lighthouse-mobile.json).
+- Axe checks passed every route in light and dark modes with no serious or critical violations.
+- Cold 390 × 844 Home kept all three facts above the fold, with their bottoms at 719, 742, and 765 px and no horizontal overflow.
+- Cold `/?demo=1` used only `recall-anchor-demo`, created no localStorage keys, made no off-origin requests, reset the sample, and exited to an empty real collection.
+- Live `/`, `/demo`, `/study`, `/cards`, `/privacy`, and `/terms` returned 200. An unknown path returned a real HTTP 404 with the correct title, description, h1, and recovery links.
+- Live and local SHA-256 hashes matched for HTML, JavaScript, and CSS. Initial JavaScript is 35,962 bytes raw / 12.06 kB gzip; CSS is 18,644 bytes raw / 5.02 kB gzip; the mobile hero is 79,516 bytes.
+
+## Deployment
+
+- Product commits: `08d60f2` and `d5515b6`
+- Test stabilization commit: `e07eec4`
+- Azure Static Web Apps deployment: `d85a93ba-acd2-451e-9105-25833b77d4b1`
+- Live URL: <https://answer-anchored-flashcards.sociobot.in>
+
+## Run and verify
+
+```bash
+npm ci
+npm run typecheck
+npm test
+npm run build
+npm audit --audit-level=low
+PLAYWRIGHT_BASE_URL=https://answer-anchored-flashcards.sociobot.in npm test
+```
 
 ## Known gaps
 
-1. **Blocking:** `/terms` again says “Sociobot/Dodo is the merchant of record” without a matching claim entry or authoritative contract-backed test. This repeats F-3-1 / F-1-7.
-2. **Blocking:** `/terms` again promises refund handling and now promises automatic refund revocation without matching claim entries or authoritative outcome tests. This repeats F-3-2 / F-1-8.
-3. **Minor:** the designed 404 h1, “This page is not in the deck,” is metaphorical and does not identify the error on its own.
-
-## Next step
-
-Remove or separately register and authoritatively test the legal claims. Change both static and client-side 404 headings to “Page not found.” Then rerun the full review from a clean context; PASS still requires zero findings.
+None.

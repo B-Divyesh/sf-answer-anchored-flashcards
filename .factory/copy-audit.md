@@ -1,6 +1,6 @@
 # Copy audit
 
-Audited 2026-08-29. Counts treat hyphenated terms as one word. Every landing sentence is 22 words or fewer and contains no banned plain-words term.
+Audited 2026-08-29 against version 1.0.9. Counts treat hyphenated terms as one word. Every landing sentence is 22 words or fewer and contains no banned plain-words term.
 
 ## Landing page
 

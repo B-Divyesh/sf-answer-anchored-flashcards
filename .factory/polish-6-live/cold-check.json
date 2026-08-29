@@ -1,0 +1,45 @@
+{
+  "url": "https://answer-anchored-flashcards.sociobot.in",
+  "checked_at": "2026-08-29T18:48:00Z",
+  "version": "1.0.9",
+  "home": {
+    "status": 200,
+    "viewport": "390x844",
+    "title": "Recall Anchor — Score typed flashcard answers",
+    "h1": "Score flashcards from typed answers",
+    "fact_bottoms_px": [719, 742, 765],
+    "scroll_width_px": 390,
+    "console_errors": 0
+  },
+  "demo": {
+    "entry": "/?demo=1",
+    "initial_databases": ["recall-anchor-demo"],
+    "initial_local_storage_keys": [],
+    "off_origin_requests": [],
+    "banner": "Demo — sample data, nothing is saved",
+    "reset_status": "Sample cards were reset.",
+    "start_for_real_path": "/cards",
+    "real_collection_after_exit": "empty",
+    "banner_after_exit": false
+  },
+  "routing": {
+    "path": "/cards",
+    "title": "Cards — Recall Anchor",
+    "h1": "Build answer keys you can score",
+    "h1_focused": true,
+    "announcement": "Build answer keys you can score"
+  },
+  "terms": {
+    "merchant_claim_present": false,
+    "refund_claim_present": false,
+    "privacy_link_present": true,
+    "terms_link_present": true
+  },
+  "not_found": {
+    "status": 404,
+    "title": "Page not found — Recall Anchor",
+    "description": "This Recall Anchor page does not exist.",
+    "h1": "Page not found",
+    "links": ["Return home", "Privacy", "Terms"]
+  }
+}
