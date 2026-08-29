@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 
 async function addExactCard(page: import('@playwright/test').Page, prompt: string, answer = 'answer') {
   await page.getByLabel('Prompt').fill(prompt);
@@ -175,4 +175,19 @@ test('static host policy serves real 404s and immutable hashed assets', async ()
   expect(static404).toContain('href="/privacy"');
   expect(static404).toContain('href="/terms"');
   expect(static404).not.toContain('factory-image');
+});
+
+test('claim registry has exactly one tagged test for every product claim', async () => {
+  const claims = JSON.parse(await readFile('.factory/claims.json', 'utf8')) as Array<{ id: string; test: string }>;
+  const testFiles = (await readdir('tests')).filter(file => file.endsWith('.spec.ts'));
+  const testSource = (await Promise.all(testFiles.map(file => readFile(`tests/${file}`, 'utf8')))).join('\n');
+  const registered = claims.map(claim => claim.id);
+  const tagged = [...testSource.matchAll(/@claim:([a-z0-9-]+)/g)].map(match => match[1]);
+
+  expect(new Set(registered).size).toBe(registered.length);
+  expect(new Set(tagged)).toEqual(new Set(registered));
+  for (const claim of claims) {
+    expect(tagged.filter(id => id === claim.id), claim.id).toHaveLength(1);
+    expect(claim.test).toBe(`npm test -- --grep @claim:${claim.id}`);
+  }
 });

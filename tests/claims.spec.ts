@@ -251,6 +251,100 @@ test('@claim:local-privacy sends no study data off origin', async ({ page }) => 
   expect(requests.some(request => /analytics|telemetry|beacon/i.test(request.url))).toBe(false);
 });
 
+test('@claim:local-data-deletion clears every documented local data store', async ({ page, context }) => {
+  await page.goto('/?demo=1');
+  await expect(page.getByRole('complementary', { name: 'Demo mode' })).toBeVisible();
+  await page.getByRole('link', { name: 'Start for real' }).click();
+  await page.getByLabel('Prompt').fill('Private real card');
+  await page.getByLabel('Expected answer').fill('private answer');
+  await page.getByRole('button', { name: 'Save card' }).click();
+  await page.getByRole('link', { name: 'Study due cards' }).click();
+  await page.getByLabel('Your answer').fill('private answer');
+  await page.getByText('Certain', { exact: true }).click();
+  await page.getByRole('button', { name: 'Score my answer' }).click();
+  await page.evaluate(() => {
+    localStorage.setItem('sb_license:answer-anchored-flashcards', 'local-deletion-license');
+    localStorage.setItem('sb_license:answer-anchored-flashcards:verdict', JSON.stringify({ valid: true, checkedAt: Date.now() }));
+  });
+
+  await page.goto('/?demo=1');
+  await page.getByLabel('Your answer').fill('café');
+  await page.getByText('Close', { exact: true }).click();
+  await page.getByRole('button', { name: 'Score my answer' }).click();
+  await page.evaluate(async () => navigator.serviceWorker.ready);
+
+  const seeded = await page.evaluate(async () => ({
+    databases: (await indexedDB.databases()).map(database => database.name),
+    localKeys: Object.keys(localStorage),
+    caches: await globalThis.caches.keys(),
+    registrations: (await navigator.serviceWorker.getRegistrations()).length
+  }));
+  expect(seeded.databases).toEqual(expect.arrayContaining(['recall-anchor', 'recall-anchor-demo']));
+  expect(seeded.localKeys).toEqual(expect.arrayContaining([
+    'sb_license:answer-anchored-flashcards',
+    'sb_license:answer-anchored-flashcards:verdict'
+  ]));
+  expect(seeded.caches.length).toBeGreaterThan(0);
+  expect(seeded.registrations).toBeGreaterThan(0);
+
+  const origin = new URL(page.url()).origin;
+  const session = await context.newCDPSession(page);
+  await session.send('Storage.clearDataForOrigin', { origin, storageTypes: 'all' });
+
+  await expect.poll(() => page.evaluate(async () => ({
+    databases: (await indexedDB.databases()).map(database => database.name),
+    localKeys: Object.keys(localStorage),
+    caches: await globalThis.caches.keys(),
+    registrations: (await navigator.serviceWorker.getRegistrations()).length
+  }))).toEqual({ databases: [], localKeys: [], caches: [], registrations: 0 });
+
+  await page.goto('/cards');
+  await expect(page.getByRole('heading', { name: 'No cards yet' })).toBeVisible();
+  await expect.poll(() => page.evaluate(() => localStorage.length)).toBe(0);
+  await page.goto('/?demo=1');
+  await expect(page.getByText('Foundations · 3 due', { exact: true })).toBeVisible();
+});
+
+test('@claim:card-removal-retention removes a card and keeps its past review row', async ({ page }) => {
+  const prompt = 'Which layer protects a leaf from water loss?';
+  const answer = 'waxy cuticle';
+  await page.goto('/?demo=1');
+  await page.getByRole('link', { name: 'Cards', exact: true }).click();
+  await page.getByLabel('Prompt').fill(prompt);
+  await page.getByLabel('Expected answer').fill(answer);
+  await page.getByRole('button', { name: 'Save card' }).click();
+  await page.getByRole('link', { name: 'Study due cards' }).click();
+
+  for (const sampleAnswer of ['café', '299792', 'claim, evidence, reasoning']) {
+    await page.getByLabel('Your answer').fill(sampleAnswer);
+    await page.getByText('Certain', { exact: true }).click();
+    await page.getByRole('button', { name: 'Score my answer' }).click();
+    await page.getByRole('button', { name: 'Review next card' }).click();
+  }
+  await expect(page.getByText(prompt, { exact: true })).toBeVisible();
+  await page.getByLabel('Your answer').fill(answer);
+  await page.getByText('Certain', { exact: true }).click();
+  await page.getByRole('button', { name: 'Score my answer' }).click();
+  await page.getByRole('link', { name: 'View all cards' }).click();
+
+  page.once('dialog', async dialog => {
+    expect(dialog.message()).toBe(`Remove “${prompt}”? Its past review rows stay in exports.`);
+    await dialog.accept();
+  });
+  await page.getByRole('button', { name: `Remove card: ${prompt}` }).click();
+  await expect(page.getByText('Card removed. Past review rows were kept.')).toBeVisible();
+  await expect(page.getByText(prompt, { exact: true })).toHaveCount(0);
+  await page.reload();
+  await expect(page.getByText(prompt, { exact: true })).toHaveCount(0);
+
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Export review CSV' }).click();
+  const download = await downloadPromise;
+  const csv = await readFile((await download.path())!, 'utf8');
+  expect(csv).toContain(`"${prompt}"`);
+  expect(csv).toContain(`"${answer}"`);
+});
+
 test('@claim:free-limit makes creation idempotent and stops concurrent tabs at 30 cards', async ({ page, context }) => {
   await page.goto('/cards');
   await page.getByLabel('Prompt').fill('One rapid submission');

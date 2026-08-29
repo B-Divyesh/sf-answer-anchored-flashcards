@@ -68,4 +68,16 @@ The README now starts with the ordinary study task before implementation details
 | Isolated sample workspace | demo |
 | Paid one-time tier | Recall Anchor Desk license |
 
-Catalog description: “Score flashcards from typed answers and set the next review date.” (65 characters, verb-first)
+## Privacy and removal review
+
+| Copy | Words | Result |
+|---|---:|---|
+| Remove cards from the Cards page. | 6 | `card-removal-retention` |
+| Past review rows stay in Review CSV exports. | 8 | `card-removal-retention` |
+| Use your browser’s site-data controls to remove cards, reviews, demo changes, licenses, and cached app files. | 17 | `local-data-deletion` |
+| Remove “card”? Its past review rows stay in exports. | 9 | `card-removal-retention` |
+| Card removed. Past review rows were kept. | 7 | `card-removal-retention` |
+
+The clearing instruction names each tested storage category. The removal wording states both outcomes at the destructive action.
+
+Catalog description: “Score flashcards from typed answers and schedule the next review.” (65 characters, verb-first)
