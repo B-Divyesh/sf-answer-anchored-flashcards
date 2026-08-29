@@ -50,10 +50,6 @@ The Terms page has no merchant-of-record or refund-handling statement. Those leg
 
 The README now starts with the ordinary study task before implementation details. Technical storage, encryption, and license-key information are grouped under **Technical details**. No README sentence exceeds 22 words.
 
-## Terms review
-
-Purchases are described only as a Sociobot-hosted checkout and an active-license requirement. The unsupported merchant-of-record and refund-handling assertions are absent.
-
 ## Terminology
 
 | Concept | One word or phrase |

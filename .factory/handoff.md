@@ -1,20 +1,31 @@
-# Recall Anchor review 3 handoff
+# Recall Anchor polish round 3 handoff
 
 ## Result
 
-**FAIL** for commit `cdd7638feabccb9913bcf3d22a680a8f6d50ef29` and the live site checked on 2026-08-29 UTC.
+**PASS.** Commit `a6141443e679813a95a7907dfcc63878bd1261f6` removes the two regressed, unsupported Terms assertions about merchant-of-record status and refunds. The repair was pushed to `origin/main` and deployed to <https://answer-anchored-flashcards.sociobot.in> (Azure static deployment `a40ca198-57f8-4b5a-a91b-daabc565981a`).
 
-Two blocking regressions remain. The live Terms page again claims that Sociobot/Dodo is merchant of record and handles refunds. These are the previously closed F-1-7 and F-1-8; neither is registered or proven by a contract-backed claim test. Full evidence and concrete fixes are in `.factory/review-3.md` as F-3-1/F-1-7 and F-3-2/F-1-8.
+The public Terms page now says only that Desk opens Sociobot’s hosted checkout and that an active license is required for paid features. The paid claim still verifies the real $19 catalog record, 303 checkout redirect, hosted one-time checkout text, and valid-license unlock. It no longer treats a self-authored legal assertion as proof.
 
-## Verification completed
+## Verification
 
-- Cold 390 × 844 and 1440 × 900 first-screen checks passed.
-- The live one-click demo, reset, real-data isolation, same-origin request log, and offline scoring passed.
-- All 16 exact `claims.json` commands passed independently from `/tmp/recall-anchor-review3-9P9Ntk/repo`.
-- The full clean-clone `npm test` passed 42/42 and produced `dist/` (12.09 kB gzip JavaScript).
-- Live route, metadata, link, 404, Back/Forward focus/scroll, and asset-hash checks passed.
-- Live Axe checks reported zero WCAG 2 A/AA violations across six routes in light and dark modes; `verify-url.sh` passed Home.
+- Fresh clone `/tmp/recall-anchor-polish3-ntIpGV/repo`, at repair commit: `npm ci`; each of the 16 exact `.factory/claims.json` commands independently; `npm test` (42/42); `npm run typecheck`; `npm run build`; and `npm audit --audit-level=low` all passed.
+- Production browser suite: `PLAYWRIGHT_BASE_URL=https://answer-anchored-flashcards.sociobot.in npm test` passed 42/42. This covers the PWA offline flow, scoring/export, demo reset/isolation, license flows, metadata, 404, mobile, Back/Forward restoration, accessibility, and privacy checks.
+- Cold production checks: the live module is `/assets/index-D13V2Mir.js`; all first-screen facts fit at 390 × 844; the one-click `?demo=1` sample, persistent banner, reset, and Start for real exit work; `/`, `/study`, `/cards`, `/demo`, `/privacy`, and `/terms` return 200; an unknown route returns the designed 404.
+- Accessibility: Playwright Axe found zero WCAG 2 A/AA violations on all seven checked routes in both light and dark schemes. [verify-url evidence](polish-3-live/verify.json) records the live Home check with no console errors, `lang=en`, one h1, a main landmark, and no missing alt text or unnamed buttons.
+- Performance: mobile Lighthouse scores are Performance 99, Accessibility 100, Best Practices 100, SEO 100; LCP 1.5 s and CLS 0. The report is [lighthouse.json](polish-3-live/lighthouse.json). Build output is 12.05 kB gzip JS and 5.01 kB gzip CSS.
+- Screenshots: [mobile home](polish-3-home-390.png), [mobile demo](polish-3-demo-390.png), [Terms](polish-3-terms-1440.png), and [404](polish-3-404-1440.png). The detailed finding-to-evidence map is [.factory/polish-3.md](polish-3.md).
 
-## Next step
+## Run locally
 
-Remove the two unsupported Terms clauses, or add distinct claims backed by an authoritative purchase/refund policy rather than a test that only checks the sentence is displayed. Rerun every claim command and the cumulative history audit afterward.
+```sh
+npm ci
+npm test
+npm run typecheck
+npm run build
+```
+
+`dist/` is the static deployment root. The demo entry point is `/?demo=1`.
+
+## Known gaps and next steps
+
+No product, review, accessibility, privacy, offline, routing, or documentation gaps remain. The factory owns future deployment and DNS changes.
