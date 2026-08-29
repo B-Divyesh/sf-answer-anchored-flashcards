@@ -1,37 +1,38 @@
-# Recall Anchor adversarial review 1 handoff
+# Recall Anchor polish round 1 handoff
 
 ## Outcome
 
-**FAIL — 20 findings: 0 blocking, 12 major, 8 minor.**
+All 20 findings in `.factory/review-1.md` are repaired. The release commit is `f03d199b3f5fc2a60b26e10f67c4d2825b7c4069`, pushed to `origin/main` and deployed to <https://answer-anchored-flashcards.sociobot.in>.
 
-The complete review is in `.factory/review-1.md`. Product code was not modified. The only repository changes are this handoff and the new review.
+## What changed
 
-## What was verified
+- The landing page uses plain typed-answer language, places all three required facts above the fold at 390 × 844 and 1440 × 900, and preserves the printed worksheet visual system.
+- The primary one-click path is `/?demo=1`. It opens sample data in the isolated demo database with the persistent banner, Reset demo, and Start for real controls.
+- Claims now cover reset isolation, actual offline review and CSV export, hosted checkout redirect and one-time product text, conditional license networking, revoked licenses, and exact-answer normalization. There are 15 claims and exactly one tagged test per claim.
+- README, legal pages, headings, pricing language, and footer provenance were rewritten to remove jargon, dead links, unsupported legal statements, and unlisted product-boundary claims.
+- Route-level canonical, Open Graph, and Twitter metadata update on navigation. The static 404 now has the standard shell, metadata, skip link, legal navigation, and current version.
 
-- Fresh cold reads at 390 × 844 and 1440 × 900.
-- One-click live demo, realistic seed data, banner, Reset, Start for real, real/demo IndexedDB separation, and same-origin request logging.
-- Every command in `.factory/claims.json`: 11/11 passed independently.
-- `npm test`: 33/33 passed; build produced `dist/`.
-- Live route/accessibility/regression run: 22/22 passed.
-- Live offline reload and navigation, route focus/back behavior, metadata, HTTP status, dead-link crawl, checkout redirect, cache/security headers, and local/live artifact hashes.
-- Every earlier verification finding and the previous handoff. No earlier review or polish files exist.
+## Verification
 
-## Main remaining work
+- Clean clone: cloned `f03d199` into `/tmp/recall-anchor-clean`; `npm ci && npm test` passed **39/39**.
+- Every exact command in `.factory/claims.json` ran from that clean clone and passed: **15/15**.
+- Local build: `npm run build` passed; `dist/index.html` exists. Initial bundle gzip: JS **11.45 KB**, CSS **5.01 KB**.
+- Live browser regression: `PLAYWRIGHT_BASE_URL=https://answer-anchored-flashcards.sociobot.in npx playwright test tests/app.spec.ts tests/claims.spec.ts tests/mobile.spec.ts tests/regressions.spec.ts --workers=1` passed **38/38**.
+- Live offline action/export, metadata, routing/focus, 390 px layout, real 404, privacy request boundary, checkout redirect, and Axe Playwright checks are included in that run.
+- `/opt/fleet/lib/verify-url.sh` on the live URL passed: HTTP 200, title, `lang=en`, one h1, main landmark, labelled buttons, and image alts. `npx @axe-core/cli` was attempted twice but its Selenium launcher could not start Chrome in this container; the project’s Playwright Axe checks passed locally and live with no serious or critical violations.
+- Static deploy: `/opt/fleet/lib/deploy-static.sh answer-anchored-flashcards dist` succeeded, deployment ID `6eb34b34-61bd-42a0-aac2-fb2e3db41c1b`.
+- Cold live screenshots: `.factory/polish-1-home-390.png`, `.factory/polish-1-demo-390.png`, `.factory/polish-1-404-1440.png`. The detailed finding map is `.factory/polish-1.md`.
 
-- Put all three offline/privacy/price facts above the fold at phone and desktop review sizes.
-- Add or strengthen claim tests for offline actions, Reset, checkout outcome, licensing network/storage behavior, revoked licenses, Unicode normalization, and retained payment/product-boundary statements.
-- Replace jargon, decorative headings, slogans, and pricing metaphors with the proposed text in the review.
-- Update route-specific Open Graph/Twitter metadata.
-- Bring the static 404 onto the shared shell and current version.
-
-## Reproduce
+## Run locally
 
 ```sh
 npm ci
 npm test
-PLAYWRIGHT_BASE_URL=https://answer-anchored-flashcards.sociobot.in npx playwright test tests/app.spec.ts tests/mobile.spec.ts tests/regressions.spec.ts
-mkdir -p /tmp/recall-verify-1
-VERIFY_NODE_MODULES=/work/repo/node_modules /opt/fleet/lib/verify-url.sh https://answer-anchored-flashcards.sociobot.in /tmp/recall-verify-1
+npm run build
 ```
 
-The 11 exact claim commands are listed in `.factory/claims.json`; all passed during this review.
+Use `/?demo=1` to test the isolated sample path. Build output is `dist/`.
+
+## Known gaps
+
+None.
