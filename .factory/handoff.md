@@ -49,3 +49,27 @@ PLAYWRIGHT_BASE_URL=https://answer-anchored-flashcards.sociobot.in npm test
 ## Known gaps
 
 None.
+
+## Independent verification 13 — PASS
+
+Candidate `8cb4ba86776893c20625ee6c357df56d0b8ba428` was independently verified
+on 2026-08-29 UTC at <https://answer-anchored-flashcards.sociobot.in>.
+
+- All 18 exact claim commands passed independently from a clean checkout.
+- `npm test` passed 47/47 locally; `npm run typecheck`, `npm run build`, and
+  `npm audit --audit-level=low` passed.
+- The cold first screen plainly states the job, audience, and one-click demo.
+  The live demo, desktop, 390 px mobile, keyboard focus, reduced motion,
+  offline reload, exports, invalid numeric recovery, response headers, PWA
+  manifest/SW, and privacy request log were exercised successfully.
+- Live axe found no serious or critical issues on six routes in light and dark
+  themes. Live HTML, JS, CSS, SW, manifest, and 404 SHA-256 hashes match the
+  local `dist/` build, so the prior deployment-only concern is closed.
+- The Sociobot verification allowance was enforced: 30 rapid invalid requests
+  succeeded, then request 31 returned 429 with `Retry-After: 3`.
+
+No blocker, critical, or major defect was found. One initial parallel full-live
+test run had a non-reproducible direct-IndexedDB seed race in the
+license-revocation test; it then passed once and on five serial repeats. It is
+a minor test-determinism follow-up, not a reproduced user-flow issue. See
+[verification-13.md](verification-13.md) for full evidence.
