@@ -7,6 +7,8 @@ import { ankiCsv, decryptBackup, downloadFile, encryptBackup, reviewsCsv } from 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 const slug = 'answer-anchored-flashcards';
 const licenseKey = `sb_license:${slug}`;
+const freeCardLimit = 30;
+const cardLimitMessage = 'Your 30-card free plan is full. Remove a card or buy Desk to add another.';
 let data: AppData = { cards: [], reviews: [] };
 let demo = location.pathname === '/demo' || new URLSearchParams(location.search).get('demo') === '1';
 let activeCardId = '';
@@ -14,6 +16,7 @@ let revealed: { card: Card; answer: string; confidence: 'unsure' | 'close' | 'ce
 let notice = '';
 let updateWorker: ServiceWorker | null = null;
 let answerSubmissionPending = false;
+let cardSubmissionPending = false;
 
 const escapeHtml = (value: unknown) => String(value ?? '').replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[char]!);
 const uid = () => crypto.randomUUID();
@@ -41,6 +44,7 @@ function setMeta(path: string): void {
 }
 
 function shell(content: string): string {
+  const visibleNotice = notice || (!navigator.onLine ? 'You are offline. Review and export still work.' : '');
   return `
     <a class="skip-link" href="#main">Skip to main content</a>
     ${demo ? `<aside class="demo-bar" aria-label="Demo mode"><strong>Demo</strong> — sample data, nothing is saved to your cards.<span><button class="text-button" data-action="reset-demo">Reset demo</button><a href="/cards" data-start-real>Start for real</a></span></aside>` : ''}
@@ -48,9 +52,9 @@ function shell(content: string): string {
       <a class="wordmark" href="/" data-link aria-label="Recall Anchor home"><span aria-hidden="true">RA</span> Recall Anchor</a>
       <nav aria-label="Primary"><a href="/study" data-link>Study</a><a href="/cards" data-link>Cards</a><a href="/demo" data-link>Demo</a><a href="/privacy" data-link>Privacy</a></nav>
     </header>
-    ${notice ? `<div class="notice" role="status">${escapeHtml(notice)}</div>` : ''}
+    ${visibleNotice ? `<div class="notice" role="status">${escapeHtml(visibleNotice)}</div>` : ''}
     <main id="main" tabindex="-1">${content}</main>
-    <footer><div><strong>Recall Anchor</strong><p>Score cards from answers, not guesses.</p></div><nav aria-label="Footer"><a href="/privacy" data-link>Privacy</a><a href="/terms" data-link>Terms</a><a href="https://sociobot.in" target="_blank" rel="noreferrer">Built by Param Factory <span class="sr-only">(opens in a new tab)</span></a></nav><small>Version 1.0.1 · Generated illustration disclosed in the visual notes.</small></footer>
+    <footer><div><strong>Recall Anchor</strong><p>Score cards from answers, not guesses.</p></div><nav aria-label="Footer"><a href="/privacy" data-link>Privacy</a><a href="/terms" data-link>Terms</a><a href="https://sociobot.in" target="_blank" rel="noreferrer">Built by Param Factory <span class="sr-only">(opens in a new tab)</span></a></nav><small>Version 1.0.2 · Generated illustration disclosed in the visual notes.</small></footer>
     <div class="route-announcer sr-only" aria-live="polite"></div>
     <div class="update-toast" hidden><span>A new version is ready.</span><button data-action="apply-update">Update now</button></div>`;
 }
@@ -112,7 +116,7 @@ function renderReveal(result: NonNullable<typeof revealed>): string {
 }
 
 function cardsPage(): string {
-  const atLimit = !isLicensed() && data.cards.length >= 30;
+  const atLimit = !isLicensed() && data.cards.length >= freeCardLimit;
   return shell(`<section class="page-head cards-head"><p class="eyebrow">Card workshop</p><h1 tabindex="-1">Build rubrics you can score</h1><p>Choose exact, numeric, or checklist scoring for each card.</p></section>
     <section class="card-maker"><div><h2>Add a card</h2><p>Free plans hold 30 cards. You have ${data.cards.length}.</p></div>
         ${atLimit ? `<div class="limit-note"><strong>Your 30-card free plan is full.</strong><p>Export or remove cards, or buy Desk for unlimited cards.</p><a class="button primary" href="https://api.sociobot.in/api/v1/products/${slug}/checkout">Buy Desk for $19 <span class="sr-only">(opens hosted checkout)</span></a></div>` : `<form data-card-form>
@@ -233,6 +237,7 @@ async function submitAnswer(form: HTMLFormElement): Promise<void> {
 }
 
 async function addCard(form: HTMLFormElement): Promise<void> {
+  if (cardSubmissionPending) return;
   const values = new FormData(form);
   const type = String(values.get('type')) as CardType;
   const exact = String(values.get('exactAnswer') || '').trim();
@@ -241,7 +246,36 @@ async function addCard(form: HTMLFormElement): Promise<void> {
   const error = form.querySelector<HTMLElement>('.form-error')!;
   if ((type === 'exact' && !exact) || (type === 'numeric' && numeric === '') || (type === 'checklist' && checklist.length < 2)) { error.textContent = type === 'checklist' ? 'Add at least two checklist items, one per line.' : 'Add the expected answer before saving.'; return; }
   const card: Card = { id: uid(), deck: String(values.get('deck')).trim(), prompt: String(values.get('prompt')).trim(), type, answer: type === 'exact' ? exact : type === 'numeric' ? numeric : '', aliases: String(values.get('aliases') || '').split(/\r?\n/).map(item => item.trim()).filter(Boolean), tolerance: Number(values.get('tolerance') || 0), checklist, intervalDays: 0, dueAt: new Date(0).toISOString(), reviewCount: 0, createdAt: new Date().toISOString() };
-  data = await updateData(demo, current => { current.cards.push(card); return current; }); notice = 'Card saved and ready to study.'; await render();
+  const licensed = isLicensed();
+  const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"], button:not([type])');
+  cardSubmissionPending = true;
+  form.setAttribute('aria-busy', 'true');
+  if (submitButton) { submitButton.disabled = true; submitButton.textContent = 'Saving card…'; }
+  try {
+    data = await updateData(demo, current => {
+      if (current.cards.some(item => item.id === card.id)) return current;
+      if (!licensed && current.cards.length >= freeCardLimit) throw new Error(cardLimitMessage);
+      current.cards.push(card);
+      return current;
+    });
+    notice = 'Card saved and ready to study.';
+    await render();
+  } catch (cause) {
+    const message = cause instanceof Error ? cause.message : 'The card could not be saved. Try again.';
+    if (message === cardLimitMessage) {
+      data = await loadData(demo);
+      notice = cardLimitMessage;
+      await render();
+    } else {
+      error.textContent = message;
+    }
+  } finally {
+    cardSubmissionPending = false;
+    if (form.isConnected) {
+      form.removeAttribute('aria-busy');
+      if (submitButton) { submitButton.disabled = false; submitButton.textContent = 'Save card'; }
+    }
+  }
 }
 
 async function removeCard(id: string): Promise<void> {

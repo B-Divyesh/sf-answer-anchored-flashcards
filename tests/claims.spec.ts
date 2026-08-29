@@ -1,16 +1,33 @@
 import { test, expect } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 
-async function seedThirtyCards(page: import('@playwright/test').Page) {
-  await page.evaluate(async () => {
+async function seedCards(page: import('@playwright/test').Page, count: number) {
+  await page.evaluate(async cardCount => {
     const db = await new Promise<IDBDatabase>((resolve, reject) => {
       const request = indexedDB.open('recall-anchor', 1);
       request.onsuccess = () => resolve(request.result);
       request.onerror = () => reject(request.error);
     });
-    const cards = Array.from({ length: 30 }, (_, index) => ({ id: `limit-${index}`, deck: 'Limit test', prompt: `Prompt ${index + 1}`, type: 'exact', answer: `Answer ${index + 1}`, aliases: [], tolerance: 0, checklist: [], intervalDays: 0, dueAt: new Date(0).toISOString(), reviewCount: 0, createdAt: new Date().toISOString() }));
+    const cards = Array.from({ length: cardCount }, (_, index) => ({ id: `limit-${index}`, deck: 'Limit test', prompt: `Prompt ${index + 1}`, type: 'exact', answer: `Answer ${index + 1}`, aliases: [], tolerance: 0, checklist: [], intervalDays: 0, dueAt: new Date(0).toISOString(), reviewCount: 0, createdAt: new Date().toISOString() }));
     await new Promise<void>((resolve, reject) => { const tx = db.transaction('app', 'readwrite'); tx.objectStore('app').put({ cards, reviews: [] }, 'data'); tx.oncomplete = () => resolve(); tx.onerror = () => reject(tx.error); });
     db.close();
+  }, count);
+}
+
+async function storedCards(page: import('@playwright/test').Page) {
+  return page.evaluate(async () => {
+    const db = await new Promise<IDBDatabase>((resolve, reject) => {
+      const request = indexedDB.open('recall-anchor', 1);
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+    const cards = await new Promise<Array<{ prompt: string }>>((resolve, reject) => {
+      const request = db.transaction('app').objectStore('app').get('data');
+      request.onsuccess = () => resolve(request.result.cards);
+      request.onerror = () => reject(request.error);
+    });
+    db.close();
+    return cards;
   });
 }
 
@@ -25,6 +42,8 @@ test('@claim:offline-reload works offline after the first visit', async ({ page,
   await context.setOffline(true);
   await page.reload();
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Answer before');
+  await expect(page.getByText('You are offline. Review and export still work.')).toBeVisible();
+  await page.getByRole('link', { name: 'Cards', exact: true }).click();
   await expect(page.getByText('You are offline. Review and export still work.')).toBeVisible();
 });
 
@@ -147,12 +166,37 @@ test('@claim:local-privacy sends no study data off origin', async ({ page }) => 
   expect(requests.some(request => /analytics|telemetry|beacon/i.test(request.url))).toBe(false);
 });
 
-test('@claim:free-limit stops the free collection at 30 cards', async ({ page }) => {
+test('@claim:free-limit makes creation idempotent and stops concurrent tabs at 30 cards', async ({ page, context }) => {
   await page.goto('/cards');
-  await seedThirtyCards(page);
+  await page.getByLabel('Prompt').fill('One rapid submission');
+  await page.getByLabel('Expected answer').fill('one answer');
+  await page.locator('[data-card-form]').evaluate((form: HTMLFormElement) => {
+    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+  });
+  await expect(page.locator('.card-list').getByText('One rapid submission')).toHaveCount(1);
+  expect((await storedCards(page)).filter(card => card.prompt === 'One rapid submission')).toHaveLength(1);
+
+  await seedCards(page, 29);
   await page.reload();
-  await expect(page.getByText('Your 30-card free plan is full.')).toBeVisible();
+  const second = await context.newPage();
+  await second.goto('/cards');
+  await page.getByRole('textbox', { name: 'Prompt', exact: true }).fill('Boundary tab A');
+  await page.getByLabel('Expected answer').fill('A');
+  await second.getByRole('textbox', { name: 'Prompt', exact: true }).fill('Boundary tab B');
+  await second.getByLabel('Expected answer').fill('B');
+  await Promise.all([
+    page.getByRole('button', { name: 'Save card' }).click(),
+    second.getByRole('button', { name: 'Save card' }).click()
+  ]);
+
+  const cards = await storedCards(page);
+  expect(cards).toHaveLength(30);
+  expect(cards.filter(card => card.prompt.startsWith('Boundary tab'))).toHaveLength(1);
+  await expect(page.getByText('Your 30-card free plan is full.', { exact: true })).toBeVisible();
   await expect(page.locator('[data-card-form]')).toHaveCount(0);
+  await expect(second.getByText('Your 30-card free plan is full.', { exact: true })).toBeVisible();
+  await expect(second.locator('[data-card-form]')).toHaveCount(0);
 });
 
 test('@claim:paid-desk verifies checkout and a license, then adds unlimited cards plus trends', async ({ page, request }) => {
@@ -167,9 +211,9 @@ test('@claim:paid-desk verifies checkout and a license, then adds unlimited card
   await page.route('https://api.sociobot.in/api/v1/products/answer-anchored-flashcards/verify?*', route => route.fulfill({ json: { valid: true, reason: 'ok', expires_at: null } }));
   await page.goto('/cards');
   await expect(page.getByRole('link', { name: /Buy Desk for \$19/ })).toHaveAttribute('href', listed!.checkout_url);
-  await seedThirtyCards(page);
+  await seedCards(page, 30);
   await page.reload();
-  await expect(page.getByText('Your 30-card free plan is full.')).toBeVisible();
+  await expect(page.getByText('Your 30-card free plan is full.', { exact: true })).toBeVisible();
   await page.getByText('Restore a purchase').click();
   await page.getByLabel('Paste your license').fill('test-license-token');
   await page.getByRole('button', { name: 'Verify license' }).click();

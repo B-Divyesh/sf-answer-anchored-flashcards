@@ -85,10 +85,13 @@ test('dark review controls and scored evidence retain accessible contrast', asyn
 
 test('static host policy serves real 404s and immutable hashed assets', async () => {
   const config = JSON.parse(await readFile('public/staticwebapp.config.json', 'utf8'));
+  const manifest = JSON.parse(await readFile('public/manifest.webmanifest', 'utf8'));
+  const packageJson = JSON.parse(await readFile('package.json', 'utf8'));
   expect(config.navigationFallback).toBeUndefined();
   expect(config.routes).toEqual(expect.arrayContaining([
     expect.objectContaining({ route: '/demo', rewrite: '/index.html' }),
     expect.objectContaining({ route: '/assets/*', headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } })
   ]));
   expect(config.responseOverrides['404']).toEqual({ rewrite: '/404.html' });
+  expect(manifest.start_url).toBe(`/?v=${packageJson.version}`);
 });
