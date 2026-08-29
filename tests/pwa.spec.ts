@@ -41,7 +41,10 @@ test('service worker announces and activates an available update', async ({ page
     await page.evaluate(() => navigator.serviceWorker.ready);
     await expect.poll(() => page.evaluate(() => Boolean(navigator.serviceWorker.controller))).toBe(true);
 
-    worker = Buffer.from(worker.toString().replace('recall-anchor-v6', 'recall-anchor-v6-test'));
+    worker = Buffer.from(worker.toString().replace(
+      /const VERSION = '([^']+)'/,
+      (_source, version: string) => `const VERSION = '${version}-test'`
+    ));
     await page.evaluate(async () => (await navigator.serviceWorker.getRegistration())?.update());
     await expect(page.getByText('A new version is ready.')).toBeVisible();
     const reloaded = page.waitForEvent('load');

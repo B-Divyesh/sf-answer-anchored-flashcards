@@ -41,7 +41,7 @@ test('terms keep purchase copy to the declared checkout and license behavior', a
   const terms = page.locator('.legal');
   await expect(terms).toContainText('The Desk purchase opens Sociobot’s hosted checkout.');
   await expect(terms).toContainText('A license must be active for paid features to remain available.');
-  await expect(terms).not.toContainText(/merchant of record|refund/i);
+  await expect(terms).not.toContainText(/merchant of record|refund|measure learning ability|guarantee recall/i);
 });
 
 test('every app route updates canonical, Open Graph, and Twitter metadata', async ({ page }) => {

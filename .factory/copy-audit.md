@@ -39,12 +39,17 @@ Read-aloud check: “Score flashcards from typed answers. For people studying al
 
 | Copy | Words | Result |
 |---|---:|---|
+| Use Recall Anchor for personal study | 6 | Heading |
 | The free plan holds 30 cards. | 6 | `free-limit` |
 | The Recall Anchor Desk license costs $19 once and adds unlimited cards plus review trends. | 14 | `paid-desk` |
 | The Desk purchase opens Sociobot’s hosted checkout. | 7 | `paid-desk` |
 | A license must be active for paid features to remain available. | 11 | `license-revocation` |
+| Keep an encrypted backup and its passphrase. | 7 | Instruction |
+| Browser storage can be cleared by your device or browser. | 10 | Storage warning |
+| The software is provided as is under the MIT License. | 10 | License term |
+| Use it only where local law allows. | 7 | Legal instruction |
 
-The Terms page has no merchant-of-record or refund-handling statement. Those legal roles are not asserted because this product has no contract source or sandbox proof for them.
+The Terms page has no merchant-of-record, refund-handling, learning-measurement, or recall-guarantee statement. These claims are not asserted because they have no observable sandbox proof.
 
 ## README review
 
@@ -63,4 +68,4 @@ The README now starts with the ordinary study task before implementation details
 | Isolated sample workspace | demo |
 | Paid one-time tier | Recall Anchor Desk license |
 
-Catalog description: “Score typed flashcard answers and set the next review date.” (61 characters, verb-first)
+Catalog description: “Score flashcards from typed answers and set the next review date.” (64 characters, verb-first)
