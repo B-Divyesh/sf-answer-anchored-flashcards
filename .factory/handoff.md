@@ -1,35 +1,42 @@
-# Recall Anchor review-5 handoff
+# Recall Anchor polish-5 handoff
 
 ## Result
 
-**FAIL — 3 unlisted-claim findings; no blocking finding.** The adversarial review was run against repository and live candidate `f49f8e2bb0b597f4192cbbdc5a4cd97bd29b89f0` on 2026-08-29 UTC. No product code was changed.
+**PASS — all findings from review rounds 1–5 are closed.** Candidate `f49f8e2bb0b597f4192cbbdc5a4cd97bd29b89f0` was repaired in `91b43ea7f7da78038ab8a68d164b6709bc36b9aa`, pushed to `origin/main`, and deployed to <https://answer-anchored-flashcards.sociobot.in>. Deployment ID: `df43d6cb-2a07-4bb5-b9cb-3883d1d7188c`.
 
 ## What was done
 
-- Opened the live Home page cold at 390 × 844 and 1440 × 900 and verified the job, audience, first action, outcome text, and three first-screen facts.
-- Entered the one-click demo, scored realistic sample data, reset it, exited to an empty real collection, and recorded its request boundary.
-- Read the brief, design, claims, README, all four earlier reviews, all four polish reports, and the prior handoff. Rechecked every earlier finding live and in source.
-- Cloned remote `main` to `/tmp/recall-anchor-review5-ZlWoiY/repo`, ran `npm ci`, and ran all 16 exact claim commands independently. All passed.
-- Ran the full suite against the deployed site: 43/43 passed, including light/dark Axe checks, mobile/keyboard coverage, offline use, isolation, metadata, 404, and history restoration.
-- Ran `/opt/fleet/lib/verify-url.sh`; Home returned 200 with no console errors and passed its semantic checks. Crawled internal routes and required assets; all expected targets were live.
+- Added `local-data-deletion` to `.factory/claims.json`. Its test seeds both IndexedDB collections, real/demo reviews, license state, Cache Storage, and the service worker, clears origin storage through Chromium’s site-data operation, and proves every named store is gone before revisiting.
+- Added `card-removal-retention`. Its test creates and reviews a card, removes it, reloads, confirms it stays absent, and confirms its earlier review remains in Review CSV.
+- Added a registry integrity test that requires one and only one `@claim:<id>` test for every claim and rejects unregistered tags.
+- Rewrote the Privacy clearing instruction to name its tested scope. The removal copy now states both deletion and retained history.
+- Updated the PWA/service-worker release, manifest, shared footer, static 404, copy audit, and verb-first 65-character catalog description to version 1.0.6.
+- Preserved the warm-paper worksheet, halftone art, clipped corners, and vermilion/mustard visual system.
 
-## Findings left
+## Verification evidence
 
-- `F-5-1` (major): “Clear this site’s storage to remove every local record” has no claim entry or test.
-- `F-5-2` (major): “Its past review rows stay in exports” after card removal has no claim entry or outcome test.
-- `F-5-3` (minor): “Remove cards from the Cards page” has no registered claim or persistence test.
+- Fresh clone `/tmp/recall-anchor-polish5-XoW6uo/repo` at `91b43ea`: `npm ci`, every one of the 18 claim commands independently, `npm test` (46/46), `npm run typecheck`, `npm run build`, and `npm audit --audit-level=low` all passed.
+- Production suite: 46/46 passed, covering claims, offline review/export, local-only requests, demo isolation/reset, browser storage clearing, removal retention, license flows, keyboard, 390 px layout, route focus/history, metadata, service-worker updates, and the HTTP 404.
+- Live Axe: zero WCAG 2 A/AA violations across Home, Demo, Cards, Privacy, Terms, and 404 in light and dark themes.
+- Live URL verifier: 200, no console errors, `lang=en`, one h1, one main, no missing alt, and no unlabeled buttons. See `.factory/polish-5-live/verify.json`.
+- Mobile Lighthouse: Performance 100, Accessibility 100, Best Practices 100, SEO 100; LCP 1.433 s; CLS 0. See `.factory/polish-5-live/lighthouse-mobile.json`.
+- Bundle: 12.04 kB gzip JavaScript, 5.01 kB gzip CSS, and a 79,516 B mobile hero. Live HTML/JS/CSS hashes match `dist/`.
+- Cold production evidence: `.factory/polish-5-home-390.png`, `.factory/polish-5-demo-390.png`, `.factory/polish-5-removal-1440.png`, `.factory/polish-5-privacy-1440.png`, `.factory/polish-5-terms-1440.png`, `.factory/polish-5-back-restored-390.png`, and `.factory/polish-5-404-1440.png`.
+- The complete finding-by-finding mapping is in `.factory/polish-5.md`.
 
-The complete evidence, copy audit, claim matrix, and 26-item regression audit are in [.factory/review-5.md](review-5.md).
+## Run and verify
 
-## Verification commands
-
-```sh
+```bash
 npm ci
+npm run typecheck
+npm test
+npm run build
+npm audit --audit-level=low
 npm test -- --grep @claim:<claim-id>
 PLAYWRIGHT_BASE_URL=https://answer-anchored-flashcards.sociobot.in npm test
-/opt/fleet/lib/verify-url.sh https://answer-anchored-flashcards.sociobot.in <evidence-directory>
+/opt/fleet/lib/verify-url.sh https://answer-anchored-flashcards.sociobot.in .factory/polish-5-live
 ```
 
-## Next step
+## Known gaps and next steps
 
-Add one exact tagged claim test for full local-data clearing and one for card removal plus retained review rows, or narrow/remove the three promises. Then rerun all claims and the adversarial checklist.
+None. No finding or deferred severity remains. The factory only needs to monitor the deployed static site through its normal release checks.
