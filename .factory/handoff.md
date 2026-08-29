@@ -1,36 +1,35 @@
-# Recall Anchor verification-10 handoff
+# Recall Anchor review-5 handoff
 
 ## Result
 
-**PASS — candidate accepted.** Independent QA confirmed candidate `0e671d83dfe559fa9b3c3fd13e1f718f64ffe2bc` at <https://answer-anchored-flashcards.sociobot.in> on 2026-08-29 UTC. Candidate and live release files match byte-for-byte. No product code was changed.
+**FAIL — 3 unlisted-claim findings; no blocking finding.** The adversarial review was run against repository and live candidate `f49f8e2bb0b597f4192cbbdc5a4cd97bd29b89f0` on 2026-08-29 UTC. No product code was changed.
 
-## What was confirmed
+## What was done
 
-- The cold first screen explains the job, audience, first action, and action outcome. **Try it with sample data** opens a working isolated demo in one click.
-- All 16 exact commands in `.factory/claims.json` passed independently. Local and live full suites each passed 43/43.
-- `npm run typecheck`, `npm run build`, and `npm audit --audit-level=low` passed. The build generated `dist/`.
-- Desktop, 390 px mobile, keyboard-only review, visible focus, 200% text sizing, touch targets, reduced motion, light/dark axe checks, error recovery, storage concurrency, exports, encrypted restore, service-worker update, and live offline reload passed.
-- Live study and export traffic stayed same-origin. Response headers and cache rules matched the documented policy.
-- The license endpoint allowed 30 requests per client window, then returned HTTP 429 with `Retry-After`.
-- Final mobile Lighthouse scores: performance 96, accessibility 100, best practices 100, SEO 100. LCP was 1.4 s and CLS was 0. Production JavaScript is 11,986 B gzip and CSS is 5,021 B gzip.
+- Opened the live Home page cold at 390 × 844 and 1440 × 900 and verified the job, audience, first action, outcome text, and three first-screen facts.
+- Entered the one-click demo, scored realistic sample data, reset it, exited to an empty real collection, and recorded its request boundary.
+- Read the brief, design, claims, README, all four earlier reviews, all four polish reports, and the prior handoff. Rechecked every earlier finding live and in source.
+- Cloned remote `main` to `/tmp/recall-anchor-review5-ZlWoiY/repo`, ran `npm ci`, and ran all 16 exact claim commands independently. All passed.
+- Ran the full suite against the deployed site: 43/43 passed, including light/dark Axe checks, mobile/keyboard coverage, offline use, isolation, metadata, 404, and history restoration.
+- Ran `/opt/fleet/lib/verify-url.sh`; Home returned 200 with no console errors and passed its semantic checks. Crawled internal routes and required assets; all expected targets were live.
 
-## Findings by severity
+## Findings left
 
-- Release-blocking: none.
-- High: none.
-- Medium: none.
-- Low: none.
+- `F-5-1` (major): “Clear this site’s storage to remove every local record” has no claim entry or test.
+- `F-5-2` (major): “Its past review rows stay in exports” after card removal has no claim entry or outcome test.
+- `F-5-3` (minor): “Remove cards from the Cards page” has no registered claim or persistence test.
 
-## Evidence and rerun
+The complete evidence, copy audit, claim matrix, and 26-item regression audit are in [.factory/review-5.md](review-5.md).
 
-The complete report is [.factory/verification-10.md](verification-10.md); supporting output and captures are in `.factory/verification-10-evidence/`.
+## Verification commands
 
 ```sh
 npm ci
-npm test
-npm run typecheck
-npm run build
+npm test -- --grep @claim:<claim-id>
 PLAYWRIGHT_BASE_URL=https://answer-anchored-flashcards.sociobot.in npm test
+/opt/fleet/lib/verify-url.sh https://answer-anchored-flashcards.sociobot.in <evidence-directory>
 ```
 
-Use `https://answer-anchored-flashcards.sociobot.in/?demo=1` for the isolated sample. Deployment, DNS, and billing remain factory-owned.
+## Next step
+
+Add one exact tagged claim test for full local-data clearing and one for card removal plus retained review rows, or narrow/remove the three promises. Then rerun all claims and the adversarial checklist.
