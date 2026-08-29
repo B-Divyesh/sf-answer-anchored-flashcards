@@ -1,0 +1,21 @@
+{
+  "catalog": {
+    "slug": "answer-anchored-flashcards",
+    "price_minor": 1900,
+    "checkout_url": "https://api.sociobot.in/api/v1/products/answer-anchored-flashcards/checkout"
+  },
+  "checkout": {
+    "status": 303,
+    "location": "https://checkout.dodopayments.com/session/cks_0NmSEkhWRvjrcwvXExDIB"
+  },
+  "hosted": {
+    "status": 200,
+    "containsProductName": true
+  },
+  "terms": {
+    "text": "TERMS / AUGUST 29, 2026\n\nUse Recall Anchor for personal study\nFree and paid use\n\nThe free plan holds 30 cards. The Recall Anchor Desk license costs $19 once and adds unlimited cards plus review trends.\n\nPurchases\n\nThe Desk purchase opens Sociobot’s hosted checkout. A license must be active for paid features to remain available.\n\nYour responsibility\n\nKeep an encrypted backup and its passphrase. Browser storage can be cleared by your device or browser.\n\nWarranty\n\nThe software is provided as is under the MIT License. Use it only where local law allows.",
+    "mentionsMerchant": false,
+    "mentionsDodo": false,
+    "mentionsRefund": false
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "privacy": {
+    "requests": [
+      {
+        "url": "https://answer-anchored-flashcards.sociobot.in/?demo=1",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "url": "https://answer-anchored-flashcards.sociobot.in/assets/index-BIClYVio.js",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "url": "https://answer-anchored-flashcards.sociobot.in/assets/index-EvPMZokD.css",
+        "method": "GET",
+        "body": null
+      }
+    ],
+    "offOrigin": [],
+    "requestContainsAnswerOrPassphrase": false,
+    "csvContainsAnswer": true,
+    "backupCipher": "AES-GCM",
+    "backupContainsPlaintext": false
+  },
+  "invalidRecovery": {
+    "emptyPrompt": "Please fill out this field.",
+    "missingNumber": "Add the expected answer before saving.",
+    "negativeTolerance": "Value must be greater than or equal to 0.",
+    "validSaved": true
+  }
+}

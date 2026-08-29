@@ -1,0 +1,12 @@
+{
+  "reduced": {
+    "animationDuration": "1e-05s",
+    "transitionDuration": "1e-05s",
+    "scrollBehavior": "auto"
+  },
+  "resize": {
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "h1Visible": true
+  }
+}

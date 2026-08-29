@@ -1,0 +1,19 @@
+offline-reload	PASS	npm test -- --grep @claim:offline-reload
+answer-types	PASS	npm test -- --grep @claim:answer-types
+interval-reason	PASS	npm test -- --grep @claim:interval-reason
+csv-export	PASS	npm test -- --grep @claim:csv-export
+anki-export	PASS	npm test -- --grep @claim:anki-export
+encrypted-backup	PASS	npm test -- --grep @claim:encrypted-backup
+demo-isolation	PASS	npm test -- --grep @claim:demo-isolation
+demo-sample	PASS	npm test -- --grep @claim:demo-sample
+demo-reset	PASS	npm test -- --grep @claim:demo-reset
+local-privacy	PASS	npm test -- --grep @claim:local-privacy
+local-data-deletion	PASS	npm test -- --grep @claim:local-data-deletion
+card-removal-retention	PASS	npm test -- --grep @claim:card-removal-retention
+keyboard-review	PASS	npm test -- --grep @claim:keyboard-review
+exact-normalization	PASS	npm test -- --grep @claim:exact-normalization
+free-limit	PASS	npm test -- --grep @claim:free-limit
+paid-desk	PASS	npm test -- --grep @claim:paid-desk
+license-network	PASS	npm test -- --grep @claim:license-network
+license-revocation	PASS	npm test -- --grep @claim:license-revocation
+TOTAL	18/18 passed

@@ -1,0 +1,28 @@
+{
+  "numeric": {
+    "heading": "100% of the answer key matched",
+    "typed": "299802",
+    "key": {
+      "text": "○ 299792 ± 10",
+      "className": "missing",
+      "ariaLabel": null,
+      "color": "rgb(154, 35, 48)"
+    },
+    "interval": "→\n\nNEXT REVIEW IN 8 DAYS\n\nWhy this interval changed\n\nThe answer key passed. Certain confidence added a small extension. Previous interval: 3 days."
+  },
+  "offline": {
+    "before": {
+      "controller": true,
+      "caches": [
+        "recall-anchor-v8"
+      ],
+      "dbs": [
+        "recall-anchor-demo"
+      ]
+    },
+    "url": "https://answer-anchored-flashcards.sociobot.in/?demo=1",
+    "heading": "100% of the answer key matched",
+    "notice": "You are offline. Review and export still work.",
+    "controller": true
+  }
+}

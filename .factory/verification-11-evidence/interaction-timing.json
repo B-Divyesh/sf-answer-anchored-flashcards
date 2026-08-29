@@ -1,0 +1,43 @@
+{
+  "cpuThrottle": 4,
+  "navigationAndFlowWallMs": 1683,
+  "scoreToResultWallMs": 286,
+  "maxEventDurationMs": 56,
+  "events": [
+    {
+      "name": "pointerdown",
+      "duration": 56,
+      "interactionId": 5408
+    },
+    {
+      "name": "pointerup",
+      "duration": 56,
+      "interactionId": 5408
+    },
+    {
+      "name": "click",
+      "duration": 56,
+      "interactionId": 5408
+    },
+    {
+      "name": "click",
+      "duration": 56,
+      "interactionId": 5415
+    },
+    {
+      "name": "pointerdown",
+      "duration": 24,
+      "interactionId": 5422
+    },
+    {
+      "name": "pointerup",
+      "duration": 24,
+      "interactionId": 5422
+    },
+    {
+      "name": "click",
+      "duration": 24,
+      "interactionId": 5422
+    }
+  ]
+}

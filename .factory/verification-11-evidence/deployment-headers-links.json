@@ -1,0 +1,379 @@
+{
+  "candidate": "79bb74e40c134b95d5b46a2e4d950f43f01ad5e2",
+  "identity": [
+    {
+      "path": "/index.html",
+      "localSha256": "a72be6b2dcdfd6287ffb1ba6afddd7c5e0c98a08e1c77fdab4d0a909475dcff3",
+      "liveSha256": "a72be6b2dcdfd6287ffb1ba6afddd7c5e0c98a08e1c77fdab4d0a909475dcff3",
+      "match": true,
+      "size": 1900
+    },
+    {
+      "path": "/assets/index-BIClYVio.js",
+      "localSha256": "9d0fcec20a02e97d2f38966ef28a7b42bd9ea7e9e9146cbdb8ab3495cbc2496d",
+      "liveSha256": "9d0fcec20a02e97d2f38966ef28a7b42bd9ea7e9e9146cbdb8ab3495cbc2496d",
+      "match": true,
+      "size": 35907
+    },
+    {
+      "path": "/assets/index-EvPMZokD.css",
+      "localSha256": "584671ae02a384547837f25fef66fe985216d0b38604c76047f8a53a66a361bf",
+      "liveSha256": "584671ae02a384547837f25fef66fe985216d0b38604c76047f8a53a66a361bf",
+      "match": true,
+      "size": 18644
+    },
+    {
+      "path": "/sw.js",
+      "localSha256": "035083eecefeb63328dda4d7c8a755905a66e33212361a71ee53d841a647ceb9",
+      "liveSha256": "035083eecefeb63328dda4d7c8a755905a66e33212361a71ee53d841a647ceb9",
+      "match": true,
+      "size": 1948
+    },
+    {
+      "path": "/manifest.webmanifest",
+      "localSha256": "0648fe079e05f2ca040e39a08d59f743b4d9eedf3ba7c8320caa27c7c037b469",
+      "liveSha256": "0648fe079e05f2ca040e39a08d59f743b4d9eedf3ba7c8320caa27c7c037b469",
+      "match": true,
+      "size": 757
+    },
+    {
+      "path": "/offline.html",
+      "localSha256": "6b20ec6900f1630e83a6db300ce8cb33a1d922d922a9ff8f085c6b4877410bb4",
+      "liveSha256": "6b20ec6900f1630e83a6db300ce8cb33a1d922d922a9ff8f085c6b4877410bb4",
+      "match": true,
+      "size": 578
+    },
+    {
+      "path": "/404.html",
+      "localSha256": "785514eadac07468356242a2b6f873194fb40c0aa46b93a942c3f4b463a9e6cd",
+      "liveSha256": "785514eadac07468356242a2b6f873194fb40c0aa46b93a942c3f4b463a9e6cd",
+      "match": true,
+      "size": 4456
+    },
+    {
+      "path": "/assets/hero-768-v1.webp",
+      "localSha256": "5ed74eabb88a4ec87c061226979e45f592f5eb9604f42710f3ef64611e857143",
+      "liveSha256": "5ed74eabb88a4ec87c061226979e45f592f5eb9604f42710f3ef64611e857143",
+      "match": true,
+      "size": 79516
+    }
+  ],
+  "headers": [
+    {
+      "path": "/",
+      "status": 200,
+      "headers": {
+        "content-type": "text/html",
+        "cache-control": "public, must-revalidate, max-age=30",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://api.sociobot.in; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "x-content-type-options": "nosniff",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "etag": "\"41315559\"",
+        "last-modified": "Sat, 29 Aug 2026 15:49:35 GMT"
+      }
+    },
+    {
+      "path": "/demo",
+      "status": 200,
+      "headers": {
+        "content-type": "text/html",
+        "cache-control": "public, must-revalidate, max-age=30",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://api.sociobot.in; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "x-content-type-options": "nosniff",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "etag": "\"41315559\"",
+        "last-modified": "Sat, 29 Aug 2026 15:49:35 GMT"
+      }
+    },
+    {
+      "path": "/privacy",
+      "status": 200,
+      "headers": {
+        "content-type": "text/html",
+        "cache-control": "public, must-revalidate, max-age=30",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://api.sociobot.in; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "x-content-type-options": "nosniff",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "etag": "\"41315559\"",
+        "last-modified": "Sat, 29 Aug 2026 15:49:35 GMT"
+      }
+    },
+    {
+      "path": "/terms",
+      "status": 200,
+      "headers": {
+        "content-type": "text/html",
+        "cache-control": "public, must-revalidate, max-age=30",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://api.sociobot.in; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "x-content-type-options": "nosniff",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "etag": "\"41315559\"",
+        "last-modified": "Sat, 29 Aug 2026 15:49:35 GMT"
+      }
+    },
+    {
+      "path": "/not-a-real-card",
+      "status": 404,
+      "headers": {
+        "content-type": "text/html",
+        "cache-control": "public, must-revalidate, max-age=30",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://api.sociobot.in; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "x-content-type-options": "nosniff",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "etag": "\"41315559\"",
+        "last-modified": "Sat, 29 Aug 2026 15:49:35 GMT"
+      }
+    },
+    {
+      "path": "/manifest.webmanifest",
+      "status": 200,
+      "headers": {
+        "content-type": "application/manifest+json",
+        "cache-control": "public, must-revalidate, max-age=30",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://api.sociobot.in; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "x-content-type-options": "nosniff",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "etag": "\"41315559\"",
+        "last-modified": "Sat, 29 Aug 2026 15:49:35 GMT"
+      }
+    },
+    {
+      "path": "/sw.js",
+      "status": 200,
+      "headers": {
+        "content-type": "text/javascript",
+        "cache-control": "public, must-revalidate, max-age=30",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://api.sociobot.in; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "x-content-type-options": "nosniff",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "etag": "\"41315559\"",
+        "last-modified": "Sat, 29 Aug 2026 15:49:35 GMT"
+      }
+    },
+    {
+      "path": "/assets/index-BIClYVio.js",
+      "status": 200,
+      "headers": {
+        "content-type": "text/javascript",
+        "cache-control": "public, max-age=31536000, immutable",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://api.sociobot.in; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "x-content-type-options": "nosniff",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "etag": "\"41315559\"",
+        "last-modified": "Sat, 29 Aug 2026 15:49:35 GMT"
+      }
+    },
+    {
+      "path": "/assets/index-EvPMZokD.css",
+      "status": 200,
+      "headers": {
+        "content-type": "text/css",
+        "cache-control": "public, max-age=31536000, immutable",
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://api.sociobot.in; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "x-content-type-options": "nosniff",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "etag": "\"41315559\"",
+        "last-modified": "Sat, 29 Aug 2026 15:49:35 GMT"
+      }
+    }
+  ],
+  "routeMeta": [
+    {
+      "path": "/",
+      "status": 200,
+      "title": "Recall Anchor — Score typed flashcard answers",
+      "h1": [
+        "Score flashcards from typed answers"
+      ],
+      "canonical": "https://answer-anchored-flashcards.sociobot.in/"
+    },
+    {
+      "path": "/demo",
+      "status": 200,
+      "title": "Demo — Recall Anchor",
+      "h1": [
+        "Answer before you see the key"
+      ],
+      "canonical": "https://answer-anchored-flashcards.sociobot.in/demo"
+    },
+    {
+      "path": "/study",
+      "status": 200,
+      "title": "Study — Recall Anchor",
+      "h1": [
+        "Add a card before you study"
+      ],
+      "canonical": "https://answer-anchored-flashcards.sociobot.in/study"
+    },
+    {
+      "path": "/cards",
+      "status": 200,
+      "title": "Cards — Recall Anchor",
+      "h1": [
+        "Build answer keys you can score"
+      ],
+      "canonical": "https://answer-anchored-flashcards.sociobot.in/cards"
+    },
+    {
+      "path": "/privacy",
+      "status": 200,
+      "title": "Privacy — Recall Anchor",
+      "h1": [
+        "Your cards stay in your browser"
+      ],
+      "canonical": "https://answer-anchored-flashcards.sociobot.in/privacy"
+    },
+    {
+      "path": "/terms",
+      "status": 200,
+      "title": "Terms — Recall Anchor",
+      "h1": [
+        "Use Recall Anchor for personal study"
+      ],
+      "canonical": "https://answer-anchored-flashcards.sociobot.in/terms"
+    },
+    {
+      "path": "/not-a-real-card",
+      "status": 404,
+      "title": "Page not found — Recall Anchor",
+      "h1": [
+        "This page is not in the deck"
+      ],
+      "canonical": "https://answer-anchored-flashcards.sociobot.in/404"
+    }
+  ],
+  "linkResults": [
+    {
+      "href": "https://answer-anchored-flashcards.sociobot.in/",
+      "status": 200,
+      "location": null
+    },
+    {
+      "href": "https://answer-anchored-flashcards.sociobot.in/#main",
+      "status": 200,
+      "location": null
+    },
+    {
+      "href": "https://answer-anchored-flashcards.sociobot.in/?demo=1",
+      "status": 200,
+      "location": null
+    },
+    {
+      "href": "https://answer-anchored-flashcards.sociobot.in/cards",
+      "status": 200,
+      "location": null
+    },
+    {
+      "href": "https://answer-anchored-flashcards.sociobot.in/cards#main",
+      "status": 200,
+      "location": null
+    },
+    {
+      "href": "https://answer-anchored-flashcards.sociobot.in/demo",
+      "status": 200,
+      "location": null
+    },
+    {
+      "href": "https://answer-anchored-flashcards.sociobot.in/demo#main",
+      "status": 200,
+      "location": null
+    },
+    {
+      "href": "https://answer-anchored-flashcards.sociobot.in/not-a-real-card#main",
+      "status": 404,
+      "location": null
+    },
+    {
+      "href": "https://answer-anchored-flashcards.sociobot.in/privacy",
+      "status": 200,
+      "location": null
+    },
+    {
+      "href": "https://answer-anchored-flashcards.sociobot.in/privacy#main",
+      "status": 200,
+      "location": null
+    },
+    {
+      "href": "https://answer-anchored-flashcards.sociobot.in/study",
+      "status": 200,
+      "location": null
+    },
+    {
+      "href": "https://answer-anchored-flashcards.sociobot.in/study#main",
+      "status": 200,
+      "location": null
+    },
+    {
+      "href": "https://answer-anchored-flashcards.sociobot.in/terms",
+      "status": 200,
+      "location": null
+    },
+    {
+      "href": "https://answer-anchored-flashcards.sociobot.in/terms#main",
+      "status": 200,
+      "location": null
+    },
+    {
+      "href": "https://api.sociobot.in/api/v1/products/answer-anchored-flashcards/checkout",
+      "status": 303,
+      "location": "https://checkout.dodopayments.com/session/cks_0NmSEisRgSYzi1Toq7hUb"
+    },
+    {
+      "href": "https://sociobot.in/",
+      "status": 200,
+      "location": null
+    },
+    {
+      "href": "mailto:privacy@sociobot.in",
+      "status": "mailto"
+    },
+    {
+      "href": "https://answer-anchored-flashcards.sociobot.in/robots.txt",
+      "status": 200,
+      "contentType": "text/plain"
+    },
+    {
+      "href": "https://answer-anchored-flashcards.sociobot.in/sitemap.xml",
+      "status": 200,
+      "contentType": "text/xml"
+    },
+    {
+      "href": "https://answer-anchored-flashcards.sociobot.in/assets/social-v1.webp",
+      "status": 200,
+      "contentType": "image/webp"
+    },
+    {
+      "href": "https://answer-anchored-flashcards.sociobot.in/icons/icon-192.png",
+      "status": 200,
+      "contentType": "image/png"
+    },
+    {
+      "href": "https://answer-anchored-flashcards.sociobot.in/icons/icon-512.png",
+      "status": 200,
+      "contentType": "image/png"
+    },
+    {
+      "href": "https://answer-anchored-flashcards.sociobot.in/icons/apple-touch-icon.png",
+      "status": 200,
+      "contentType": "image/png"
+    }
+  ]
+}

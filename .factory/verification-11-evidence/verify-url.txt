@@ -1,0 +1,2 @@
+GET https://answer-anchored-flashcards.sociobot.in -> 200
+{"url":"https://answer-anchored-flashcards.sociobot.in","loadMs":1031,"errors":[],"a11y":{"title":"Recall Anchor — Score typed flashcard answers","lang":"en","h1":1,"main":true,"imgsMissingAlt":0,"buttonsUnlabeled":0,"textLength":1401}}

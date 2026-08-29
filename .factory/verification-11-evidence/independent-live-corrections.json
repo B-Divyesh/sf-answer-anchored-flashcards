@@ -1,0 +1,83 @@
+{
+  "inclusive": {
+    "exact": "100% of the answer key matched",
+    "heading": "100% of the answer key matched",
+    "evidence": "Your answer\n\n299802\n\nConfidence: certain\nAnswer key\n○ 299792 ± 10",
+    "explanation": "→\n\nNEXT REVIEW IN 8 DAYS\n\nWhy this interval changed\n\nThe answer key passed. Certain confidence added a small extension. Previous interval: 3 days."
+  },
+  "outside": {
+    "exact": "100% of the answer key matched",
+    "heading": "0% of the answer key matched",
+    "evidence": "Your answer\n\n299802.01\n\nConfidence: certain\nAnswer key\n○ 299792 ± 10",
+    "explanation": "→\n\nNEXT REVIEW IN 10 MINUTES\n\nWhy this interval changed\n\nFewer than half of the answer-key points matched. Review again in 10 minutes. Previous interval: 3 days."
+  },
+  "checklist": {
+    "heading": "0% of the answer key matched",
+    "missing": [
+      "○ claim",
+      "○ evidence",
+      "○ reasoning"
+    ],
+    "matched": [],
+    "explanation": "→\n\nNEXT REVIEW IN 10 MINUTES\n\nWhy this interval changed\n\nFewer than half of the answer-key points matched. Review again in 10 minutes. Previous interval: 1 days."
+  },
+  "mobile": {
+    "tabTrail": [
+      {
+        "text": "",
+        "href": null
+      },
+      {
+        "text": "",
+        "href": null
+      },
+      {
+        "text": "Skip to main content",
+        "href": "#main"
+      },
+      {
+        "text": "RA Recall Anchor",
+        "href": "/"
+      },
+      {
+        "text": "Study",
+        "href": "/study"
+      },
+      {
+        "text": "Cards",
+        "href": "/cards"
+      },
+      {
+        "text": "Demo",
+        "href": "/demo"
+      },
+      {
+        "text": "Privacy",
+        "href": "/privacy"
+      },
+      {
+        "text": "Try it with sample data",
+        "href": "/?demo=1"
+      }
+    ],
+    "focus": {
+      "outline": "rgb(217, 67, 47) solid 3px",
+      "color": "rgb(217, 67, 47)",
+      "width": "3px"
+    },
+    "heading": "100% of the answer key matched",
+    "layout": {
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "small": []
+    }
+  },
+  "assertions": {
+    "inclusivePass": true,
+    "outsideFail": true,
+    "checklistNoSubstring": true,
+    "mobileKeyboard": true,
+    "noOverflow": true,
+    "noSmallTargets": true
+  }
+}

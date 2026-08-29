@@ -1,0 +1,4 @@
+
+> recall-anchor@1.0.6 typecheck
+> tsc --noEmit
+

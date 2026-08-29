@@ -1,0 +1,158 @@
+{
+  "summary": {
+    "routes": 12,
+    "seriousCritical": 0,
+    "normalConsoleErrors": 0,
+    "pageErrors": 0
+  },
+  "routes": [
+    {
+      "scheme": "light",
+      "path": "/",
+      "status": 200,
+      "title": "Recall Anchor — Score typed flashcard answers",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "seriousCritical": [],
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    {
+      "scheme": "light",
+      "path": "/demo",
+      "status": 200,
+      "title": "Demo — Recall Anchor",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "seriousCritical": [],
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    {
+      "scheme": "light",
+      "path": "/cards",
+      "status": 200,
+      "title": "Cards — Recall Anchor",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "seriousCritical": [],
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    {
+      "scheme": "light",
+      "path": "/privacy",
+      "status": 200,
+      "title": "Privacy — Recall Anchor",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "seriousCritical": [],
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    {
+      "scheme": "light",
+      "path": "/terms",
+      "status": 200,
+      "title": "Terms — Recall Anchor",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "seriousCritical": [],
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    {
+      "scheme": "light",
+      "path": "/not-a-real-card",
+      "status": 404,
+      "title": "Page not found — Recall Anchor",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "seriousCritical": [],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "pageErrors": []
+    },
+    {
+      "scheme": "dark",
+      "path": "/",
+      "status": 200,
+      "title": "Recall Anchor — Score typed flashcard answers",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "seriousCritical": [],
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    {
+      "scheme": "dark",
+      "path": "/demo",
+      "status": 200,
+      "title": "Demo — Recall Anchor",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "seriousCritical": [],
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    {
+      "scheme": "dark",
+      "path": "/cards",
+      "status": 200,
+      "title": "Cards — Recall Anchor",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "seriousCritical": [],
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    {
+      "scheme": "dark",
+      "path": "/privacy",
+      "status": 200,
+      "title": "Privacy — Recall Anchor",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "seriousCritical": [],
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    {
+      "scheme": "dark",
+      "path": "/terms",
+      "status": 200,
+      "title": "Terms — Recall Anchor",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "seriousCritical": [],
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    {
+      "scheme": "dark",
+      "path": "/not-a-real-card",
+      "status": 404,
+      "title": "Page not found — Recall Anchor",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "seriousCritical": [],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "pageErrors": []
+    }
+  ]
+}

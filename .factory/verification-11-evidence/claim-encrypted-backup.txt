@@ -1,0 +1,29 @@
+
+> recall-anchor@1.0.6 test
+> npm run build && playwright test --grep @claim:encrypted-backup
+
+
+> recall-anchor@1.0.6 build
+> tsc --noEmit && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 8 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.90 kB │ gzip:  0.66 kB
+dist/assets/index-EvPMZokD.css  18.64 kB │ gzip:  5.01 kB
+dist/assets/index-BIClYVio.js   35.91 kB │ gzip: 12.04 kB
+✓ built in 380ms
+[WebServer] (node:1627) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:1639) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1639) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › tests/claims.spec.ts:130:1 › @claim:encrypted-backup exports AES-GCM data, restores valid records, and preserves data on malformed import (6.9s)
+
+  1 passed (9.7s)

@@ -1,0 +1,115 @@
+{
+  "status": 200,
+  "url": "https://answer-anchored-flashcards.sociobot.in/",
+  "title": "Recall Anchor — Score typed flashcard answers",
+  "h1": [
+    "Score flashcards from typed answers"
+  ],
+  "fold": [
+    {
+      "tag": "A",
+      "text": "RA\nRecall Anchor",
+      "top": 16
+    },
+    {
+      "tag": "A",
+      "text": "Study",
+      "top": 16
+    },
+    {
+      "tag": "A",
+      "text": "Cards",
+      "top": 16
+    },
+    {
+      "tag": "A",
+      "text": "Demo",
+      "top": 16
+    },
+    {
+      "tag": "A",
+      "text": "Privacy",
+      "top": 16
+    },
+    {
+      "tag": "P",
+      "text": "TYPED-ANSWER FLASHCARD REVIEW",
+      "top": 215
+    },
+    {
+      "tag": "H1",
+      "text": "Score flashcards from typed answers",
+      "top": 251
+    },
+    {
+      "tag": "P",
+      "text": "For people studying alone who want the next review date based on an answer, not a guessed rating.",
+      "top": 581
+    },
+    {
+      "tag": "A",
+      "text": "Try it with sample data",
+      "top": 710
+    },
+    {
+      "tag": "LI",
+      "text": "Works offline after your first visit",
+      "top": 809
+    },
+    {
+      "tag": "LI",
+      "text": "Cards stay in this browser",
+      "top": 836
+    },
+    {
+      "tag": "LI",
+      "text": "Free for 30 cards",
+      "top": 863
+    }
+  ],
+  "headers": {
+    "cache-control": "public, must-revalidate, max-age=30",
+    "content-encoding": "br",
+    "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://api.sociobot.in; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in; frame-ancestors 'none'",
+    "content-type": "text/html",
+    "date": "Sat, 29 Aug 2026 16:00:08 GMT",
+    "etag": "\"41315559\"",
+    "last-modified": "Sat, 29 Aug 2026 15:49:35 GMT",
+    "permissions-policy": "camera=(), microphone=(), geolocation=()",
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+    "vary": "Accept-Encoding",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-xss-protection": "1; mode=block"
+  },
+  "requests": [
+    {
+      "method": "GET",
+      "url": "https://answer-anchored-flashcards.sociobot.in/",
+      "type": "document"
+    },
+    {
+      "method": "GET",
+      "url": "https://answer-anchored-flashcards.sociobot.in/assets/index-BIClYVio.js",
+      "type": "script"
+    },
+    {
+      "method": "GET",
+      "url": "https://answer-anchored-flashcards.sociobot.in/assets/index-EvPMZokD.css",
+      "type": "stylesheet"
+    },
+    {
+      "method": "GET",
+      "url": "https://answer-anchored-flashcards.sociobot.in/assets/hero-768-v1.webp",
+      "type": "image"
+    }
+  ],
+  "errors": [],
+  "consoles": [
+    {
+      "type": "warning",
+      "text": "Service Worker registration blocked by Playwright"
+    }
+  ]
+}

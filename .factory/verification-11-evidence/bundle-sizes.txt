@@ -1,0 +1,3 @@
+--- gzip budgets ---
+dist/assets/index-BIClYVio.js raw=35907 gzip=12017
+dist/assets/index-EvPMZokD.css raw=18644 gzip=5021
