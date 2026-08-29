@@ -44,6 +44,7 @@ test('@claim:offline-reload works offline after the first visit', async ({ page,
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Answer before');
   await expect(page.getByText('You are offline. Review and export still work.')).toBeVisible();
   await page.getByRole('link', { name: 'Cards', exact: true }).click();
+  await expect(page).toHaveURL(/\/cards\?demo=1$/);
   await expect(page.getByText('You are offline. Review and export still work.')).toBeVisible();
 });
 

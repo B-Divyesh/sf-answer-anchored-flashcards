@@ -1,6 +1,6 @@
 # Landing copy audit
 
-Audited 2026-08-28 after the repair. Counts treat hyphenated terms as one word. No sentence exceeds 22 words. No sentence contains a banned term.
+Audited 2026-08-29 after the repair. Counts treat hyphenated terms as one word. No sentence exceeds 22 words. No sentence contains a banned term.
 
 | Copy | Words | Result |
 |---|---:|---|

@@ -1,14 +1,12 @@
 import './style.css';
 import type { AppData, Card, CardType, Review } from './types';
-import { loadData, resetDemo, saveData, updateData } from './store';
+import { addCardToStore, CardLimitError, FREE_CARD_LIMIT, loadData, resetDemo, saveData, updateData } from './store';
 import { dueDate, nextInterval, scoreCard } from './scoring';
 import { ankiCsv, decryptBackup, downloadFile, encryptBackup, reviewsCsv } from './backup';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 const slug = 'answer-anchored-flashcards';
 const licenseKey = `sb_license:${slug}`;
-const freeCardLimit = 30;
-const cardLimitMessage = 'Your 30-card free plan is full. Remove a card or buy Desk to add another.';
 let data: AppData = { cards: [], reviews: [] };
 let demo = location.pathname === '/demo' || new URLSearchParams(location.search).get('demo') === '1';
 let activeCardId = '';
@@ -17,6 +15,8 @@ let notice = '';
 let updateWorker: ServiceWorker | null = null;
 let answerSubmissionPending = false;
 let cardSubmissionPending = false;
+
+const OFFLINE_NOTICE = 'You are offline. Review and export still work.';
 
 const escapeHtml = (value: unknown) => String(value ?? '').replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[char]!);
 const uid = () => crypto.randomUUID();
@@ -44,7 +44,7 @@ function setMeta(path: string): void {
 }
 
 function shell(content: string): string {
-  const visibleNotice = notice || (!navigator.onLine ? 'You are offline. Review and export still work.' : '');
+  const visibleNotice = [!navigator.onLine ? OFFLINE_NOTICE : '', notice].filter(Boolean).join(' ');
   return `
     <a class="skip-link" href="#main">Skip to main content</a>
     ${demo ? `<aside class="demo-bar" aria-label="Demo mode"><strong>Demo</strong> — sample data, nothing is saved to your cards.<span><button class="text-button" data-action="reset-demo">Reset demo</button><a href="/cards" data-start-real>Start for real</a></span></aside>` : ''}
@@ -56,7 +56,7 @@ function shell(content: string): string {
     <main id="main" tabindex="-1">${content}</main>
     <footer><div><strong>Recall Anchor</strong><p>Score cards from answers, not guesses.</p></div><nav aria-label="Footer"><a href="/privacy" data-link>Privacy</a><a href="/terms" data-link>Terms</a><a href="https://sociobot.in" target="_blank" rel="noreferrer">Built by Param Factory <span class="sr-only">(opens in a new tab)</span></a></nav><small>Version 1.0.2 · Generated illustration disclosed in the visual notes.</small></footer>
     <div class="route-announcer sr-only" aria-live="polite"></div>
-    <div class="update-toast" hidden><span>A new version is ready.</span><button data-action="apply-update">Update now</button></div>`;
+    <div class="update-toast" hidden><span>A new version is ready.</span><button data-action="apply-update" aria-label="Update now">Update now</button></div>`;
 }
 
 function homePage(): string {
@@ -74,7 +74,7 @@ function homePage(): string {
     <section class="proof-strip" aria-label="Live scoring preview"><div><span>Typed answer</span><strong>claim, evidence</strong></div><div><span>Rubric</span><strong>2 of 3 matched</strong></div><div><span>Next review</span><strong>Tomorrow</strong></div></section>
     <section class="how"><div class="section-label">How it works / 03 marks</div><h2>Let the evidence set the interval</h2><ol><li><span>01</span><div><h3>Type before reveal</h3><p>Put your full answer on the record.</p></div></li><li><span>02</span><div><h3>Check one rubric</h3><p>Use exact text, a number range, or a checklist.</p></div></li><li><span>03</span><div><h3>See the reason</h3><p>Read what matched and when the card returns.</p></div></li></ol></section>
     <section class="boundaries"><div><p class="eyebrow">Local by design</p><h2>Your study record stays yours</h2><p>Recall Anchor does not host decks, generate cards, or diagnose learning ability. It stores cards in this browser.</p><a href="/privacy" data-link>Read the privacy details</a></div><div class="stamp" aria-hidden="true">LOCAL<br>ONLY</div></section>
-    <section class="pricing"><p class="eyebrow">One-time desk pass</p><h2>Keep studying free, or add more room</h2><div class="price-row"><div><strong>$19</strong><span>one-time purchase</span></div><p>Recall Anchor Desk adds unlimited cards and review trends. The free plan includes 30 cards, every card type, and every export.</p></div><div class="price-actions"><a class="button primary" href="https://api.sociobot.in/api/v1/products/${slug}/checkout">Buy Recall Anchor Desk <span class="sr-only">(opens hosted checkout)</span></a><a href="/terms" data-link>Read purchase terms</a></div><details class="license-restore"><summary>Have a license?</summary><form data-license-form><label for="home-license">Paste your license</label><div class="inline-form"><input id="home-license" name="license" autocomplete="off" required><button>Verify license</button></div><p class="form-status" aria-live="polite"></p></form></details></section>
+    <section class="pricing"><p class="eyebrow">One-time desk pass</p><h2>Keep studying free, or add more room</h2><div class="price-row"><div><strong>$19</strong><span>one-time purchase</span></div><p>Recall Anchor Desk adds unlimited cards and review trends. The free plan includes 30 cards, every card type, and every export.</p></div><div class="price-actions"><a class="button primary" href="https://api.sociobot.in/api/v1/products/${slug}/checkout">Buy Recall Anchor Desk <span class="sr-only">(opens hosted checkout)</span></a><a href="/terms" data-link>Read purchase terms</a></div><details class="license-restore"><summary>Have a license?</summary><form data-license-form><label for="home-license">Paste your license</label><div class="inline-form"><input id="home-license" name="license" autocomplete="off" required><button aria-label="Verify license">Verify license</button></div><p class="form-status" aria-live="polite"></p></form></details></section>
   `);
 }
 
@@ -116,7 +116,7 @@ function renderReveal(result: NonNullable<typeof revealed>): string {
 }
 
 function cardsPage(): string {
-  const atLimit = !isLicensed() && data.cards.length >= freeCardLimit;
+  const atLimit = !isLicensed() && data.cards.length >= FREE_CARD_LIMIT;
   return shell(`<section class="page-head cards-head"><p class="eyebrow">Card workshop</p><h1 tabindex="-1">Build rubrics you can score</h1><p>Choose exact, numeric, or checklist scoring for each card.</p></section>
     <section class="card-maker"><div><h2>Add a card</h2><p>Free plans hold 30 cards. You have ${data.cards.length}.</p></div>
         ${atLimit ? `<div class="limit-note"><strong>Your 30-card free plan is full.</strong><p>Export or remove cards, or buy Desk for unlimited cards.</p><a class="button primary" href="https://api.sociobot.in/api/v1/products/${slug}/checkout">Buy Desk for $19 <span class="sr-only">(opens hosted checkout)</span></a></div>` : `<form data-card-form>
@@ -139,7 +139,7 @@ function cardsPage(): string {
 }
 
 function trendsPanel(): string {
-  if (!isLicensed()) return `<section class="trends locked"><p class="eyebrow">Recall Anchor Desk</p><h2>See your review trend</h2><p>Desk adds match-rate trends and unlimited cards for a $19 one-time purchase.</p><a class="button primary" href="https://api.sociobot.in/api/v1/products/${slug}/checkout">Buy Desk for $19 <span class="sr-only">(opens hosted checkout)</span></a><details class="license-restore"><summary>Restore a purchase</summary><form data-license-form><label for="card-license">Paste your license</label><div class="inline-form"><input id="card-license" name="license" required><button>Verify license</button></div><p class="form-status" aria-live="polite"></p></form></details></section>`;
+  if (!isLicensed()) return `<section class="trends locked"><p class="eyebrow">Recall Anchor Desk</p><h2>See your review trend</h2><p>Desk adds match-rate trends and unlimited cards for a $19 one-time purchase.</p><a class="button primary" href="https://api.sociobot.in/api/v1/products/${slug}/checkout">Buy Desk for $19 <span class="sr-only">(opens hosted checkout)</span></a><details class="license-restore"><summary>Restore a purchase</summary><form data-license-form><label for="card-license">Paste your license</label><div class="inline-form"><input id="card-license" name="license" required><button aria-label="Verify license">Verify license</button></div><p class="form-status" aria-live="polite"></p></form></details></section>`;
   const last = data.reviews.slice(-20);
   const average = last.length ? Math.round(last.reduce((sum, item) => sum + item.score, 0) / last.length * 100) : 0;
   const confident = last.filter(item => item.confidence === 'certain' && item.score < .8).length;
@@ -190,6 +190,7 @@ function bindEvents(): void {
     return current;
   }).then(latest => { data = latest; return render(); }));
   const cardForm = app.querySelector<HTMLFormElement>('[data-card-form]');
+  if (cardForm) cardForm.dataset.submissionId = uid();
   const typeSelect = cardForm?.elements.namedItem('type') as HTMLSelectElement | null;
   typeSelect?.addEventListener('change', () => app.querySelectorAll<HTMLElement>('[data-fields]').forEach(group => group.hidden = group.dataset.fields !== typeSelect.value));
   cardForm?.addEventListener('submit', event => { event.preventDefault(); void addCard(cardForm); });
@@ -245,29 +246,21 @@ async function addCard(form: HTMLFormElement): Promise<void> {
   const checklist = String(values.get('checklist') || '').split(/\r?\n/).map(item => item.trim()).filter(Boolean);
   const error = form.querySelector<HTMLElement>('.form-error')!;
   if ((type === 'exact' && !exact) || (type === 'numeric' && numeric === '') || (type === 'checklist' && checklist.length < 2)) { error.textContent = type === 'checklist' ? 'Add at least two checklist items, one per line.' : 'Add the expected answer before saving.'; return; }
-  const card: Card = { id: uid(), deck: String(values.get('deck')).trim(), prompt: String(values.get('prompt')).trim(), type, answer: type === 'exact' ? exact : type === 'numeric' ? numeric : '', aliases: String(values.get('aliases') || '').split(/\r?\n/).map(item => item.trim()).filter(Boolean), tolerance: Number(values.get('tolerance') || 0), checklist, intervalDays: 0, dueAt: new Date(0).toISOString(), reviewCount: 0, createdAt: new Date().toISOString() };
-  const licensed = isLicensed();
+  const card: Card = { id: form.dataset.submissionId || uid(), deck: String(values.get('deck')).trim(), prompt: String(values.get('prompt')).trim(), type, answer: type === 'exact' ? exact : type === 'numeric' ? numeric : '', aliases: String(values.get('aliases') || '').split(/\r?\n/).map(item => item.trim()).filter(Boolean), tolerance: Number(values.get('tolerance') || 0), checklist, intervalDays: 0, dueAt: new Date(0).toISOString(), reviewCount: 0, createdAt: new Date().toISOString() };
   const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"], button:not([type])');
   cardSubmissionPending = true;
   form.setAttribute('aria-busy', 'true');
   if (submitButton) { submitButton.disabled = true; submitButton.textContent = 'Saving card…'; }
   try {
-    data = await updateData(demo, current => {
-      if (current.cards.some(item => item.id === card.id)) return current;
-      if (!licensed && current.cards.length >= freeCardLimit) throw new Error(cardLimitMessage);
-      current.cards.push(card);
-      return current;
-    });
+    data = await addCardToStore(demo, card, isLicensed());
     notice = 'Card saved and ready to study.';
     await render();
   } catch (cause) {
-    const message = cause instanceof Error ? cause.message : 'The card could not be saved. Try again.';
-    if (message === cardLimitMessage) {
-      data = await loadData(demo);
-      notice = cardLimitMessage;
+    if (cause instanceof CardLimitError) {
+      notice = cause.message;
       await render();
     } else {
-      error.textContent = message;
+      error.textContent = 'The card could not be saved. Try again.';
     }
   } finally {
     cardSubmissionPending = false;
@@ -353,10 +346,9 @@ function showUpdate(worker: ServiceWorker): void { updateWorker = worker; const 
 
 window.addEventListener('popstate', () => { revealed = null; activeCardId = ''; void render(true); });
 window.addEventListener('online', () => { notice = 'Back online. Your local cards stayed available.'; void render(); });
-window.addEventListener('offline', () => { notice = 'You are offline. Review and export still work.'; void render(); });
+window.addEventListener('offline', () => { notice = ''; void render(); });
 
 await consumeReturnedLicense();
-if (!navigator.onLine) notice = 'You are offline. Review and export still work.';
 await render();
 void refreshCachedLicense();
 registerServiceWorker();

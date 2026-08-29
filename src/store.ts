@@ -1,7 +1,15 @@
-import type { AppData } from './types';
+import type { AppData, Card } from './types';
 import { emptyData, sampleData } from './data';
 
 const DB_VERSION = 1;
+export const FREE_CARD_LIMIT = 30;
+
+export class CardLimitError extends Error {
+  constructor() {
+    super(`The free plan holds ${FREE_CARD_LIMIT} cards. Remove a card or add a Desk license before saving another.`);
+    this.name = 'CardLimitError';
+  }
+}
 
 function openDb(demo: boolean): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
@@ -63,6 +71,20 @@ export async function updateData(demo: boolean, update: (current: AppData) => Ap
     tx.oncomplete = () => { db.close(); resolve(next!); };
     tx.onerror = () => { db.close(); reject(tx.error); };
     tx.onabort = () => db.close();
+  });
+}
+
+/**
+ * Add one card against the newest stored snapshot. The stable card id makes a
+ * repeated submission idempotent, while the limit check and write share the
+ * same transaction so concurrent tabs cannot cross the free-plan boundary.
+ */
+export function addCardToStore(demo: boolean, card: Card, unlimited: boolean): Promise<AppData> {
+  return updateData(demo, current => {
+    if (current.cards.some(item => item.id === card.id)) return current;
+    if (!unlimited && current.cards.length >= FREE_CARD_LIMIT) throw new CardLimitError();
+    current.cards.push(card);
+    return current;
   });
 }
 
