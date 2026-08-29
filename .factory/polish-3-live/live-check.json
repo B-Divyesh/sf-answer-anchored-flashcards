@@ -1,0 +1,85 @@
+{
+  "routes": {
+    "/": {
+      "status": 200,
+      "title": "Recall Anchor — Score typed flashcard answers",
+      "h1": 1,
+      "main": 1,
+      "canonical": "https://answer-anchored-flashcards.sociobot.in/",
+      "ogTitle": "Recall Anchor — Score typed flashcard answers"
+    },
+    "/study": {
+      "status": 200,
+      "title": "Study — Recall Anchor",
+      "h1": 1,
+      "main": 1,
+      "canonical": "https://answer-anchored-flashcards.sociobot.in/study",
+      "ogTitle": "Study — Recall Anchor"
+    },
+    "/cards": {
+      "status": 200,
+      "title": "Cards — Recall Anchor",
+      "h1": 1,
+      "main": 1,
+      "canonical": "https://answer-anchored-flashcards.sociobot.in/cards",
+      "ogTitle": "Cards — Recall Anchor"
+    },
+    "/demo": {
+      "status": 200,
+      "title": "Demo — Recall Anchor",
+      "h1": 1,
+      "main": 1,
+      "canonical": "https://answer-anchored-flashcards.sociobot.in/demo",
+      "ogTitle": "Demo — Recall Anchor"
+    },
+    "/privacy": {
+      "status": 200,
+      "title": "Privacy — Recall Anchor",
+      "h1": 1,
+      "main": 1,
+      "canonical": "https://answer-anchored-flashcards.sociobot.in/privacy",
+      "ogTitle": "Privacy — Recall Anchor"
+    },
+    "/terms": {
+      "status": 200,
+      "title": "Terms — Recall Anchor",
+      "h1": 1,
+      "main": 1,
+      "canonical": "https://answer-anchored-flashcards.sociobot.in/terms",
+      "ogTitle": "Terms — Recall Anchor"
+    }
+  },
+  "firstScreen": {
+    "Works offline after your first visit": {
+      "bottom": 719,
+      "fitsViewport": true
+    },
+    "Cards stay in this browser": {
+      "bottom": 742,
+      "fitsViewport": true
+    },
+    "Free for 30 cards": {
+      "bottom": 765,
+      "fitsViewport": true
+    },
+    "scrollWidth": 390
+  },
+  "demo": {
+    "url": "https://answer-anchored-flashcards.sociobot.in/?demo=1",
+    "banner": "Demo\n— sample data, nothing is saved to your cards.\nReset demo\nStart for real",
+    "resetVisible": true,
+    "startRealVisible": true,
+    "threeDueVisible": true,
+    "answerVisible": true
+  },
+  "terms": {
+    "hasUnsupportedPaymentClaim": false
+  },
+  "notFound": {
+    "status": 404,
+    "title": "Page not found — Recall Anchor",
+    "h1": "This page is not in the deck",
+    "canonical": "https://answer-anchored-flashcards.sociobot.in/404"
+  },
+  "normalRouteConsoleErrors": []
+}
