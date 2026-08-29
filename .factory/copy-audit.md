@@ -84,4 +84,4 @@ The README now starts with the ordinary study task before implementation details
 
 The clearing instruction names each tested storage category. The removal wording states both outcomes at the destructive action.
 
-Catalog description: “Score flashcards from typed answers and set the next review date.” (62 characters, verb-first)
+Catalog description: “Score flashcards from typed answers and set the next review date.” (65 characters, verb-first)

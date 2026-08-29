@@ -54,7 +54,7 @@ test('every app route updates title, description, canonical, Open Graph, and Twi
     ['/demo', 'Demo — Recall Anchor', 'Try answer-anchored review with isolated sample data.'],
     ['/privacy', 'Privacy — Recall Anchor', 'How Recall Anchor stores and handles your study data.'],
     ['/terms', 'Terms — Recall Anchor', 'Terms for using Recall Anchor.'],
-    ['/not-a-real-card', 'Page not found — Recall Anchor', 'This page does not exist.']
+    ['/not-a-real-card', 'Page not found — Recall Anchor', 'This Recall Anchor page does not exist.']
   ];
   for (const [path, title, description] of routes) {
     await page.goto(path);

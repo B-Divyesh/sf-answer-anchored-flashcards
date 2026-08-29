@@ -39,7 +39,7 @@ const routeMeta: Record<string, [string, string]> = {
   '/demo': ['Demo — Recall Anchor', 'Try answer-anchored review with isolated sample data.'],
   '/privacy': ['Privacy — Recall Anchor', 'How Recall Anchor stores and handles your study data.'],
   '/terms': ['Terms — Recall Anchor', 'Terms for using Recall Anchor.'],
-  '/404': ['Page not found — Recall Anchor', 'This page does not exist.']
+  '/404': ['Page not found — Recall Anchor', 'This Recall Anchor page does not exist.']
 };
 
 function setMeta(path: string): void {
@@ -66,7 +66,7 @@ function shell(content: string): string {
     </header>
     ${visibleNotice ? `<div class="notice" role="status">${escapeHtml(visibleNotice)}</div>` : ''}
     <main id="main" tabindex="-1">${content}</main>
-    <footer><div><strong>Recall Anchor</strong><p>Score cards from typed answers, not guessed ratings.</p></div><nav aria-label="Footer"><a href="/privacy" data-link>Privacy</a><a href="/terms" data-link>Terms</a><a href="https://sociobot.in" target="_blank" rel="noreferrer">Built by Param Factory <span class="sr-only">(opens in a new tab)</span></a></nav><small>Version 1.0.8</small></footer>
+    <footer><div><strong>Recall Anchor</strong><p>Score cards from typed answers, not guessed ratings.</p></div><nav aria-label="Footer"><a href="/privacy" data-link>Privacy</a><a href="/terms" data-link>Terms</a><a href="https://sociobot.in" target="_blank" rel="noreferrer">Built by Param Factory <span class="sr-only">(opens in a new tab)</span></a></nav><small>Version 1.0.9</small></footer>
     <div class="route-announcer sr-only" aria-live="polite"></div>
     <div class="update-toast" hidden><span>A new version is ready.</span><button data-action="apply-update" aria-label="Update now">Update now</button></div>`;
 }
