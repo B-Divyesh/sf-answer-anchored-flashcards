@@ -1,3 +1,41 @@
+# Recall Anchor verification handoff — PASS
+
+## Current acceptance result
+
+Independent QA accepted commit `e01a5eda22dd816cccd27c0edb2d25b72cef1882`
+on 2026-08-29 UTC against
+<https://answer-anchored-flashcards.sociobot.in>. The live asset matches the
+candidate and no release-blocking defects remain. Full evidence is in
+[`verification-4.md`](verification-4.md).
+
+## How the acceptance was verified
+
+- `npm ci`, every one of the 15 `claims.json` commands independently, full
+  `npm test` (**39/39**), `npm run typecheck`, `npm run build`, and
+  `npm audit --audit-level=low` all passed.
+- The real demo was tested cold, at desktop and 390 px, by keyboard, offline
+  after first load, and with reduced motion. Production security headers,
+  same-origin study-data traffic, PWA update behavior, rate limiting, payment
+  redirect, accessibility scans, bundle budgets, and build identity passed.
+- Live Lighthouse: Performance 90, Accessibility 100, Best Practices 100,
+  SEO 100.
+
+## Run locally
+
+```sh
+npm ci
+npm test
+npm run build
+```
+
+Use `/?demo=1` for the isolated sample workflow. Build output is `dist/`.
+
+## Known gaps
+
+None found in this candidate.
+
+---
+
 # Recall Anchor polish round 1 handoff
 
 ## Outcome
