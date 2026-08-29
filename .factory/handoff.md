@@ -1,3 +1,33 @@
+# Review 2 handoff — FAIL
+
+## What was done
+
+Performed an adversarial cold review of the live product at desktop and 390 px. No product code was changed. The full report is `.factory/review-2.md`.
+
+## Verification
+
+- Created a clean clone, ran `npm ci`, then every exact command in the 15-entry claims register: all passed.
+- `npm test` passed **39/39**; `npm run build` passed and produced `dist/`.
+- Checked cold first-read copy, demo/reset/isolation, offline/privacy flow, links, metadata, 404, visual identity, and every Review 1 repair.
+
+## Findings left
+
+1. **BLOCKING F-2-1:** Browser Back/Forward resets reading position instead of restoring it.
+2. **F-2-2:** The three-card initial-demo promise is not a registered claim.
+3. **F-2-3:** Public hero provenance is an unlisted assertion.
+
+## Repeat locally
+
+```sh
+npm ci
+npm test
+npm run build
+```
+
+Use `/?demo=1` for the isolated sample workflow.
+
+---
+
 # Recall Anchor verification handoff — PASS
 
 ## Current acceptance result
