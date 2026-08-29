@@ -68,6 +68,24 @@ test('checklist scoring matches complete rubric items, not substrings', async ({
   await expect(page.getByText(/Review again in 10 minutes/)).toBeVisible();
 });
 
+test('an accepted numeric tolerance boundary marks the answer key as matched', async ({ page }) => {
+  await page.goto('/demo');
+  await page.getByLabel('Your answer').fill('café');
+  await page.getByText('Close', { exact: true }).click();
+  await page.getByRole('button', { name: 'Score my answer' }).click();
+  await page.getByRole('button', { name: 'Review next card' }).click();
+  await page.getByLabel('Your answer').fill('299802');
+  await page.getByText('Certain', { exact: true }).click();
+  await page.getByRole('button', { name: 'Score my answer' }).click();
+
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('100%');
+  const numericKey = page.locator('.evidence-grid li').filter({ hasText: '299792 ± 10' });
+  await expect(numericKey).toHaveClass('matched');
+  await expect(numericKey.getByText('Matched:', { exact: true })).toBeAttached();
+  await expect(page.locator('.evidence-grid .missing')).toHaveCount(0);
+  await expect(page.getByText(/The answer key passed/)).toBeVisible();
+});
+
 test('one answer submit records exactly one review', async ({ page }) => {
   await page.goto('/demo');
   await page.getByLabel('Your answer').fill('café');

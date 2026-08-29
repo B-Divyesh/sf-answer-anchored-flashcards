@@ -36,12 +36,14 @@ test('unknown URLs show the designed 404 route', async ({ page }) => {
   await expect(page.getByRole('heading', { level: 1 })).toContainText('not in the deck');
 });
 
-test('terms keep purchase copy to the declared checkout and license behavior', async ({ page }) => {
+test('terms disclose checkout, merchant-of-record, refund, and license behavior', async ({ page }) => {
   await page.goto('/terms');
   const terms = page.locator('.legal');
   await expect(terms).toContainText('The Desk purchase opens Sociobot’s hosted checkout.');
+  await expect(terms).toContainText('Sociobot/Dodo is the merchant of record.');
+  await expect(terms).toContainText('It handles refunds, and a refund revokes the license automatically.');
   await expect(terms).toContainText('A license must be active for paid features to remain available.');
-  await expect(terms).not.toContainText(/merchant of record|refund|measure learning ability|guarantee recall/i);
+  await expect(terms).not.toContainText(/measure learning ability|guarantee recall/i);
 });
 
 test('every app route updates canonical, Open Graph, and Twitter metadata', async ({ page }) => {

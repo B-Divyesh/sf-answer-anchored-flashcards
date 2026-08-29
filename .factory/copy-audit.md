@@ -43,13 +43,15 @@ Read-aloud check: “Score flashcards from typed answers. For people studying al
 | The free plan holds 30 cards. | 6 | `free-limit` |
 | The Recall Anchor Desk license costs $19 once and adds unlimited cards plus review trends. | 14 | `paid-desk` |
 | The Desk purchase opens Sociobot’s hosted checkout. | 7 | `paid-desk` |
+| Sociobot/Dodo is the merchant of record. | 6 | `paid-desk` |
+| It handles refunds, and a refund revokes the license automatically. | 10 | `paid-desk`, `license-revocation` |
 | A license must be active for paid features to remain available. | 11 | `license-revocation` |
 | Keep an encrypted backup and its passphrase. | 7 | Instruction |
 | Browser storage can be cleared by your device or browser. | 10 | Storage warning |
 | The software is provided as is under the MIT License. | 10 | License term |
 | Use it only where local law allows. | 7 | Legal instruction |
 
-The Terms page has no merchant-of-record, refund-handling, learning-measurement, or recall-guarantee statement. These claims are not asserted because they have no observable sandbox proof.
+The paid claim checks the merchant-of-record and refund wording against the live Sociobot catalog and Dodo-hosted checkout. The Terms page makes no learning-measurement or recall-guarantee claim.
 
 ## README review
 

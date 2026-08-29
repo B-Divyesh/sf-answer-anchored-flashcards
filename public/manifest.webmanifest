@@ -2,7 +2,7 @@
   "name": "Recall Anchor",
   "short_name": "Recall Anchor",
   "description": "Score flashcards from the answer you type, not a rating you guess.",
-  "start_url": "/?v=1.0.6",
+  "start_url": "/?v=1.0.7",
   "scope": "/",
   "display": "standalone",
   "background_color": "#f4eddd",
