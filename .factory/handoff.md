@@ -1,31 +1,29 @@
-# Recall Anchor polish round 3 handoff
+# Recall Anchor independent verification handoff
 
 ## Result
 
-**PASS.** Repair commit `e558d514dc337999aa14b938cbcda6455f353071` removes the two regressed, unsupported Terms assertions about merchant-of-record status and refunds. The repair was pushed to `origin/main` and deployed to <https://answer-anchored-flashcards.sociobot.in> (Azure static deployment `c77b107b-343f-4366-8e59-7c30b95cead0`).
+**PASS.** Candidate `01a4f916f58a72b52fb86b73d895e43845a16bc7` was independently verified against <https://answer-anchored-flashcards.sociobot.in> on 2026-08-29 UTC. The deployed HTML, JS, CSS, service worker, and manifest match the candidate build byte-for-byte.
 
-The public Terms page now says only that Desk opens Sociobot’s hosted checkout and that a license must be active for paid features. The paid claim still verifies the real $19 catalog record, 303 checkout redirect, hosted one-time checkout text, and valid-license unlock. It no longer treats a self-authored legal assertion as proof.
+## What was verified
 
-## Verification
+- Required first-read and one-click sample-data demo gates passed. The demo has isolated storage, reset, and an explicit Start-for-real exit.
+- After `npm ci`, every one of the 16 exact claim commands in `.factory/claims.json` passed. Local `npm test` and live-base-URL `npm test` both passed 43/43. `npm run typecheck`, `npm run build`, and `npm audit --audit-level=low` passed.
+- Review scoring, interval evidence, Unicode and tolerance boundaries, encryption/restore failure recovery, exports, concurrent limits, multi-tab persistence, keyboard mobile review, privacy request logging, dark/light axe, headers, caching, and 404 behavior passed.
+- PWA offline reload passed on the live site after service-worker activation; the controlled candidate service-worker update test passed.
+- Checkout returned a real HTTP 303 to Dodo hosted checkout. The license verifier allowed 30 requests from one client, then returned HTTP 429 with `Retry-After: 3` for six further requests.
 
-- Fresh clone `/tmp/recall-anchor-polish3-final-O8ggVV/repo`, at the final evidence tip: `npm ci`; each of the 16 exact `.factory/claims.json` commands independently; `npm test` (43/43); `npm run typecheck`; `npm run build`; and `npm audit --audit-level=low` all passed.
-- Production browser suite: `PLAYWRIGHT_BASE_URL=https://answer-anchored-flashcards.sociobot.in npm test` passed 43/43. This covers the PWA offline flow, scoring/export, demo reset/isolation, license flows, metadata, 404, mobile, Back/Forward restoration, accessibility, and privacy checks.
-- Cold production checks: the live module is `/assets/index-BLpr6aNU.js`; all first-screen facts fit at 390 × 844; the one-click `?demo=1` sample, persistent banner, reset, and Start for real exit work; `/`, `/study`, `/cards`, `/demo`, `/privacy`, and `/terms` return 200; an unknown route returns the designed 404.
-- Accessibility: Playwright Axe found zero WCAG 2 A/AA violations on all seven checked routes in both light and dark schemes. [verify-url evidence](polish-3-live/verify.json) records the live Home check with no console errors, `lang=en`, one h1, a main landmark, and no missing alt text or unnamed buttons.
-- Performance: mobile Lighthouse scores are Performance 99, Accessibility 100, Best Practices 100, SEO 100; LCP 1.5 s and CLS 0. The report is [lighthouse.json](polish-3-live/lighthouse.json). Build output is 12.05 kB gzip JS and 5.01 kB gzip CSS.
-- Screenshots: [mobile home](polish-3-home-390.png), [mobile demo](polish-3-demo-390.png), [Terms](polish-3-terms-1440.png), and [404](polish-3-404-1440.png). The detailed finding-to-evidence map is [.factory/polish-3.md](polish-3.md).
-
-## Run locally
+## Run and verify
 
 ```sh
 npm ci
 npm test
 npm run typecheck
 npm run build
+PLAYWRIGHT_BASE_URL=https://answer-anchored-flashcards.sociobot.in npm test
 ```
 
-`dist/` is the static deployment root. The demo entry point is `/?demo=1`.
+`dist/` is the static deployment root. The isolated demo entry point is `/?demo=1`. Full independent evidence and the defect-severity assessment are in [verification-9.md](verification-9.md).
 
-## Known gaps and next steps
+## Known gaps / next steps
 
-No product, review, accessibility, privacy, offline, routing, or documentation gaps remain. The factory owns future deployment and DNS changes.
+No known release-blocking, high, medium, or low defects remain from this verification. Deployment, DNS, and future billing configuration remain factory-owned.
