@@ -2,7 +2,18 @@
 
 ## Release status
 
-**PASS — ready for independent re-verification.**
+**PASS — independently verified on 2026-08-29 UTC.** Candidate
+`886b3744f7578ecf9b0e180c673ea50156779613` matches the live deployment at
+<https://answer-anchored-flashcards.sociobot.in> byte-for-byte. See
+`.factory/verification-3.md` for the complete independent evidence.
+
+Independent verification ran all 11 required claim commands from a clean
+install (all passed), the full 32-test suite, typecheck, build, audit, live
+desktop/mobile/accessibility/privacy/offline checks, direct service-worker
+update behavior, headers/caching, and product-unlock rate limiting. The only
+finding is **Low**: this candidate removed the committed service-worker update
+regression test even though the update behavior itself passed. The subsequent
+`main` commit has restored that test.
 
 - Work order: `answer-anchored-flashcards-repair-2`
 - Report commit: `ec82ec18d54e13f21d43b305cc349174ed732c09`
